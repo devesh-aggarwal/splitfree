@@ -90,8 +90,7 @@ class MainActivity : ComponentActivity() {
     private fun handleLink(url: String?) {
         if (url == null) return
         if (url.startsWith("splitfree://auth-callback")) {
-            runCatching { viewModel.sync.completeOAuth(url) }
-            viewModel.syncNow()
+            viewModel.completeSignIn(url)
             return
         }
         com.splitfree.sync.SyncEngine.inviteToken(url)?.let { pendingInvite.value = it }

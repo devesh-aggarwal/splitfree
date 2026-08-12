@@ -126,8 +126,9 @@ class SyncEngine(
     }
 
     /** Finishes the round trip when the browser sends us back. */
-    fun completeOAuth(callback: String) {
+    suspend fun completeOAuth(callback: String) {
         client.completeOAuth(callback)
+        client.refreshUserDetails()
         refreshAccountState()
     }
 

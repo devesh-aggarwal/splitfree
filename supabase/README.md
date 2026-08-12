@@ -28,19 +28,34 @@ supabase link --project-ref <your-project-ref>
 supabase db push
 ```
 
-Then in the Supabase dashboard:
+Then in the Supabase dashboard, under Authentication:
 
-1. **Authentication → Providers:** enable Apple, Google and email. Apple requires
-   Sign in with Apple in any app that offers another third-party sign-in, so
-   those two travel together.
-2. **Authentication → URL Configuration:** add `splitfree://auth-callback` to the
-   redirect allow-list, or browser sign-in returns to nowhere.
-3. **Authentication → Email Templates → Magic Link:** the template must contain
-   `{{ .Token }}`. This one is easy to miss and fails in a way that gives you
-   nothing to go on: the apps ask for a six-digit code, GoTrue generates one
-   either way, and the stock template shows only a link — so the code exists,
-   nobody is ever shown it, and sign-in just doesn't work. Copy
-   `supabase/templates/magic_link.html`, which the local stack already uses.
+1. **URL Configuration → Redirect URLs:** add `splitfree://auth-callback`.
+   Required. Without it GoTrue substitutes `site_url` for the redirect the client
+   asked for, without erroring, so the sign-in link opens a web page instead of
+   the app and nothing anywhere says why.
+2. **Providers:** email is on by default. Apple and Google are optional and need
+   credentials from those companies. Apple requires Sign in with Apple in any app
+   offering another third-party sign-in, so on iOS those two travel together.
+3. **Emails → SMTP Settings:** connect a provider before real users arrive. The
+   built-in sender only delivers to members of your own Supabase organisation and
+   allows a couple of messages an hour, so anyone else gets silence. Any free
+   tier is enough.
+4. **Emails → Magic Link** *(optional, and only possible once SMTP is set up):*
+   paste in `templates/magic_link.html`. It adds a six-digit code beside the
+   link, for someone reading their email on a different device from the one they
+   are signing in on. The apps accept either.
+
+## Two things that are easy to get wrong
+
+`redirect_to` is a **query parameter** on `/auth/v1/otp`, not a body field. Sent
+in the body it is ignored silently and the link falls back to `site_url`.
+
+The `Authorization` header carries a user's session and nothing else. The old
+anon key was a JWT and could stand in for one, which is why so much sample code
+puts it there; the newer `sb_publishable_…` keys are not JWTs, and a server asked
+to parse one as a token rejects the request. The `apikey` header is what
+identifies the project, and it works with both.
 
 ## How sync works
 

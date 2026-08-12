@@ -55,6 +55,9 @@ final class SyncEngine {
             return
         }
         _ = await client.restoreSession()
+        if await client.isSignedIn, await client.email == nil {
+            await client.refreshUserDetails()
+        }
         isSignedIn = await client.isSignedIn
         accountEmail = await client.email
         status = isSignedIn ? .idle : .signedOut

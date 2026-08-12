@@ -160,7 +160,10 @@ site_url = "http://127.0.0.1:3000"
 # The public URL that Auth serves on. Defaults to the API external URL with `/auth/v1` appended.
 # external_url = ""
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
-additional_redirect_urls = ["https://127.0.0.1:3000"]
+# The app's own URL scheme has to be listed, or GoTrue quietly ignores the
+# redirect the client asked for and sends people to site_url instead — a web
+# page, not the app, with no error anywhere to say why.
+additional_redirect_urls = ["https://127.0.0.1:3000", "splitfree://auth-callback"]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 (1 week).
 jwt_expiry = 3600
 # JWT issuer URL. If not set, defaults to auth.external_url.
@@ -412,10 +415,3 @@ enabled = true
 # declarative_schema_path = "./database"
 # JSON string passed through to pg-delta SQL formatting.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":80,\"commaStyle\":\"trailing\"}"
-
-# The apps sign in with a six-digit code, so the email has to contain one.
-# See templates/magic_link.html: the stock template shows only a link, and
-# sign-in then fails with nothing on screen to explain why.
-[auth.email.template.magic_link]
-subject = "Your SplitFree code"
-content_path = "./supabase/templates/magic_link.html"

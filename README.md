@@ -41,22 +41,38 @@ security decides the rest.
 
 **3. Set up sign-in.** In the dashboard, under Authentication:
 
-- **Providers** → enable Email. Enable Apple and Google too if you want those
-  buttons; each needs credentials from Apple and Google respectively. Apple
-  requires Sign in with Apple in any app offering another third-party sign-in,
-  so on iOS those two travel together.
-- **URL Configuration** → add `splitfree://auth-callback` to the redirect
-  allow-list, or a browser sign-in comes back to nowhere.
-- **Email Templates → Magic Link** → the template must contain `{{ .Token }}`.
-  Paste in `supabase/templates/magic_link.html`.
+- **URL Configuration → Redirect URLs** → add `splitfree://auth-callback`.
+  This one is required, and skipping it fails silently: the sign-in email still
+  arrives and its link still works, but it opens your project's website instead
+  of the app, because the server quietly substitutes its own site URL for a
+  redirect it hasn't been told to allow.
+- **Providers** → Email is on by default and needs nothing else. Enable Apple
+  and Google only if you want those buttons; each needs credentials from Apple
+  and Google respectively. Apple requires Sign in with Apple in any app offering
+  another third-party sign-in, so on iOS those two travel together.
 
-That last one is worth the extra sentence, because it fails in a way that gives
-you nothing to go on. The apps ask for a six-digit code, and the stock template
-sends only a link. The code is generated either way and simply never shown, so
-sign-in just doesn't work and nothing anywhere says why.
+Email sign-in works at this point: the app sends a link, and tapping it signs you
+in. You do **not** need to touch the email templates or set up SMTP.
 
-**4. Check it.** With the stack running locally, `supabase/tests/contract_test.sh`
+**4. Check it.** With a local stack running, `supabase/tests/contract_test.sh`
 sends the same requests the apps send and tells you which part is wrong.
+
+### Before real people use it
+
+Supabase's built-in email sender is for development. It only delivers to
+addresses belonging to your own Supabase organization, and it is rate-limited to
+a couple of messages an hour, so anybody else who tries to sign in gets nothing
+and no error. It also cannot be customised, which is why the dashboard tells you
+to set up SMTP before editing a template.
+
+Connecting any SMTP provider fixes both. The free tiers of Resend, Brevo and
+Postmark are all far past what this app needs. It is a setting, not a paid plan:
+Authentication → Emails → SMTP Settings.
+
+Once SMTP is connected you can also paste `supabase/templates/magic_link.html`
+into the Magic Link template. It adds a six-digit code alongside the link, which
+is useful when someone opens their email on a different device from the one
+they're signing in on. The app accepts either.
 
 ## Features
 

@@ -52,7 +52,11 @@ struct SignInView: View {
                 }
             }
             .disabled(isWorking)
-            .onOpenURL { url in Task { await completeOAuth(url) } }
+            // The callback is handled by RootView, which is on screen whichever
+            // way the user comes back. This only has to notice that it worked.
+            .onChange(of: sync.isSignedIn) { _, signedIn in
+                if signedIn { dismiss() }
+            }
         }
     }
 
@@ -91,7 +95,7 @@ struct SignInView: View {
                 Task { await sendCode() }
             } label: {
                 HStack {
-                    Text("Email me a code")
+                    Text("Email me a link")
                     Spacer()
                     if isWorking { ProgressView() }
                 }
@@ -100,7 +104,7 @@ struct SignInView: View {
         } header: {
             Text("With your email")
         } footer: {
-            Text("We send a six-digit code. There's no password to forget.")
+            Text("No password to forget.")
         }
     }
 
@@ -156,9 +160,11 @@ struct SignInView: View {
         } header: {
             Text("Check your email")
         } footer: {
-            Text(String(format: String(localized: "We sent a code to %@.", comment: "Email address"), email))
+            Text(String(
+                format: String(localized: "Tap the link we sent to %@. If the email shows a six-digit code instead, type it above.", comment: "Email address"),
+                email
+            ))
         }
-        .onAppear { focus = .code }
     }
 
     private var isPlausibleEmail: Bool {
@@ -218,14 +224,6 @@ struct SignInView: View {
             return
         }
         await UIApplication.shared.open(url)
-    }
-
-    private func completeOAuth(_ url: URL) async {
-        guard url.scheme == "splitfree", url.host == "auth-callback" else { return }
-        await perform {
-            _ = try await SupabaseClient.shared.completeOAuth(callback: url)
-            await finishSignIn()
-        }
     }
 
     private func finishSignIn() async {

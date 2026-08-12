@@ -22,7 +22,15 @@ enum SupabaseConfig {
         raw = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         while raw.hasSuffix("/") { raw.removeLast() }
         guard !raw.isEmpty, raw != "https:", raw != "http:" else { return nil }
-        if !raw.lowercased().hasPrefix("http") { raw = "https://" + raw }
+        if !raw.lowercased().hasPrefix("http") {
+            // Loopback means a stack running on this machine, which serves plain
+            // HTTP. Inferring it is what lets the scheme stay out of the config
+            // file entirely, which is the point: `//` starts a comment there.
+            let isLoopback = raw.hasPrefix("127.0.0.1")
+                || raw.hasPrefix("localhost")
+                || raw.hasPrefix("[::1]")
+            raw = (isLoopback ? "http://" : "https://") + raw
+        }
         return URL(string: raw)
     }()
 
@@ -159,11 +167,21 @@ actor SupabaseClient {
 
     // MARK: Auth
 
-    /// Sends a six-digit code to an email address. No password to forget, and no
-    /// third-party SDK.
+    /// Starts an email sign-in.
+    ///
+    /// One request produces both a link and a six-digit code; which of them the
+    /// email actually shows is decided by the project's email template. The
+    /// stock template shows only the link, so the link is the path that works
+    /// without configuring anything, and `redirect_to` is what brings that link
+    /// back into the app instead of to a web page.
     func sendEmailCode(to email: String) async throws {
+        // `redirect_to` is a query parameter. GoTrue ignores it in the body, and
+        // ignores it silently: the email still arrives, the link still works,
+        // and it opens the project's website instead of the app.
+        let redirect = SupabaseConfig.redirectURI
+            .addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
         _ = try await request(
-            path: "/auth/v1/otp",
+            path: "/auth/v1/otp?redirect_to=\(redirect)",
             method: "POST",
             body: ["email": email, "create_user": true],
             authorized: false
@@ -236,6 +254,21 @@ actor SupabaseClient {
         current = session
         SessionStore.save(session)
         return session
+    }
+
+    /// Fills in the account's email after a link or browser sign-in.
+    ///
+    /// Those flows hand back tokens in a URL fragment and nothing else, so the
+    /// account row would otherwise read "Signed in" and leave someone with two
+    /// addresses unable to tell which one they used.
+    func refreshUserDetails() async {
+        guard current != nil,
+              let data = try? await request(path: "/auth/v1/user", method: "GET", authorized: true),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let email = json["email"] as? String, !email.isEmpty
+        else { return }
+        current?.email = email
+        if let current { SessionStore.save(current) }
     }
 
     func signOut() {
@@ -363,11 +396,14 @@ actor SupabaseClient {
             urlRequest.setValue(value, forHTTPHeaderField: key)
         }
 
+        // Authorization carries a user's session and nothing else. The older
+        // anon key was a JWT and could stand in for one, which is why so much
+        // sample code sends it here; the newer publishable keys are not JWTs, and
+        // a server asked to parse one as a token rejects the request. The apikey
+        // header is what identifies the project, and it is set above either way.
         if authorized {
             let session = try await validSession()
             urlRequest.setValue("Bearer \(session.accessToken)", forHTTPHeaderField: "Authorization")
-        } else {
-            urlRequest.setValue("Bearer \(anonKey)", forHTTPHeaderField: "Authorization")
         }
 
         if let body {

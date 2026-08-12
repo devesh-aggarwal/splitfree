@@ -62,6 +62,12 @@ class LedgerViewModel(
 
     fun syncNow() = viewModelScope.launch { sync.syncNow() }
 
+    /** Finishes an email or browser sign-in when its link comes back to the app. */
+    fun completeSignIn(callback: String) = viewModelScope.launch {
+        runCatching { sync.completeOAuth(callback) }
+        sync.syncNow()
+    }
+
     fun signOut() = viewModelScope.launch { sync.signOut() }
 
     fun stopSharing(groupId: String) = viewModelScope.launch {

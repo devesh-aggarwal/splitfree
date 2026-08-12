@@ -64,6 +64,12 @@ fun SignInScreen(viewModel: LedgerViewModel, onDone: () -> Unit) {
     var working by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
 
+    // The magic link comes back through MainActivity, whichever screen is up.
+    val syncStatus by viewModel.sync.status.collectAsState()
+    LaunchedEffect(syncStatus) {
+        if (viewModel.sync.isSignedIn) onDone()
+    }
+
     fun run(block: suspend () -> Unit) {
         scope.launch {
             working = true
@@ -107,7 +113,7 @@ fun SignInScreen(viewModel: LedgerViewModel, onDone: () -> Unit) {
 
         if (!awaitingCode) {
             SplitCard {
-                SectionHeader("With your email", "We send a six-digit code. There's no password to forget.")
+                SectionHeader("With your email", "No password to forget.")
                 Spacer(Modifier.height(12.dp))
                 OutlinedTextField(
                     value = email,
@@ -118,7 +124,7 @@ fun SignInScreen(viewModel: LedgerViewModel, onDone: () -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                 )
                 Spacer(Modifier.height(12.dp))
-                PrimaryButton("Email me a code", enabled = isPlausibleEmail(email) && !working) {
+                PrimaryButton("Email me a link", enabled = isPlausibleEmail(email) && !working) {
                     run {
                         viewModel.sync.sendEmailCode(email.trim())
                         awaitingCode = true
@@ -135,7 +141,11 @@ fun SignInScreen(viewModel: LedgerViewModel, onDone: () -> Unit) {
             }
         } else {
             SplitCard {
-                SectionHeader("Check your email", "We sent a code to ${email.trim()}.")
+                SectionHeader(
+                    "Check your email",
+                    "Tap the link we sent to ${email.trim()}. If the email shows a six-digit " +
+                        "code instead, type it below.",
+                )
                 Spacer(Modifier.height(12.dp))
                 OutlinedTextField(
                     value = code,

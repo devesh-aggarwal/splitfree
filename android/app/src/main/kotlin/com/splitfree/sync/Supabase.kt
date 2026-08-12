@@ -34,7 +34,14 @@ object SupabaseConfig {
         get() {
             val raw = BuildConfig.SUPABASE_URL.trim().trimEnd('/')
             if (raw.isBlank() || raw == "https:" || raw == "http:") return ""
-            return if (raw.startsWith("http", ignoreCase = true)) raw else "https://$raw"
+            if (raw.startsWith("http", ignoreCase = true)) return raw
+            // Loopback means a stack running on this machine, which serves plain
+            // HTTP. On Android the emulator reaches the host at 10.0.2.2.
+            val isLoopback = raw.startsWith("127.0.0.1") ||
+                raw.startsWith("localhost") ||
+                raw.startsWith("10.0.2.2") ||
+                raw.startsWith("[::1]")
+            return (if (isLoopback) "http://" else "https://") + raw
         }
 
     val anonKey: String get() = BuildConfig.SUPABASE_ANON_KEY.trim()
@@ -103,10 +110,22 @@ class SupabaseClient(context: Context) {
 
     // MARK: - Auth
 
-    /** Sends a six-digit code. No password to forget, and no third-party SDK. */
+    /**
+     * Starts an email sign-in.
+     *
+     * One request produces both a link and a six-digit code; which of them the
+     * email shows is decided by the project's email template. The stock template
+     * shows only the link, so the link is the path that works without
+     * configuring anything, and `redirect_to` is what brings that link back
+     * into the app instead of to a web page.
+     */
     suspend fun sendEmailCode(email: String) {
+        // `redirect_to` is a query parameter. GoTrue ignores it in the body, and
+        // ignores it silently: the email still arrives, the link still works,
+        // and it opens the project's website instead of the app.
+        val redirect = URLEncoder.encode(SupabaseConfig.REDIRECT_URI, "UTF-8")
         request(
-            path = "/auth/v1/otp",
+            path = "/auth/v1/otp?redirect_to=$redirect",
             method = "POST",
             body = JSONObject().put("email", email).put("create_user", true),
             authorized = false,
@@ -149,6 +168,21 @@ class SupabaseClient(context: Context) {
         )
         writeSession(session)
         return session
+    }
+
+    /**
+     * Fills in the account's email after a link or browser sign-in. Those flows
+     * hand back tokens in a URL fragment and nothing else, so the account row
+     * would otherwise read "Signed in" and leave someone with two addresses
+     * unable to tell which one they used.
+     */
+    suspend fun refreshUserDetails() {
+        val session = current ?: return
+        runCatching {
+            val json = JSONObject(request("/auth/v1/user", "GET", authorized = true))
+            val email = json.optString("email").takeIf { it.isNotBlank() } ?: return
+            writeSession(session.copy(email = email))
+        }
     }
 
     fun signOut() {
@@ -265,7 +299,11 @@ class SupabaseClient(context: Context) {
     ): String {
         if (!SupabaseConfig.isConfigured) throw SupabaseException("This build isn't set up for syncing.")
 
-        val token = if (authorized) validSession().accessToken else SupabaseConfig.anonKey
+        // Authorization carries a user's session and nothing else. The older
+        // anon key was a JWT and could stand in for one; the newer publishable
+        // keys are not JWTs, and a server asked to parse one as a token rejects
+        // the request. The apikey header identifies the project either way.
+        val token = if (authorized) validSession().accessToken else null
 
         return withContext(Dispatchers.IO) {
             val connection = (URL(SupabaseConfig.url + path).openConnection() as HttpURLConnection).apply {
@@ -273,7 +311,7 @@ class SupabaseClient(context: Context) {
                 connectTimeout = 15_000
                 readTimeout = 30_000
                 setRequestProperty("apikey", SupabaseConfig.anonKey)
-                setRequestProperty("Authorization", "Bearer $token")
+                if (token != null) setRequestProperty("Authorization", "Bearer $token")
                 setRequestProperty("Content-Type", "application/json")
                 extraHeaders.forEach { (key, value) -> setRequestProperty(key, value) }
                 if (body != null) {

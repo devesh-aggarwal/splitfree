@@ -52,6 +52,10 @@ struct RootView: View {
         }
         .task { await bootstrap() }
         .onOpenURL { url in
+            if url.scheme == "splitfree", url.host == "auth-callback" {
+                Task { await completeSignIn(callback: url) }
+                return
+            }
             if let token = SyncEngine.inviteToken(from: url) { inviteToken = InviteToken(token) }
         }
         .sheet(item: $inviteToken) { token in
@@ -125,6 +129,18 @@ struct RootView: View {
         case .activity: ActivityView()
         case .insights: InsightsView()
         case .account: AccountView()
+        }
+    }
+
+    /// Finishes an email or browser sign-in when its link comes back to the app.
+    private func completeSignIn(callback: URL) async {
+        do {
+            _ = try await SupabaseClient.shared.completeOAuth(callback: callback)
+            await sync.refreshAccountState()
+            await sync.syncNow(context: context)
+            Haptics.success()
+        } catch {
+            Haptics.warning()
         }
     }
 

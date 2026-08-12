@@ -19,4 +19,6 @@
 // inside the app binary regardless, so keeping it out of the repo buys nothing.
 
 SUPABASE_URL =
+// Paste the anon key or the newer publishable key (sb_publishable_...).
+// Either works; the dashboard now labels the anon one as legacy.
 SUPABASE_ANON_KEY =
