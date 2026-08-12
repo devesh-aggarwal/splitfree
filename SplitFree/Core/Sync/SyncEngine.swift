@@ -728,7 +728,12 @@ final class SyncEngine {
 
     // MARK: - Helpers
 
-    private nonisolated static let outbound: ISO8601DateFormatter = {
+    /// `nonisolated(unsafe)` rather than `nonisolated`: `ISO8601DateFormatter`
+    /// is not `Sendable`, but its formatting and parsing methods are documented
+    /// as thread-safe and this instance is never mutated after creation. The
+    /// alternative is allocating a formatter per row, which a large pull would
+    /// do thousands of times for no benefit.
+    private nonisolated(unsafe) static let outbound: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         formatter.timeZone = TimeZone(secondsFromGMT: 0)

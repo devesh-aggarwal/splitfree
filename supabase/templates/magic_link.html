@@ -1,13 +1,20 @@
 <!--
-  The sign-in email.
+  The sign-in email. Optional.
 
-  It has to show {{ .Token }}. The stock Supabase template sends only a magic
-  link, and the apps ask for a six-digit code: they call /auth/v1/verify with
-  type=email and the token typed in by hand. GoTrue generates that code either
-  way, so with the default template the code exists and nobody is ever shown it,
-  and sign-in fails with no clue why.
+  Nothing needs this template. Both apps sign in by link, and Supabase's stock
+  template sends one, so email sign-in works on a fresh project with no
+  configuration at all.
 
-  The link is kept as well, because tapping it is easier on a phone.
+  What this adds is the six-digit code beside the link. One /auth/v1/otp request
+  produces both; the stock template just never shows the code. Having it matters
+  when someone reads their email on a laptop and is signing in on their phone,
+  where a link is useless and a code is not.
+
+  Editing templates requires custom SMTP, so this only becomes available once you
+  have connected a provider — which you need before real users arrive anyway,
+  since the built-in sender only delivers to your own organisation.
+
+  Paste this into Authentication -> Emails -> Magic Link.
 -->
 <h2>Your SplitFree code</h2>
 

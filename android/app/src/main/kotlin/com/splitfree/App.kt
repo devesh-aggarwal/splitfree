@@ -54,7 +54,7 @@ import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.filled.Weekend
 import androidx.compose.material.icons.filled.ConfirmationNumber
 import androidx.compose.material.icons.filled.Inventory2
-import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /** Wires the database, repository and settings together. */
@@ -135,7 +135,7 @@ fun ExpenseCategory.icon(): ImageVector = when (this) {
     ExpenseCategory.HOTEL -> Icons.Filled.Hotel
     ExpenseCategory.ACTIVITIES -> Icons.Filled.Brush
     ExpenseCategory.SOUVENIRS -> Icons.Filled.ShoppingBag
-    ExpenseCategory.GENERAL -> Icons.Filled.List
+    ExpenseCategory.GENERAL -> Icons.AutoMirrored.Filled.List
 }
 
 /** Display title, read from the generated string resources. */
