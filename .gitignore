@@ -1,0 +1,27 @@
+# Build output
+build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# Gradle / Android Studio
+.gradle/
+local.properties
+*.iml
+.idea/
+captures/
+.cxx/
+
+# Supabase CLI scratch
+supabase/.branches/
+supabase/.temp/
+
+# macOS
+.DS_Store

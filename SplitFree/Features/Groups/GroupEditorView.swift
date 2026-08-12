@@ -16,7 +16,7 @@ struct GroupEditorView: View {
     @State private var kind: GroupKind = .trip
     @State private var colorIndex = 0
     @State private var currencyCode = Currency.deviceDefaultCode
-    @State private var simplifyDebts = false
+    @State private var simplifyDebts = true
     @State private var coverImageData: Data?
     @State private var memberIDs: Set<UUID> = []
     @State private var photoItem: PhotosPickerItem?

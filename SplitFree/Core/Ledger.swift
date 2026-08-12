@@ -28,6 +28,23 @@ enum Ledger {
         return me
     }
 
+    // MARK: - Deletion
+
+    /// Notes that something was deleted so sync can tell a friend's phone about
+    /// it. Local-only rows are skipped: nothing on the server ever knew about
+    /// them, so there is nothing to tell.
+    static func recordTombstone(
+        _ entity: SyncEntity,
+        id: UUID,
+        groupID: UUID? = nil,
+        in context: ModelContext
+    ) {
+        guard let groupID else { return }
+        let descriptor = FetchDescriptor<SpendingGroup>(predicate: #Predicate { $0.id == groupID })
+        guard let group = try? context.fetch(descriptor).first, group.isShared else { return }
+        context.insert(SyncTombstone(entity: entity, entityID: id, groupID: groupID))
+    }
+
     // MARK: - Activity
 
     static func log(
@@ -119,6 +136,7 @@ enum Ledger {
             groupName: expense.group?.name ?? "",
             in: context
         )
+        recordTombstone(.expense, id: expense.id, groupID: expense.group?.id, in: context)
         context.delete(expense)
     }
 
@@ -135,6 +153,7 @@ enum Ledger {
             groupName: settlement.group?.name ?? "",
             in: context
         )
+        recordTombstone(.settlement, id: settlement.id, groupID: settlement.group?.id, in: context)
         context.delete(settlement)
     }
 
@@ -149,6 +168,13 @@ enum Ledger {
             ),
             in: context
         )
+        recordTombstone(.group, id: group.id, groupID: group.id, in: context)
+        for expense in group.expenseList {
+            recordTombstone(.expense, id: expense.id, groupID: group.id, in: context)
+        }
+        for settlement in group.settlementList {
+            recordTombstone(.settlement, id: settlement.id, groupID: group.id, in: context)
+        }
         context.delete(group)
     }
 
@@ -164,6 +190,8 @@ enum Ledger {
 
     static func remove(_ participant: Participant, from group: SpendingGroup, in context: ModelContext) {
         group.members?.removeAll { $0.id == participant.id }
+        group.updatedAt = Date()
+        recordTombstone(.member, id: participant.id, groupID: group.id, in: context)
         log(
             .memberRemoved,
             headline: String(

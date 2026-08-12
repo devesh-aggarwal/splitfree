@@ -15,10 +15,11 @@ struct BalanceEngineTests {
             Participant.self, SpendingGroup.self, Expense.self, ExpensePayer.self,
             ExpenseShare.self, ExpenseLineItem.self, ExpenseComment.self,
             Settlement.self, RecurringRule.self, SplitTemplate.self, ActivityEntry.self,
+            SyncTombstone.self,
         ])
         let container = try ModelContainer(
             for: schema,
-            configurations: [ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)]
+            configurations: [ModelConfiguration(schema: schema, isStoredInMemoryOnly: true, cloudKitDatabase: .none)]
         )
         return ModelContext(container)
     }

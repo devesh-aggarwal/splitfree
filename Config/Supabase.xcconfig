@@ -1,0 +1,22 @@
+// Backend configuration for the iOS app.
+//
+// Leave this blank and SplitFree never contacts a server: no sign-in screen, no
+// sync, every group stays on the device. That is a supported way to run the app,
+// not a broken build.
+//
+// To turn sync on, paste your Supabase project's host and anon key below.
+// Find both in the Supabase dashboard under Project Settings -> API.
+//
+// Write the host WITHOUT "https://". Two forward slashes start a comment in this
+// file format, so a pasted URL would be silently cut off at "https:" and the app
+// would fail to reach anything with no clue why.
+//
+//   Right:  SUPABASE_URL = abcdefghijkl.supabase.co
+//   Wrong:  SUPABASE_URL = https://abcdefghijkl.supabase.co
+//
+// Both values are safe to commit. The anon key grants nothing on its own: every
+// table denies by default and row-level security decides the rest. It ships
+// inside the app binary regardless, so keeping it out of the repo buys nothing.
+
+SUPABASE_URL =
+SUPABASE_ANON_KEY =

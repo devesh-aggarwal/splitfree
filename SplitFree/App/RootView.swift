@@ -31,12 +31,14 @@ struct RootView: View {
     @Environment(AppSettings.self) private var settings
     @Environment(ExchangeRateService.self) private var exchangeRates
     @Environment(AppLockState.self) private var lock
+    @Environment(SyncEngine.self) private var sync
 
     @State private var selectedTab: AppTab = .groups
     @State private var isPresentingExpenseEditor = false
     @State private var expenseEditorContext: ExpenseEditorContext?
     @State private var recurringSummary: RecurrenceService.CatchUpResult?
     @State private var hidesFloatingAction = false
+    @State private var inviteToken: InviteToken?
 
     var body: some View {
         Group {
@@ -49,6 +51,12 @@ struct RootView: View {
             }
         }
         .task { await bootstrap() }
+        .onOpenURL { url in
+            if let token = SyncEngine.inviteToken(from: url) { inviteToken = InviteToken(token) }
+        }
+        .sheet(item: $inviteToken) { token in
+            JoinGroupView(token: token.id)
+        }
         .onChange(of: scenePhase) { _, phase in
             switch phase {
             case .background:
@@ -56,6 +64,9 @@ struct RootView: View {
             case .active:
                 lock.noteBecameActive(lockEnabled: settings.requiresBiometricUnlock)
                 Task { await catchUpRecurring() }
+                // Coming back to the app is the moment a friend's change is most
+                // worth having, and the cheapest time to ask for it.
+                Task { await sync.syncNow(context: context) }
             default:
                 break
             }
@@ -123,6 +134,8 @@ struct RootView: View {
         lock.lockIfNeeded(enabled: settings.requiresBiometricUnlock)
         await exchangeRates.refreshIfNeeded()
         await catchUpRecurring()
+        await sync.refreshAccountState()
+        await sync.syncNow(context: context)
     }
 
     /// Creates any recurring expenses that came due while the app was closed.

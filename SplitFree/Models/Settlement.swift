@@ -49,6 +49,16 @@ final class Settlement {
     var date: Date = Date()
     var createdAt: Date = Date()
     var notes: String = ""
+    var updatedAt: Date = Date()
+
+    /// A fingerprint of this row's contents as the server last saw them.
+    ///
+    /// Sync decides what to push by comparing it against the row's current
+    /// fingerprint. A hash is used rather than a dirty flag or a timestamp
+    /// because both of those have to be *remembered* at every write site, and
+    /// one forgotten line means an edit that silently never syncs. A hash cannot
+    /// be forgotten: if the contents differ, it differs.
+    var syncedFingerprint: String = ""
     var methodRaw: String = PaymentMethod.cash.rawValue
 
     var exchangeRateToBase: Double = 1.0

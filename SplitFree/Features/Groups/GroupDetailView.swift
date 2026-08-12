@@ -13,6 +13,7 @@ struct GroupDetailView: View {
     @State private var selectedExpense: Expense?
     @State private var isPresentingSettleUp = false
     @State private var isPresentingEditGroup = false
+    @State private var isPresentingShare = false
     @State private var isPresentingMembers = false
     @State private var isPresentingNotes = false
     @State private var showsBalances = true
@@ -91,6 +92,7 @@ struct GroupDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbar }
         .sheet(item: $editorContext) { ExpenseEditorView(context: $0) }
+        .sheet(isPresented: $isPresentingShare) { ShareGroupView(group: group) }
         .sheet(item: $selectedExpense) { expense in
             ExpenseDetailView(expense: expense)
         }
@@ -379,6 +381,12 @@ struct GroupDetailView: View {
     private var toolbar: some ToolbarContent {
         ToolbarItem(placement: .primaryAction) {
             Menu {
+                Button { isPresentingShare = true } label: {
+                    Label(
+                        group.isShared ? "Sharing and invites" : "Share with friends",
+                        systemImage: group.isShared ? "person.2.badge.gearshape" : "person.badge.plus"
+                    )
+                }
                 Button { isPresentingEditGroup = true } label: {
                     Label("Group settings", systemImage: "gearshape")
                 }

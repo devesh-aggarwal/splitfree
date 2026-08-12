@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  Merged with the keys Xcode generates. Only what cannot be expressed as a
+	  build setting lives here.
+
+	  The two Supabase values come from Config/Supabase.xcconfig, which is not
+	  checked in with real values. When they are empty the app never contacts a
+	  server and behaves exactly as it did before accounts existed.
+	-->
+	<key>SupabaseURL</key>
+	<string>$(SUPABASE_URL)</string>
+	<key>SupabaseAnonKey</key>
+	<string>$(SUPABASE_ANON_KEY)</string>
+
+	<!-- Where a browser sign-in and an invite link come back to. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.splitfree.SplitFree</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>splitfree</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

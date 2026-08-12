@@ -1,0 +1,22 @@
+<!--
+  The sign-in email.
+
+  It has to show {{ .Token }}. The stock Supabase template sends only a magic
+  link, and the apps ask for a six-digit code: they call /auth/v1/verify with
+  type=email and the token typed in by hand. GoTrue generates that code either
+  way, so with the default template the code exists and nobody is ever shown it,
+  and sign-in fails with no clue why.
+
+  The link is kept as well, because tapping it is easier on a phone.
+-->
+<h2>Your SplitFree code</h2>
+
+<p style="font-size: 28px; letter-spacing: 4px; font-weight: 600;">{{ .Token }}</p>
+
+<p>Enter this code in SplitFree to sign in. It expires in an hour.</p>
+
+<p>Or <a href="{{ .ConfirmationURL }}">tap here</a> to sign in on this device.</p>
+
+<p style="color: #666; font-size: 13px;">
+  If you didn't ask to sign in, ignore this email. Nothing has changed.
+</p>

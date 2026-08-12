@@ -15,7 +15,10 @@ final class AppSettings {
         self.defaults = defaults
         self.baseCurrencyCode = defaults.string(forKey: Keys.baseCurrency) ?? Currency.deviceDefaultCode
         self.hasCompletedOnboarding = defaults.bool(forKey: Keys.onboarded)
-        self.simplifyDebtsByDefault = defaults.object(forKey: Keys.simplifyDefault) as? Bool ?? false
+        // On by default: fewer payments is what almost everyone wants, and the
+        // per-group toggle is right there for the people who'd rather see the
+        // literal history of who paid for whom.
+        self.simplifyDebtsByDefault = defaults.object(forKey: Keys.simplifyDefault) as? Bool ?? true
         self.convertToBaseCurrency = defaults.object(forKey: Keys.convertToBase) as? Bool ?? true
         self.hapticsEnabled = defaults.object(forKey: Keys.haptics) as? Bool ?? true
         self.requiresBiometricUnlock = defaults.bool(forKey: Keys.biometricLock)

@@ -6,6 +6,7 @@ struct SplitFreeApp: App {
     @State private var settings = AppSettings()
     @State private var exchangeRates = ExchangeRateService()
     @State private var lockState = AppLockState()
+    @State private var sync = SyncEngine()
 
     private let container: ModelContainer
 
@@ -20,6 +21,7 @@ struct SplitFreeApp: App {
                 .environment(settings)
                 .environment(exchangeRates)
                 .environment(lockState)
+                .environment(sync)
                 .preferredColorScheme(settings.appearance.colorScheme)
                 .tint(Palette.accent)
         }
@@ -45,6 +47,7 @@ struct SplitFreeApp: App {
             RecurringRule.self,
             SplitTemplate.self,
             ActivityEntry.self,
+            SyncTombstone.self,
         ])
 
         let syncEnabled = UserDefaults.standard.object(forKey: "settings.cloudSyncEnabled") as? Bool ?? true

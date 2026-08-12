@@ -1655,6 +1655,60 @@
         }
       }
     },
+    "A new person": {
+      "extractionState": "manual",
+      "comment": "Picker option",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una persona nueva"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une nouvelle personne"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine neue Person"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una persona nuova"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma pessoa nova"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नया व्यक्ति"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しい人"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新成员"
+          }
+        }
+      }
+    },
     "A one-off between friends": {
       "extractionState": "manual",
       "localizations": {
@@ -1704,6 +1758,59 @@
           "stringUnit": {
             "state": "translated",
             "value": "朋友之间的一次性支出"
+          }
+        }
+      }
+    },
+    "A shared group is stored on SplitFree's server so your friend's phone can reach it. Groups you don't share never leave this device.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un grupo compartido se guarda en el servidor de SplitFree para que el teléfono de tu amigo pueda acceder a él. Los grupos que no compartes nunca salen de este dispositivo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un groupe partagé est stocké sur le serveur de SplitFree pour que le téléphone de votre ami puisse y accéder. Les groupes que vous ne partagez pas ne quittent jamais cet appareil."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine geteilte Gruppe wird auf dem Server von SplitFree gespeichert, damit das Gerät deiner Freundin oder deines Freundes sie erreichen kann. Gruppen, die du nicht teilst, verlassen dieses Gerät nie."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un gruppo condiviso è memorizzato sul server di SplitFree così il telefono del tuo amico può raggiungerlo. I gruppi che non condividi non lasciano mai questo dispositivo."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um grupo compartilhado fica no servidor do SplitFree para que o telefone do seu amigo consiga acessá-lo. Grupos que você não compartilha nunca saem deste aparelho."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "साझा किया गया समूह SplitFree के सर्वर पर रखा जाता है ताकि आपके मित्र का फ़ोन उस तक पहुँच सके। जो समूह आप साझा नहीं करते वे कभी इस डिवाइस से बाहर नहीं जाते।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共有したグループは友達の端末から参照できるよう SplitFree のサーバーに保存されます。共有していないグループはこの端末から出ることはありません。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共享的群组会保存在 SplitFree 的服务器上，以便朋友的手机能够访问。未共享的群组永远不会离开这台设备。"
           }
         }
       }
@@ -3300,6 +3407,112 @@
         }
       }
     },
+    "An account is only for sharing": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La cuenta solo sirve para compartir"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un compte sert uniquement au partage"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Konto ist nur zum Teilen da"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'account serve solo per condividere"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma conta serve apenas para compartilhar"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "खाता केवल साझा करने के लिए है"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アカウントは共有のためだけのものです"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "账户只用于共享"
+          }
+        }
+      }
+    },
+    "Anyone with the link can join this group and see everything in it. It stops working after 14 days.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cualquiera con el enlace puede unirse a este grupo y ver todo lo que contiene. Deja de funcionar a los 14 días."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toute personne disposant du lien peut rejoindre ce groupe et voir tout son contenu. Il expire au bout de 14 jours."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wer den Link hat, kann dieser Gruppe beitreten und alles darin sehen. Nach 14 Tagen funktioniert er nicht mehr."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiunque abbia il link può unirsi a questo gruppo e vedere tutto ciò che contiene. Smette di funzionare dopo 14 giorni."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qualquer pessoa com o link pode entrar neste grupo e ver tudo o que há nele. Ele para de funcionar depois de 14 dias."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "जिसके पास लिंक है वह इस समूह में शामिल होकर सब कुछ देख सकता है। यह 14 दिन बाद काम करना बंद कर देता है।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リンクを持つ人は誰でもこのグループに参加し、中身をすべて見られます。14日後に無効になります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "任何拿到链接的人都能加入这个群组并看到其中的全部内容。链接在 14 天后失效。"
+          }
+        }
+      }
+    },
     "Anything the group should remember — the rental address, the wifi password, who's driving.": {
       "extractionState": "manual",
       "localizations": {
@@ -3402,6 +3615,59 @@
           "stringUnit": {
             "state": "translated",
             "value": "外观"
+          }
+        }
+      }
+    },
+    "Apple didn't return a usable sign-in.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple no devolvió un inicio de sesión utilizable."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple n'a pas renvoyé de connexion exploitable."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple hat keine verwendbare Anmeldung zurückgegeben."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple non ha restituito un accesso utilizzabile."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A Apple não retornou um login utilizável."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple ने उपयोग योग्य साइन-इन नहीं लौटाया।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple から有効なサインイン情報が返されませんでした。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple 未返回可用的登录信息。"
           }
         }
       }
@@ -4148,6 +4414,59 @@
         }
       }
     },
+    "By default, everything lives in the app's own store on this device. Turn on iCloud sync and it also goes to your private iCloud database, which only you can read.\n\nSharing a group is the one thing that changes that. A shared group is uploaded to SplitFree's server so your friends' phones can reach it: its expenses, who paid, who owes, and the names you gave people. Everyone in that group can read all of it. Groups you never share never leave this device.\n\nThere is no analytics SDK, no advertising, and nobody is sold anything about how you spend. Signing in is optional, and the app is fully usable without ever doing it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De forma predeterminada, todo vive en el almacén de la propia app en este dispositivo. Si activas la sincronización con iCloud, también va a tu base de datos privada de iCloud, que solo tú puedes leer.\n\nCompartir un grupo es lo único que cambia eso. Un grupo compartido se sube al servidor de SplitFree para que los teléfonos de tus amigos puedan acceder a él: sus gastos, quién pagó, quién debe y los nombres que diste a cada persona. Todos los del grupo pueden leerlo todo. Los grupos que nunca compartes nunca salen de este dispositivo.\n\nNo hay SDK de analítica, ni publicidad, ni nadie a quien se venda nada sobre cómo gastas. Iniciar sesión es opcional y la app se puede usar por completo sin hacerlo nunca."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Par défaut, tout réside dans le stockage propre à l'app sur cet appareil. Activez la synchronisation iCloud et cela va aussi dans votre base iCloud privée, que vous seul pouvez lire.\n\nPartager un groupe est la seule chose qui change cela. Un groupe partagé est envoyé sur le serveur de SplitFree pour que les téléphones de vos amis puissent y accéder : ses dépenses, qui a payé, qui doit, et les noms que vous avez donnés aux personnes. Tout le monde dans ce groupe peut tout lire. Les groupes que vous ne partagez jamais ne quittent jamais cet appareil.\n\nIl n'y a pas de SDK d'analytique, pas de publicité, et rien sur vos dépenses n'est vendu à qui que ce soit. La connexion est facultative et l'app est pleinement utilisable sans jamais s'y connecter."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standardmäßig liegt alles im eigenen Speicher der App auf diesem Gerät. Wenn du iCloud-Sync einschaltest, geht es zusätzlich in deine private iCloud-Datenbank, die nur du lesen kannst.\n\nEine Gruppe zu teilen ist das Einzige, was daran etwas ändert. Eine geteilte Gruppe wird auf den Server von SplitFree hochgeladen, damit die Geräte deiner Freunde sie erreichen: ihre Ausgaben, wer bezahlt hat, wer schuldet, und die Namen, die du den Personen gegeben hast. Alle in dieser Gruppe können alles davon lesen. Gruppen, die du nie teilst, verlassen dieses Gerät nie.\n\nEs gibt kein Analyse-SDK, keine Werbung, und niemandem wird etwas darüber verkauft, wofür du Geld ausgibst. Die Anmeldung ist optional, und die App ist auch ohne sie vollständig nutzbar."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per impostazione predefinita tutto risiede nell'archivio dell'app su questo dispositivo. Attivando la sincronizzazione iCloud, i dati vanno anche nel tuo database iCloud privato, che solo tu puoi leggere.\n\nCondividere un gruppo è l'unica cosa che cambia questo. Un gruppo condiviso viene caricato sul server di SplitFree così i telefoni dei tuoi amici possono raggiungerlo: le sue spese, chi ha pagato, chi deve e i nomi che hai dato alle persone. Tutti nel gruppo possono leggere tutto. I gruppi che non condividi mai non lasciano mai questo dispositivo.\n\nNon c'è alcun SDK di analisi, nessuna pubblicità e nessuno a cui venga venduto qualcosa su come spendi. Accedere è facoltativo e l'app è pienamente utilizzabile senza farlo mai."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por padrão, tudo fica no armazenamento do próprio app neste aparelho. Se você ativar a sincronização com o iCloud, os dados também vão para o seu banco de dados privado do iCloud, que só você pode ler.\n\nCompartilhar um grupo é a única coisa que muda isso. Um grupo compartilhado é enviado ao servidor do SplitFree para que os telefones dos seus amigos consigam acessá-lo: suas despesas, quem pagou, quem deve e os nomes que você deu às pessoas. Todo mundo nesse grupo pode ler tudo. Grupos que você nunca compartilha nunca saem deste aparelho.\n\nNão há SDK de analytics, não há publicidade e ninguém compra nada sobre como você gasta. Entrar é opcional e o app é totalmente utilizável sem nunca fazer isso."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "डिफ़ॉल्ट रूप से सब कुछ इस डिवाइस पर ऐप के अपने स्टोर में रहता है। iCloud सिंक चालू करने पर यह आपके निजी iCloud डेटाबेस में भी जाता है, जिसे केवल आप पढ़ सकते हैं।\n\nकिसी समूह को साझा करना ही एकमात्र चीज़ है जो इसे बदलती है। साझा किया गया समूह SplitFree के सर्वर पर अपलोड होता है ताकि आपके मित्रों के फ़ोन उस तक पहुँच सकें: उसके खर्च, किसने भुगतान किया, किस पर बकाया है, और आपने लोगों को जो नाम दिए। उस समूह के सभी लोग यह सब पढ़ सकते हैं। जो समूह आप कभी साझा नहीं करते, वे कभी इस डिवाइस से बाहर नहीं जाते।\n\nकोई एनालिटिक्स SDK नहीं, कोई विज्ञापन नहीं, और आपके खर्च के बारे में किसी को कुछ नहीं बेचा जाता। साइन इन करना वैकल्पिक है और ऐप बिना इसके भी पूरी तरह उपयोग योग्य है।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "既定では、すべてがこの端末内のアプリ専用の保存領域にあります。iCloud 同期を有効にすると、あなただけが読める非公開の iCloud データベースにも保存されます。\n\nそれが変わるのはグループを共有したときだけです。共有したグループは友達の端末から参照できるよう SplitFree のサーバーにアップロードされます。支出、支払った人、貸し借り、あなたが付けた名前が含まれます。そのグループの全員がそのすべてを読めます。一度も共有していないグループがこの端末から出ることはありません。\n\n解析 SDK も広告もなく、あなたの支出について誰かに売られるものもありません。サインインは任意で、一度もしなくてもアプリは完全に使えます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "默认情况下，所有内容都保存在这台设备上应用自己的存储中。开启 iCloud 同步后，它还会进入只有你能读取的私人 iCloud 数据库。\n\n只有共享群组会改变这一点。共享的群组会上传到 SplitFree 的服务器，以便朋友的手机能够访问：包括支出、谁付的钱、谁欠钱，以及你给每个人起的名字。该群组中的所有人都能读取全部内容。你从未共享过的群组永远不会离开这台设备。\n\n没有分析 SDK，没有广告，也没有人拿你的消费情况去交易。登录是可选的，即使从不登录，应用也完全可用。"
+          }
+        }
+      }
+    },
     "By group": {
       "extractionState": "manual",
       "localizations": {
@@ -4830,6 +5149,113 @@
           "stringUnit": {
             "state": "translated",
             "value": "图表与支出汇总"
+          }
+        }
+      }
+    },
+    "Check your email": {
+      "extractionState": "manual",
+      "comment": "Section header",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisa tu correo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifiez vos e-mails"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sieh in deine E-Mails"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controlla la tua email"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confira seu e-mail"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अपना ईमेल देखें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メールを確認"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看你的邮箱"
+          }
+        }
+      }
+    },
+    "Checking the link": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprobando el enlace"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérification du lien"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link wird geprüft"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verifica del link"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verificando o link"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "लिंक जाँचा जा रहा है"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リンクを確認しています"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在检查链接"
           }
         }
       }
@@ -5736,6 +6162,60 @@
         }
       }
     },
+    "Continue with Google": {
+      "extractionState": "manual",
+      "comment": "Button",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar con Google"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer avec Google"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weiter mit Google"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continua con Google"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar com o Google"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Google से जारी रखें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Google で続ける"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用 Google 继续"
+          }
+        }
+      }
+    },
     "Convert other currencies": {
       "extractionState": "manual",
       "localizations": {
@@ -6103,6 +6583,60 @@
           "stringUnit": {
             "state": "translated",
             "value": "创建群组"
+          }
+        }
+      }
+    },
+    "Create invite link": {
+      "extractionState": "manual",
+      "comment": "Button",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crear enlace de invitación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Créer un lien d'invitation"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladungslink erstellen"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crea link d'invito"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criar link de convite"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आमंत्रण लिंक बनाएँ"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "招待リンクを作成"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "创建邀请链接"
           }
         }
       }
@@ -7486,6 +8020,60 @@
         }
       }
     },
+    "Email me a code": {
+      "extractionState": "manual",
+      "comment": "Button",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviarme un código"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "M'envoyer un code"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code per E-Mail senden"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inviami un codice"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar um código"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "मुझे कोड भेजें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "コードを送信"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "给我发送验证码"
+          }
+        }
+      }
+    },
     "Enter an amount greater than zero.": {
       "extractionState": "manual",
       "localizations": {
@@ -8539,6 +9127,59 @@
           "stringUnit": {
             "state": "translated",
             "value": "所有人"
+          }
+        }
+      }
+    },
+    "Everyone in this group can see every expense in it, including the ones you add.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todas las personas de este grupo pueden ver todos sus gastos, incluidos los que añadas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toutes les personnes de ce groupe voient toutes ses dépenses, y compris celles que vous ajoutez."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle in dieser Gruppe sehen jede Ausgabe darin, auch die, die du hinzufügst."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutti in questo gruppo possono vedere ogni spesa, comprese quelle che aggiungi tu."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todas as pessoas deste grupo veem todas as despesas nele, inclusive as que você adicionar."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इस समूह के सभी लोग इसके हर खर्च को देख सकते हैं, जो आप जोड़ते हैं वे भी।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このグループの全員が、あなたが追加したものも含め、すべての支出を見られます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此群组中的所有人都能看到其中的每一笔支出，包括你添加的。"
           }
         }
       }
@@ -11614,6 +12255,114 @@
         }
       }
     },
+    "Invite as": {
+      "extractionState": "manual",
+      "comment": "Picker label",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitar como"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inviter en tant que"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladen als"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invita come"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convidar como"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इस रूप में आमंत्रित करें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "招待する相手"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "邀请为"
+          }
+        }
+      }
+    },
+    "Invite someone": {
+      "extractionState": "manual",
+      "comment": "Section header",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitar a alguien"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inviter quelqu'un"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jemanden einladen"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invita qualcuno"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convidar alguém"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "किसी को आमंत्रित करें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "誰かを招待"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "邀请他人"
+          }
+        }
+      }
+    },
     "Involving you": {
       "extractionState": "manual",
       "localizations": {
@@ -11928,6 +12677,166 @@
           "stringUnit": {
             "state": "translated",
             "value": "条目"
+          }
+        }
+      }
+    },
+    "Join group": {
+      "extractionState": "manual",
+      "comment": "Screen title",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unirse al grupo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rejoindre le groupe"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gruppe beitreten"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unisciti al gruppo"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entrar no grupo"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "समूह में शामिल हों"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "グループに参加"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加入群组"
+          }
+        }
+      }
+    },
+    "Joining a shared group needs an account, so the group knows who you are.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unirse a un grupo compartido requiere una cuenta, para que el grupo sepa quién eres."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rejoindre un groupe partagé nécessite un compte, pour que le groupe sache qui vous êtes."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um einer geteilten Gruppe beizutreten, brauchst du ein Konto, damit die Gruppe weiß, wer du bist."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per unirti a un gruppo condiviso serve un account, così il gruppo sa chi sei."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entrar em um grupo compartilhado exige uma conta, para que o grupo saiba quem você é."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "साझा समूह में शामिल होने के लिए खाता चाहिए, ताकि समूह जान सके कि आप कौन हैं।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共有グループに参加するにはアカウントが必要です。グループがあなたを識別できるようにするためです。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加入共享群组需要账户，这样群组才知道你是谁。"
+          }
+        }
+      }
+    },
+    "Keeps everything on this phone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conserva todo en este teléfono."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conserve tout sur ce téléphone."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behält alles auf diesem Gerät."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantiene tutto su questo telefono."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantém tudo neste telefone."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सब कुछ इसी फ़ोन पर रखता है।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべてこの端末に残します。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所有内容都保留在这台手机上。"
           }
         }
       }
@@ -14318,6 +15227,59 @@
         }
       }
     },
+    "No subscription, no upgrade screen, no adverts, no limits on expenses, and nothing held back for a paid tier. Groups stay on your device unless you choose to share one with a friend.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin suscripción, sin pantalla de mejora, sin anuncios, sin límites de gastos y nada reservado para un plan de pago. Los grupos permanecen en tu dispositivo salvo que elijas compartir alguno con un amigo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas d'abonnement, pas d'écran de mise à niveau, pas de publicité, pas de limite de dépenses et rien réservé à une offre payante. Les groupes restent sur votre appareil, sauf si vous choisissez d'en partager un."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Abo, kein Upgrade-Bildschirm, keine Werbung, keine Ausgabenlimits und nichts, was einer Bezahlstufe vorbehalten wäre. Gruppen bleiben auf deinem Gerät, außer du teilst eine mit jemandem."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessun abbonamento, nessuna schermata di upgrade, nessuna pubblicità, nessun limite alle spese e niente riservato a un piano a pagamento. I gruppi restano sul tuo dispositivo, a meno che tu non scelga di condividerne uno."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sem assinatura, sem tela de upgrade, sem anúncios, sem limite de despesas e nada reservado para um plano pago. Os grupos ficam no seu aparelho, a menos que você escolha compartilhar algum."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कोई सदस्यता नहीं, कोई अपग्रेड स्क्रीन नहीं, कोई विज्ञापन नहीं, खर्चों की कोई सीमा नहीं, और कुछ भी भुगतान वाले स्तर के लिए रोका नहीं गया। जब तक आप किसी समूह को साझा न करें, समूह आपके डिवाइस पर ही रहते हैं।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サブスクリプションもアップグレード画面も広告もなく、支出の上限もなく、有料プランのために隠している機能もありません。友達と共有しない限り、グループは端末に残ります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有订阅，没有升级页面，没有广告，支出没有上限，也没有任何功能留给付费档位。除非你选择把某个群组分享给朋友，否则群组都留在你的设备上。"
+          }
+        }
+      }
+    },
     "No subscription, no upgrade screen, no adverts, no limits on expenses, and nothing held back for a paid tier. Your data stays on your device and in your own iCloud.": {
       "extractionState": "manual",
       "localizations": {
@@ -14636,6 +15598,60 @@
         }
       }
     },
+    "Not now": {
+      "extractionState": "manual",
+      "comment": "Button",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ahora no"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas maintenant"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt nicht"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non ora"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agora não"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अभी नहीं"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今はしない"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂不"
+          }
+        }
+      }
+    },
     "Not sharing": {
       "extractionState": "manual",
       "localizations": {
@@ -14738,6 +15754,59 @@
           "stringUnit": {
             "state": "translated",
             "value": "备注"
+          }
+        }
+      }
+    },
+    "Nothing changes for the groups you keep to yourself. Signing in lets you share a specific group with a friend, so their phone and yours stay in step.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nada cambia en los grupos que guardas para ti. Iniciar sesión te permite compartir un grupo concreto con un amigo, para que su teléfono y el tuyo estén sincronizados."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien ne change pour les groupes que vous gardez pour vous. Se connecter vous permet de partager un groupe précis avec un ami, pour que son téléphone et le vôtre restent synchronisés."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Gruppen, die du für dich behältst, ändert sich nichts. Mit einem Konto kannst du eine bestimmte Gruppe mit einer Freundin oder einem Freund teilen, sodass beide Geräte auf demselben Stand bleiben."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non cambia nulla per i gruppi che tieni per te. Accedendo puoi condividere un gruppo specifico con un amico, così il suo telefono e il tuo restano allineati."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nada muda nos grupos que você guarda só para você. Entrar permite compartilhar um grupo específico com um amigo, para que o telefone dele e o seu fiquem em sincronia."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "जो समूह आप अपने पास रखते हैं उनमें कुछ नहीं बदलता। साइन इन करने पर आप कोई एक समूह किसी मित्र के साथ साझा कर सकते हैं, ताकि उनका और आपका फ़ोन एक जैसा रहे।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自分だけのグループには何も影響しません。サインインすると特定のグループを友達と共有でき、相手の端末とあなたの端末が同期されます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你自己保留的群组不会有任何变化。登录后可以把某个群组分享给朋友，让对方的手机和你的保持一致。"
           }
         }
       }
@@ -15272,6 +16341,59 @@
         }
       }
     },
+    "Optional. Everything works without it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opcional. Todo funciona sin ella."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Facultatif. Tout fonctionne sans."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optional. Alles funktioniert auch ohne."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Facoltativo. Tutto funziona anche senza."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opcional. Tudo funciona sem isso."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "वैकल्पिक। इसके बिना भी सब काम करता है।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "任意です。なくてもすべて動作します。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可选。没有它一切也能正常使用。"
+          }
+        }
+      }
+    },
     "Optional. Used to open your payment app with the details filled in.": {
       "extractionState": "manual",
       "localizations": {
@@ -15321,6 +16443,60 @@
           "stringUnit": {
             "state": "translated",
             "value": "可选。用于带着填好的信息打开你的支付 App。"
+          }
+        }
+      }
+    },
+    "Or": {
+      "extractionState": "manual",
+      "comment": "Section header between sign-in options",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ou"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oder"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oppure"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ou"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "या"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "または"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "或"
           }
         }
       }
@@ -16492,6 +17668,60 @@
         }
       }
     },
+    "Privacy policy": {
+      "extractionState": "manual",
+      "comment": "Section header",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Política de privacidad"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Politique de confidentialité"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenschutzerklärung"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informativa sulla privacy"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Política de privacidade"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "गोपनीयता नीति"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プライバシーポリシー"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隐私政策"
+          }
+        }
+      }
+    },
     "Project": {
       "extractionState": "manual",
       "localizations": {
@@ -16701,6 +17931,60 @@
           "stringUnit": {
             "state": "translated",
             "value": "把银行或信用卡 CSV 读成支出。"
+          }
+        }
+      }
+    },
+    "Read the privacy policy": {
+      "extractionState": "manual",
+      "comment": "Button",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer la política de privacidad"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lire la politique de confidentialité"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenschutzerklärung lesen"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leggi l'informativa sulla privacy"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ler a política de privacidade"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "गोपनीयता नीति पढ़ें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プライバシーポリシーを読む"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "阅读隐私政策"
           }
         }
       }
@@ -18508,6 +19792,60 @@
         }
       }
     },
+    "Send the link": {
+      "extractionState": "manual",
+      "comment": "Button",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar el enlace"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Envoyer le lien"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link senden"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invia il link"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar o link"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "लिंक भेजें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リンクを送る"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发送链接"
+          }
+        }
+      }
+    },
     "Set the total from these items": {
       "extractionState": "manual",
       "localizations": {
@@ -18720,6 +20058,168 @@
         }
       }
     },
+    "Share a group with friends, on iPhone or Android": {
+      "extractionState": "manual",
+      "comment": "Feature list item",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparte un grupo con amigos, en iPhone o Android"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partagez un groupe avec des amis, sur iPhone ou Android"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teile eine Gruppe mit Freunden, auf iPhone oder Android"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Condividi un gruppo con gli amici, su iPhone o Android"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartilhe um grupo com amigos, no iPhone ou Android"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "मित्रों के साथ समूह साझा करें, iPhone या Android पर"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone でも Android でも友達とグループを共有"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "与朋友共享群组，支持 iPhone 和 Android"
+          }
+        }
+      }
+    },
+    "Share group": {
+      "extractionState": "manual",
+      "comment": "Screen title",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartir grupo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager le groupe"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gruppe teilen"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Condividi gruppo"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartilhar grupo"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "समूह साझा करें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "グループを共有"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共享群组"
+          }
+        }
+      }
+    },
+    "Share this group": {
+      "extractionState": "manual",
+      "comment": "Button",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartir este grupo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager ce groupe"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Gruppe teilen"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Condividi questo gruppo"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartilhar este grupo"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह समूह साझा करें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このグループを共有"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共享此群组"
+          }
+        }
+      }
+    },
     "Shared by everyone": {
       "extractionState": "manual",
       "localizations": {
@@ -18826,6 +20326,59 @@
         }
       }
     },
+    "Sharing needs an account": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartir requiere una cuenta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le partage nécessite un compte"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum Teilen brauchst du ein Konto"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per condividere serve un account"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartilhar exige uma conta"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "साझा करने के लिए खाता चाहिए"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共有にはアカウントが必要です"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共享需要账户"
+          }
+        }
+      }
+    },
     "Sharing this item": {
       "extractionState": "manual",
       "localizations": {
@@ -18875,6 +20428,59 @@
           "stringUnit": {
             "state": "translated",
             "value": "参与分摊此条目"
+          }
+        }
+      }
+    },
+    "Sharing uploads this group and everything in it: its expenses, who paid, who owes, notes, and any payments you've recorded. Everyone you invite can see all of it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartir sube este grupo y todo lo que contiene: sus gastos, quién pagó, quién debe, las notas y los pagos que hayas registrado. Todas las personas que invites pueden verlo todo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le partage envoie ce groupe et tout ce qu'il contient : ses dépenses, qui a payé, qui doit, les notes et les paiements enregistrés. Toutes les personnes que vous invitez voient l'ensemble."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beim Teilen werden diese Gruppe und ihr gesamter Inhalt hochgeladen: Ausgaben, wer bezahlt hat, wer schuldet, Notizen und alle erfassten Zahlungen. Alle, die du einlädst, sehen alles davon."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La condivisione carica questo gruppo e tutto ciò che contiene: le spese, chi ha pagato, chi deve, le note e i pagamenti registrati. Tutte le persone che inviti possono vedere tutto."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartilhar envia este grupo e tudo o que há nele: as despesas, quem pagou, quem deve, as anotações e os pagamentos registrados. Todas as pessoas convidadas veem tudo."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "साझा करने पर यह समूह और इसमें मौजूद सब कुछ अपलोड होता है: खर्च, किसने भुगतान किया, किस पर बकाया है, नोट्स और दर्ज किए गए भुगतान। आप जिन्हें आमंत्रित करेंगे वे सब देख सकते हैं।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共有すると、このグループとその中身がすべてアップロードされます。支出、支払った人、貸し借り、メモ、記録した精算が含まれます。招待した全員がそのすべてを見られます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共享会上传这个群组及其中的所有内容：支出、谁付的钱、谁欠钱、备注，以及你记录的所有付款。你邀请的每个人都能看到全部内容。"
           }
         }
       }
@@ -18981,6 +20587,329 @@
           "stringUnit": {
             "state": "translated",
             "value": "显示所有人"
+          }
+        }
+      }
+    },
+    "Sign in": {
+      "extractionState": "manual",
+      "comment": "Button",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar sesión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se connecter"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmelden"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accedi"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entrar"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "साइन इन करें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインイン"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录"
+          }
+        }
+      }
+    },
+    "Sign in to join": {
+      "extractionState": "manual",
+      "comment": "Button",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia sesión para unirte"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connectez-vous pour rejoindre"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum Beitreten anmelden"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accedi per unirti"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entre para participar"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "शामिल होने के लिए साइन इन करें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "参加するにはサインイン"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录后加入"
+          }
+        }
+      }
+    },
+    "Sign in to share groups": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia sesión para compartir grupos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connectez-vous pour partager des groupes"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmelden, um Gruppen zu teilen"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accedi per condividere i gruppi"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entre para compartilhar grupos"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "समूह साझा करने के लिए साइन इन करें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインインしてグループを共有"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录以共享群组"
+          }
+        }
+      }
+    },
+    "Sign out": {
+      "extractionState": "manual",
+      "comment": "Button",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerrar sesión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se déconnecter"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abmelden"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esci"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sair"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "साइन आउट करें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインアウト"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "退出登录"
+          }
+        }
+      }
+    },
+    "Sign out?": {
+      "extractionState": "manual",
+      "comment": "Confirmation title",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cerrar sesión?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se déconnecter ?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abmelden?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uscire?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sair?"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "साइन आउट करें?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインアウトしますか？"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要退出登录吗？"
+          }
+        }
+      }
+    },
+    "Signed in": {
+      "extractionState": "manual",
+      "comment": "Account status",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sesión iniciada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecté"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Angemeldet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accesso effettuato"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectado"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "साइन इन किया गया"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインイン済み"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已登录"
           }
         }
       }
@@ -19891,59 +21820,6 @@
       "extractionState": "manual",
       "shouldTranslate": false
     },
-    "SplitFree has no accounts and no servers. Everything lives in the app's own store on your device, and syncs through your private iCloud database if you turn sync on — which only you can read.\n\nThere is no analytics SDK, no advertising, and no third party receiving anything about how you spend. The one network request the app can make is to fetch exchange rates, and it works without that too.": {
-      "extractionState": "manual",
-      "localizations": {
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "SplitFree no tiene cuentas ni servidores. Todo vive en el almacén de la propia app, en tu dispositivo, y se sincroniza a través de tu base de datos privada de iCloud si activas la sincronización, a la que solo tú tienes acceso.\n\nNo hay SDK de analítica, ni publicidad, ni terceros que reciban nada sobre cómo gastas. La única petición de red que puede hacer la app es consultar los tipos de cambio, y funciona igual sin ella."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "SplitFree n'a ni comptes ni serveurs. Tout réside dans le stockage propre à l'app, sur votre appareil, et se synchronise via votre base iCloud privée si vous activez la synchronisation — vous seul pouvez la lire.\n\nIl n'y a aucun SDK d'analyse, aucune publicité et aucun tiers ne reçoit quoi que ce soit sur vos dépenses. La seule requête réseau que l'app peut faire sert à récupérer les taux de change, et elle fonctionne aussi sans."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "SplitFree hat keine Benutzerkonten und keine Server. Alles liegt im eigenen Speicher der App auf deinem Gerät und synchronisiert sich über deine private iCloud-Datenbank, wenn du die Synchronisierung aktivierst – lesen kannst nur du sie.\n\nEs gibt kein Analyse-SDK, keine Werbung und keine Dritten, die irgendetwas über deine Ausgaben erfahren. Die einzige Netzwerkanfrage, die die App stellen kann, ruft Wechselkurse ab – und sie funktioniert auch ohne."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "SplitFree non ha account né server. Tutto risiede nell'archivio dell'app stessa, sul tuo dispositivo, e si sincronizza tramite il tuo database iCloud privato se attivi la sincronizzazione: solo tu puoi leggerlo.\n\nNon c'è alcun SDK di analisi, nessuna pubblicità e nessuna terza parte che riceva informazioni su come spendi. L'unica richiesta di rete che l'app può fare serve a recuperare i tassi di cambio, e funziona anche senza."
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O SplitFree não tem contas nem servidores. Tudo fica no armazenamento do próprio app, no seu dispositivo, e sincroniza pelo seu banco de dados privado do iCloud se você ativar a sincronização — que só você consegue ler.\n\nNão há SDK de analytics, nem publicidade, nem terceiros recebendo qualquer coisa sobre como você gasta. A única requisição de rede que o app pode fazer é buscar as taxas de câmbio, e ele funciona sem isso também."
-          }
-        },
-        "hi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "SplitFree में न कोई खाता है, न कोई सर्वर। सब कुछ आपके डिवाइस पर ऐप के अपने स्टोर में रहता है, और सिंक चालू करने पर आपके निजी iCloud डेटाबेस से सिंक होता है — जिसे सिर्फ़ आप पढ़ सकते हैं।\n\nन कोई एनालिटिक्स SDK है, न विज्ञापन, और न कोई तीसरा पक्ष जिसे आपके खर्च के बारे में कुछ मिले। ऐप सिर्फ़ एक नेटवर्क अनुरोध कर सकता है — विनिमय दरें लाने के लिए — और उसके बिना भी यह काम करता है।"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "SplitFree にはアカウントもサーバーもありません。すべては端末上のアプリ専用の保存領域にあり、同期をオンにすれば、あなただけが読める非公開のiCloudデータベース経由で同期されます。\n\n分析用SDKも広告もなく、あなたの支出について第三者が何かを受け取ることもありません。アプリが行いうる唯一の通信は為替レートの取得だけで、それがなくても動作します。"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "SplitFree 没有账号，也没有服务器。所有内容都保存在你设备上 App 自己的存储中；如果你开启同步，会通过只有你能读取的私人 iCloud 数据库同步。\n\n这里没有分析 SDK，没有广告，也没有任何第三方能获知你的消费情况。App 唯一可能发起的网络请求是获取汇率，而且没有它也照样能用。"
-          }
-        }
-      }
-    },
     "SplitFree is locked": {
       "extractionState": "manual",
       "localizations": {
@@ -20266,6 +22142,60 @@
         }
       }
     },
+    "Stop sharing on this device": {
+      "extractionState": "manual",
+      "comment": "Button",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dejar de compartir en este dispositivo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrêter le partage sur cet appareil"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem Gerät nicht mehr teilen"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smetti di condividere su questo dispositivo"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parar de compartilhar neste aparelho"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इस डिवाइस पर साझा करना बंद करें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この端末での共有をやめる"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在此设备上停止共享"
+          }
+        }
+      }
+    },
     "Subscriptions": {
       "extractionState": "manual",
       "localizations": {
@@ -20425,6 +22355,114 @@
         }
       }
     },
+    "Synced %@. Tap to sync now.": {
+      "extractionState": "manual",
+      "comment": "Relative time",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizado %@. Toca para sincronizar ahora."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisé %@. Touchez pour synchroniser maintenant."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisiert %@. Zum sofortigen Synchronisieren tippen."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizzato %@. Tocca per sincronizzare ora."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizado %@. Toque para sincronizar agora."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ सिंक हुआ। अभी सिंक करने के लिए टैप करें।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ に同期しました。タップすると今すぐ同期します。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 已同步。点按可立即同步。"
+          }
+        }
+      }
+    },
+    "Syncing": {
+      "extractionState": "manual",
+      "comment": "Sync status",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizando"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisation"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird synchronisiert"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizzazione"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizando"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सिंक हो रहा है"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同期中"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在同步"
+          }
+        }
+      }
+    },
     "Tap one to record it.": {
       "extractionState": "manual",
       "localizations": {
@@ -20527,6 +22565,59 @@
           "stringUnit": {
             "state": "translated",
             "value": "点按以填写你的信息"
+          }
+        }
+      }
+    },
+    "Tap to sync now.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca para sincronizar ahora."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touchez pour synchroniser maintenant."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum sofortigen Synchronisieren tippen."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tocca per sincronizzare ora."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toque para sincronizar agora."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अभी सिंक करने के लिए टैप करें।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タップすると今すぐ同期します。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按可立即同步。"
           }
         }
       }
@@ -20902,6 +22993,59 @@
         }
       }
     },
+    "The full version, including what is stored, for how long, and how to delete it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La versión completa: qué se guarda, durante cuánto tiempo y cómo borrarlo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La version complète : ce qui est stocké, pendant combien de temps, et comment le supprimer."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die vollständige Fassung: was gespeichert wird, wie lange, und wie du es löschst."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La versione completa: cosa viene conservato, per quanto tempo e come cancellarlo."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A versão completa: o que é armazenado, por quanto tempo e como apagar."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पूरा संस्करण: क्या संग्रहीत होता है, कितने समय तक, और उसे कैसे हटाएँ।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存される内容、保存期間、削除方法を含む完全版です。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完整版本，包括存储了什么、保存多久，以及如何删除。"
+          }
+        }
+      }
+    },
     "There's nothing to pay. Nice work.": {
       "extractionState": "manual",
       "localizations": {
@@ -20955,6 +23099,59 @@
         }
       }
     },
+    "This build isn't set up for syncing.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta versión no está configurada para sincronizar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette version n'est pas configurée pour la synchronisation."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Version ist nicht für die Synchronisierung eingerichtet."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questa build non è configurata per la sincronizzazione."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta versão não está configurada para sincronização."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह बिल्ड सिंक के लिए सेट नहीं है।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このビルドは同期用に設定されていません。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此版本未配置同步功能。"
+          }
+        }
+      }
+    },
     "This device can't scan documents. You can still attach a photo of the receipt and add the items yourself.": {
       "extractionState": "manual",
       "localizations": {
@@ -21004,6 +23201,112 @@
           "stringUnit": {
             "state": "translated",
             "value": "此设备无法扫描文稿。你仍可以附上小票照片并手动添加条目。"
+          }
+        }
+      }
+    },
+    "This group goes back to being local to your phone. It stays on the server for everyone else you invited, and their copies keep working.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este grupo vuelve a ser local en tu teléfono. Sigue en el servidor para el resto de personas que invitaste, y sus copias siguen funcionando."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce groupe redevient local à votre téléphone. Il reste sur le serveur pour les autres personnes invitées, dont les copies continuent de fonctionner."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Gruppe wird wieder lokal auf deinem Gerät. Für alle anderen, die du eingeladen hast, bleibt sie auf dem Server, und ihre Kopien funktionieren weiter."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questo gruppo torna a essere locale sul tuo telefono. Resta sul server per tutte le altre persone che hai invitato e le loro copie continuano a funzionare."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este grupo volta a ser local no seu telefone. Ele continua no servidor para as outras pessoas que você convidou, e as cópias delas seguem funcionando."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह समूह फिर से केवल आपके फ़ोन पर रह जाएगा। आपने जिन्हें आमंत्रित किया था उनके लिए यह सर्वर पर बना रहेगा और उनकी प्रतियाँ काम करती रहेंगी।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このグループはあなたの端末だけのものに戻ります。招待した他の人のためにサーバー上には残り、その人たちの控えは引き続き使えます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此群组会重新变为仅存在于你的手机上。对于你邀请的其他人，它仍保留在服务器上，他们的副本继续可用。"
+          }
+        }
+      }
+    },
+    "This group is shared": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este grupo está compartido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce groupe est partagé"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Gruppe ist geteilt"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questo gruppo è condiviso"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este grupo está compartilhado"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह समूह साझा है"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このグループは共有されています"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此群组已共享"
           }
         }
       }
@@ -22816,6 +25119,60 @@
         }
       }
     },
+    "Use a different email": {
+      "extractionState": "manual",
+      "comment": "Button",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar otro correo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utiliser une autre adresse"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Andere E-Mail verwenden"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa un'altra email"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar outro e-mail"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "दूसरा ईमेल इस्तेमाल करें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "別のメールを使う"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用其他邮箱"
+          }
+        }
+      }
+    },
     "Use either a single Amount column, or a Money out / Money in pair.": {
       "extractionState": "manual",
       "localizations": {
@@ -23183,6 +25540,113 @@
           "stringUnit": {
             "state": "translated",
             "value": "水费"
+          }
+        }
+      }
+    },
+    "We send a six-digit code. There's no password to forget.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviamos un código de seis dígitos. No hay contraseña que olvidar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nous envoyons un code à six chiffres. Aucun mot de passe à retenir."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wir senden einen sechsstelligen Code. Es gibt kein Passwort, das du vergessen könntest."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inviamo un codice di sei cifre. Nessuna password da dimenticare."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviamos um código de seis dígitos. Não há senha para esquecer."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हम छह अंकों का कोड भेजते हैं। कोई पासवर्ड याद रखने की ज़रूरत नहीं।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "6桁のコードを送ります。パスワードを覚える必要はありません。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "我们会发送一个六位数验证码，无需记住密码。"
+          }
+        }
+      }
+    },
+    "We sent a code to %@.": {
+      "extractionState": "manual",
+      "comment": "Email address",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviamos un código a %@."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nous avons envoyé un code à %@."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wir haben einen Code an %@ gesendet."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbiamo inviato un codice a %@."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviamos um código para %@."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हमने %@ पर कोड भेजा है।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ にコードを送信しました。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "我们已向 %@ 发送验证码。"
           }
         }
       }
@@ -23872,6 +26336,60 @@
           "stringUnit": {
             "state": "translated",
             "value": "你常和谁一起花钱"
+          }
+        }
+      }
+    },
+    "With your email": {
+      "extractionState": "manual",
+      "comment": "Section header",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con tu correo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avec votre e-mail"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit deiner E-Mail"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con la tua email"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Com seu e-mail"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अपने ईमेल से"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メールで"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用电子邮件"
           }
         }
       }
@@ -24676,6 +27194,60 @@
         }
       }
     },
+    "You'll join as %@, so the expenses already recorded against that name become yours.": {
+      "extractionState": "manual",
+      "comment": "Member name",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te unirás como %@, así que los gastos ya registrados con ese nombre pasarán a ser tuyos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous rejoindrez en tant que %@, donc les dépenses déjà enregistrées sous ce nom deviendront les vôtres."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du trittst als %@ bei, sodass die bereits unter diesem Namen erfassten Ausgaben deine werden."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ti unirai come %@, quindi le spese già registrate con quel nome diventeranno tue."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você entrará como %@, então as despesas já registradas com esse nome passam a ser suas."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आप %@ के रूप में शामिल होंगे, इसलिए उस नाम पर पहले से दर्ज खर्च आपके हो जाएँगे।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ として参加するため、その名前ですでに記録されている支出があなたのものになります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你将以 %@ 的身份加入，因此已经记在该名下的支出会变成你的。"
+          }
+        }
+      }
+    },
     "You're all settled up": {
       "extractionState": "manual",
       "localizations": {
@@ -25153,6 +27725,59 @@
         }
       }
     },
+    "Your friend's phone has to be able to reach this group, which means it has to live somewhere both of you can get to.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El teléfono de tu amigo tiene que poder acceder a este grupo, así que debe estar en un lugar al que ambos podáis llegar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le téléphone de votre ami doit pouvoir accéder à ce groupe, il doit donc se trouver quelque part où vous pouvez tous les deux le joindre."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Gerät deiner Freundin oder deines Freundes muss diese Gruppe erreichen können, also muss sie an einem Ort liegen, den ihr beide erreicht."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il telefono del tuo amico deve poter raggiungere questo gruppo, quindi deve trovarsi in un posto accessibile a entrambi."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O telefone do seu amigo precisa conseguir acessar este grupo, então ele precisa ficar em algum lugar que os dois alcancem."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आपके मित्र का फ़ोन इस समूह तक पहुँच सके, इसके लिए इसे ऐसी जगह होना चाहिए जहाँ आप दोनों पहुँच सकें।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "友達の端末からこのグループに接続できる必要があるため、二人ともアクセスできる場所に置く必要があります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "朋友的手机需要能访问这个群组，因此它必须存放在你们双方都能访问的地方。"
+          }
+        }
+      }
+    },
     "Your groups": {
       "extractionState": "manual",
       "localizations": {
@@ -25202,6 +27827,59 @@
           "stringUnit": {
             "state": "translated",
             "value": "你的群组"
+          }
+        }
+      }
+    },
+    "Your groups stay on this phone, shared ones included. They stop receiving your friends' changes until you sign back in.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus grupos permanecen en este teléfono, también los compartidos. Dejarán de recibir los cambios de tus amigos hasta que vuelvas a iniciar sesión."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos groupes restent sur ce téléphone, y compris les groupes partagés. Ils cessent de recevoir les modifications de vos amis jusqu'à votre reconnexion."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Gruppen bleiben auf diesem Gerät, auch die geteilten. Sie erhalten keine Änderungen deiner Freunde mehr, bis du dich wieder anmeldest."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I tuoi gruppi restano su questo telefono, compresi quelli condivisi. Smettono di ricevere le modifiche dei tuoi amici finché non accedi di nuovo."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seus grupos ficam neste telefone, inclusive os compartilhados. Eles param de receber as mudanças dos seus amigos até você entrar de novo."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आपके समूह इसी फ़ोन पर रहेंगे, साझा किए गए भी। जब तक आप दोबारा साइन इन नहीं करते, उन्हें मित्रों के बदलाव मिलना बंद हो जाएगा।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共有中のものも含め、グループはこの端末に残ります。再びサインインするまで、友達の変更は届かなくなります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "包括共享的群组在内，你的群组都会留在这台手机上。在你重新登录之前，它们不再接收朋友的更改。"
           }
         }
       }
@@ -25308,6 +27986,59 @@
           "stringUnit": {
             "state": "translated",
             "value": "你的净额"
+          }
+        }
+      }
+    },
+    "Your other groups stay on this device.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus otros grupos permanecen en este dispositivo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos autres groupes restent sur cet appareil."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine anderen Gruppen bleiben auf diesem Gerät."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gli altri gruppi restano su questo dispositivo."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seus outros grupos ficam neste aparelho."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आपके बाकी समूह इसी डिवाइस पर रहते हैं।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "他のグループはこの端末に残ります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你的其他群组仍留在这台设备上。"
           }
         }
       }
@@ -27917,6 +30648,60 @@
         }
       }
     },
+    "iCloud sync across your own devices": {
+      "extractionState": "manual",
+      "comment": "Feature list item",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronización con iCloud entre tus dispositivos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisation iCloud entre vos appareils"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud-Sync zwischen deinen eigenen Geräten"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizzazione iCloud tra i tuoi dispositivi"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronização com o iCloud entre seus aparelhos"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आपके अपने डिवाइसों के बीच iCloud सिंक"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自分の端末どうしの iCloud 同期"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在你自己的设备间通过 iCloud 同步"
+          }
+        }
+      }
+    },
     "next %@": {
       "extractionState": "manual",
       "comment": "Next occurrence date",
@@ -29028,6 +31813,60 @@
           "stringUnit": {
             "state": "translated",
             "value": "你已收"
+          }
+        }
+      }
+    },
+    "you@example.com": {
+      "extractionState": "manual",
+      "comment": "Email placeholder",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tu@ejemplo.com"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vous@exemple.com"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "du@beispiel.de"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tu@esempio.com"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "voce@exemplo.com"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aap@udaharan.com"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "you@example.com"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "you@example.com"
           }
         }
       }

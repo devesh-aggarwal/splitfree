@@ -44,11 +44,38 @@ final class SpendingGroup {
     var colorIndex: Int = 0
     @Attribute(.externalStorage) var coverImageData: Data?
     var createdAt: Date = Date()
+    var updatedAt: Date = Date()
+
+    /// A fingerprint of this row's contents as the server last saw them.
+    ///
+    /// Sync decides what to push by comparing it against the row's current
+    /// fingerprint. A hash is used rather than a dirty flag or a timestamp
+    /// because both of those have to be *remembered* at every write site, and
+    /// one forgotten line means an edit that silently never syncs. A hash cannot
+    /// be forgotten: if the contents differ, it differs.
+    var syncedFingerprint: String = ""
+
+    /// Whether this group is synced through an account. Off by default and set
+    /// only when someone explicitly shares the group, which is what keeps the
+    /// local-only promise true for everything they never shared.
+    var isShared: Bool = false
+    /// Member ids removed from this group while it was shared, so the removal
+    /// can be pushed as a tombstone. Comma-separated because SwiftData arrays of
+    /// scalars are more trouble than they are worth for a list this small.
+    var removedMemberIDsRaw: String = ""
+    /// Which member slot on the server represents *you* in this group.
+    ///
+    /// It is normally your own participant id, but when you join a group
+    /// somebody else created, the slot already exists and keeps the id they
+    /// gave it. Recording that here means the expenses they already wrote
+    /// against that slot land on you rather than on a duplicate stranger.
+    var myMemberIDRaw: String = ""
     var isArchived: Bool = false
     /// Free-form shared notes — the group "whiteboard".
     var notes: String = ""
     /// When on, balances are collapsed into the fewest possible payments.
-    var simplifyDebts: Bool = false
+    /// Defaults on; the group's settings screen turns it off.
+    var simplifyDebts: Bool = true
     /// Currency new expenses in this group default to.
     var defaultCurrencyCode: String = "USD"
     /// Manual ordering on the groups screen.
@@ -65,6 +92,11 @@ final class SpendingGroup {
 
     @Relationship(deleteRule: .cascade, inverse: \SplitTemplate.group)
     var splitTemplates: [SplitTemplate]? = []
+
+    /// The other end of `RecurringRule.group`. See the note on `Participant`:
+    /// CloudKit will not load a store with a one-sided relationship.
+    @Relationship(inverse: \RecurringRule.group)
+    var recurringRules: [RecurringRule]? = []
 
     init(
         name: String,

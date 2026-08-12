@@ -6,6 +6,7 @@ struct AccountView: View {
     @Environment(AppSettings.self) private var settings
     @Environment(ExchangeRateService.self) private var exchangeRates
     @Environment(AppLockState.self) private var lock
+    @Environment(SyncEngine.self) private var sync
 
     @Query private var expenses: [Expense]
     @Query private var groups: [SpendingGroup]
@@ -17,6 +18,8 @@ struct AccountView: View {
     @State private var isPresentingImport = false
     @State private var isPresentingRecurring = false
     @State private var isPresentingAbout = false
+    @State private var isPresentingSignIn = false
+    @State private var showsSignOutConfirmation = false
     @State private var exportURL: URL?
     @State private var showsResetConfirmation = false
 
@@ -27,6 +30,7 @@ struct AccountView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     profileCard
+                    accountCard
                     freeForeverCard
                     preferencesCard
                     dataCard
@@ -48,6 +52,21 @@ struct AccountView: View {
             .sheet(isPresented: $isPresentingImport) { ImportTransactionsView() }
             .sheet(isPresented: $isPresentingRecurring) { RecurringRulesView() }
             .sheet(isPresented: $isPresentingAbout) { AboutView() }
+            .sheet(isPresented: $isPresentingSignIn) { SignInView() }
+            .confirmationDialog(
+                Text("Sign out?"),
+                isPresented: $showsSignOutConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button(role: .destructive) {
+                    sync.signOut(context: context)
+                } label: {
+                    Text("Sign out")
+                }
+            } message: {
+                Text("Your groups stay on this phone, shared ones included. They stop receiving your friends' changes until you sign back in.")
+            }
+            .task { await sync.refreshAccountState() }
             .confirmationDialog(
                 Text("Erase everything?"),
                 isPresented: $showsResetConfirmation,
@@ -100,7 +119,7 @@ struct AccountView: View {
                         .font(.headline)
                         .foregroundStyle(Palette.primaryText)
                 }
-                Text("No subscription, no upgrade screen, no adverts, no limits on expenses, and nothing held back for a paid tier. Your data stays on your device and in your own iCloud.")
+                Text("No subscription, no upgrade screen, no adverts, no limits on expenses, and nothing held back for a paid tier. Groups stay on your device unless you choose to share one with a friend.")
                     .font(Typography.rowSubtitle)
                     .foregroundStyle(Palette.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
@@ -110,6 +129,64 @@ struct AccountView: View {
                 }
                 .buttonStyle(SecondaryButtonStyle())
                 .padding(.top, 2)
+            }
+        }
+    }
+
+    // MARK: - Account
+
+    /// Only shown when the build has a backend configured. A fork with no
+    /// server should not offer a sign-in that cannot work.
+    @ViewBuilder
+    private var accountCard: some View {
+        if sync.status != .unavailable {
+            Card(padding: 0) {
+                VStack(spacing: 0) {
+                    if sync.isSignedIn {
+                        row(
+                            symbol: "checkmark.icloud",
+                            title: sync.accountEmail ?? String(localized: "Signed in"),
+                            subtitle: syncSubtitle,
+                            value: nil
+                        ) {
+                            Task { await sync.syncNow(context: context) }
+                        }
+
+                        divider
+
+                        row(
+                            symbol: "rectangle.portrait.and.arrow.right",
+                            title: String(localized: "Sign out"),
+                            subtitle: String(localized: "Keeps everything on this phone."),
+                            value: nil
+                        ) { showsSignOutConfirmation = true }
+                    } else {
+                        row(
+                            symbol: "person.badge.key",
+                            title: String(localized: "Sign in to share groups"),
+                            subtitle: String(localized: "Optional. Everything works without it."),
+                            value: nil
+                        ) { isPresentingSignIn = true }
+                    }
+                }
+            }
+        }
+    }
+
+    private var syncSubtitle: String {
+        switch sync.status {
+        case .syncing:
+            String(localized: "Syncing")
+        case .failed(let message):
+            message
+        default:
+            if let lastSyncedAt = sync.lastSyncedAt {
+                String(
+                    format: String(localized: "Synced %@. Tap to sync now.", comment: "Relative time"),
+                    lastSyncedAt.formatted(.relative(presentation: .named))
+                )
+            } else {
+                String(localized: "Tap to sync now.")
             }
         }
     }

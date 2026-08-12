@@ -18,6 +18,20 @@ final class Participant {
     var isCurrentUser: Bool = false
     var createdAt: Date = Date()
     var isArchived: Bool = false
+    var updatedAt: Date = Date()
+
+    /// A fingerprint of this row's contents as the server last saw them.
+    ///
+    /// Sync decides what to push by comparing it against the row's current
+    /// fingerprint. A hash is used rather than a dirty flag or a timestamp
+    /// because both of those have to be *remembered* at every write site, and
+    /// one forgotten line means an edit that silently never syncs. A hash cannot
+    /// be forgotten: if the contents differ, it differs.
+    var syncedFingerprint: String = ""
+
+    /// The Supabase user id, once this person has claimed their slot by signing
+    /// in. Nil for someone who was only ever typed into a group by a friend.
+    var remoteUserID: String?
 
     /// Payment handles used to build deep links on the settle-up screen.
     var venmoHandle: String = ""
@@ -26,6 +40,18 @@ final class Participant {
     var upiHandle: String = ""
 
     @Relationship(inverse: \SpendingGroup.members) var groups: [SpendingGroup]? = []
+
+    // CloudKit refuses to load a store where any relationship lacks an inverse,
+    // and it fails at load time rather than complaining at build time — so
+    // without these the app silently falls back to a local-only store and iCloud
+    // sync never happens at all. They exist to be the other end of a
+    // relationship, not because anything reads them.
+    @Relationship(inverse: \ExpensePayer.participant) var payerEntries: [ExpensePayer]? = []
+    @Relationship(inverse: \ExpenseShare.participant) var shareEntries: [ExpenseShare]? = []
+    @Relationship(inverse: \ExpenseComment.author) var authoredComments: [ExpenseComment]? = []
+    @Relationship(inverse: \ExpenseLineItem.assignees) var assignedLineItems: [ExpenseLineItem]? = []
+    @Relationship(inverse: \Settlement.fromParticipant) var settlementsSent: [Settlement]? = []
+    @Relationship(inverse: \Settlement.toParticipant) var settlementsReceived: [Settlement]? = []
 
     init(
         name: String,
