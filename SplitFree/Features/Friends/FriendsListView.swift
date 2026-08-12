@@ -13,6 +13,7 @@ struct FriendsListView: View {
 
     @State private var filter: BalanceFilter = .all
     @State private var isPresentingNewFriend = false
+    @State private var isPresentingInvite = false
     @State private var searchQuery = ""
     @State private var editorContext: ExpenseEditorContext?
 
@@ -113,13 +114,27 @@ struct FriendsListView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    Button { isPresentingNewFriend = true } label: {
+                    Menu {
+                        Button {
+                            isPresentingInvite = true
+                        } label: {
+                            Label("Invite by link", systemImage: "link")
+                        }
+                        Button {
+                            isPresentingNewFriend = true
+                        } label: {
+                            Label("Add without inviting", systemImage: "person.badge.plus")
+                        }
+                    } label: {
                         Text("Add friend")
                     }
                 }
             }
             .sheet(isPresented: $isPresentingNewFriend) {
                 FriendEditorView(friend: nil)
+            }
+            .sheet(isPresented: $isPresentingInvite) {
+                InviteFriendView(friend: nil)
             }
             .sheet(item: $editorContext) { ExpenseEditorView(context: $0) }
         }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "a1862b9dc239012c4dd8cd055f4b9311",
+    "identityHash": "63a33a6b4d9940c1ba2ef3ddd7962d5b",
     "entities": [
       {
         "tableName": "participants",
@@ -116,7 +116,7 @@
       },
       {
         "tableName": "groups",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `kind` TEXT NOT NULL, `colorIndex` INTEGER NOT NULL, `defaultCurrencyCode` TEXT NOT NULL, `simplifyDebts` INTEGER NOT NULL, `notes` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isPinned` INTEGER NOT NULL, `sortOrder` INTEGER NOT NULL, `coverPath` TEXT, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `syncedFingerprint` TEXT NOT NULL, `isShared` INTEGER NOT NULL, `myMemberId` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `kind` TEXT NOT NULL, `colorIndex` INTEGER NOT NULL, `defaultCurrencyCode` TEXT NOT NULL, `simplifyDebts` INTEGER NOT NULL, `notes` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `isPinned` INTEGER NOT NULL, `sortOrder` INTEGER NOT NULL, `coverPath` TEXT, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `syncedFingerprint` TEXT NOT NULL, `isDirect` INTEGER NOT NULL, `isShared` INTEGER NOT NULL, `myMemberId` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -200,6 +200,12 @@
             "fieldPath": "syncedFingerprint",
             "columnName": "syncedFingerprint",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isDirect",
+            "columnName": "isDirect",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -1140,7 +1146,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a1862b9dc239012c4dd8cd055f4b9311')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '63a33a6b4d9940c1ba2ef3ddd7962d5b')"
     ]
   }
 }

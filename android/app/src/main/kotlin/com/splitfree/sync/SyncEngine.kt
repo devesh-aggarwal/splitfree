@@ -192,6 +192,7 @@ class SyncEngine(
                 .put("p_currency_code", group.defaultCurrencyCode)
                 .put("p_simplify_debts", group.simplifyDebts)
                 .put("p_members", payload)
+                .put("p_is_direct", group.isDirect)
         )
 
         dao.upsertGroup(group.copy(isShared = true, syncedFingerprint = ""))
@@ -293,6 +294,7 @@ class SyncEngine(
                     .put("simplify_debts", group.simplifyDebts)
                     .put("notes", group.notes)
                     .put("is_archived", group.isArchived)
+                    .put("is_direct", group.isDirect)
             )
             // The roster travels with its group. It is small, and sending it
             // whole avoids tracking which individual member rows changed.
@@ -489,6 +491,7 @@ class SyncEngine(
                 simplifyDebts = row.optBoolean("simplify_debts", true),
                 notes = row.optString("notes"),
                 isArchived = row.optBoolean("is_archived"),
+                isDirect = row.optBoolean("is_direct"),
                 isShared = true,
                 updatedAt = epochMillis(row.optString("updated_at")) ?: System.currentTimeMillis(),
             )

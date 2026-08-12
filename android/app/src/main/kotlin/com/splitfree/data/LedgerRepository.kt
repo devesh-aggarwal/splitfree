@@ -376,4 +376,36 @@ class LedgerRepository(private val dao: LedgerDao) {
         if (!group.isShared) return
         dao.insertTombstone(TombstoneEntity(entity = entity, entityId = entityId, groupId = groupId))
     }
+
+    /**
+     * The two-person group that stands for a friendship, creating it if needed.
+     *
+     * A friendship has to have a group behind it because sync only carries
+     * groups: without one, the expenses two friends share would never leave
+     * either phone and the friend link would mean nothing.
+     */
+    suspend fun directPairGroup(friendId: String, createIfMissing: Boolean): GroupEntity? {
+        val me = dao.currentUser() ?: return null
+        val memberships = dao.allMemberships()
+        val existing = dao.allGroups().filter { it.isDirect }.firstOrNull { group ->
+            val ids = memberships.filter { it.groupId == group.id }.map { it.participantId }.toSet()
+            ids == setOf(me.id, friendId)
+        }
+        if (existing != null || !createIfMissing) return existing
+
+        val friend = dao.participant(friendId) ?: return null
+        val group = GroupEntity(
+            name = friend.fullName,
+            colorIndex = friend.colorIndex,
+            isDirect = true,
+        )
+        dao.upsertGroup(group)
+        dao.addMembers(
+            listOf(
+                GroupMemberEntity(groupId = group.id, participantId = me.id),
+                GroupMemberEntity(groupId = group.id, participantId = friendId),
+            )
+        )
+        return group
+    }
 }

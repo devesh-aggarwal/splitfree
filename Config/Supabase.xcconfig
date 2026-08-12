@@ -18,7 +18,7 @@
 // table denies by default and row-level security decides the rest. It ships
 // inside the app binary regardless, so keeping it out of the repo buys nothing.
 
-SUPABASE_URL =
+SUPABASE_URL = zxplqgokkzivckpqvarn.supabase.co
 // Paste the anon key or the newer publishable key (sb_publishable_...).
 // Either works; the dashboard now labels the anon one as legacy.
-SUPABASE_ANON_KEY =
+SUPABASE_ANON_KEY = sb_publishable_1H0w8g837GJa6AX3vqgRjg_9VYZ-7yF

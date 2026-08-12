@@ -151,7 +151,9 @@ fun GroupsScreen(
     val colors = splitColors
     val ledger by viewModel.ledger.collectAsState()
     val settings by viewModel.settings.collectAsState()
-    val active = ledger.groups.filter { !it.isArchived }
+    // Friendships are two-person groups underneath, but they belong on the
+    // Friends tab. Showing them here would list every friend twice.
+    val active = ledger.groups.filter { !it.isArchived && !it.isDirect }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize().background(colors.background),
@@ -312,7 +314,7 @@ fun GroupKind.kindIcon() = when (this) {
 // MARK: - Friends
 
 @Composable
-fun FriendsScreen(viewModel: LedgerViewModel) {
+fun FriendsScreen(viewModel: LedgerViewModel, onInviteFriend: () -> Unit = {}) {
     val colors = splitColors
     val ledger by viewModel.ledger.collectAsState()
     val settings by viewModel.settings.collectAsState()
@@ -331,7 +333,10 @@ fun FriendsScreen(viewModel: LedgerViewModel) {
                 Text("Friends", style = MaterialTheme.typography.headlineLarge, color = colors.primaryText)
                 Spacer(Modifier.weight(1f))
                 TextButton(onClick = { showAdd = true }) {
-                    Text("Add friend", color = colors.accent, fontWeight = FontWeight.SemiBold)
+                    Text("Add", color = colors.secondaryText)
+                }
+                TextButton(onClick = onInviteFriend) {
+                    Text("Invite", color = colors.accent, fontWeight = FontWeight.SemiBold)
                 }
             }
         }
@@ -342,9 +347,10 @@ fun FriendsScreen(viewModel: LedgerViewModel) {
                 EmptyState(
                     icon = Icons.Filled.People,
                     title = "No friends yet",
-                    message = "Add the people you split with. You can settle up with them directly, without a group.",
-                    actionLabel = "Add a friend",
-                    onAction = { showAdd = true },
+                    message = "Send someone a link and what the two of you share stays in step " +
+                        "on both phones. Or add a name yourself to keep track on your own.",
+                    actionLabel = "Invite a friend",
+                    onAction = onInviteFriend,
                 )
             }
         } else {

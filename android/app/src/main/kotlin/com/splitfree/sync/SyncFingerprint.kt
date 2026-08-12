@@ -68,6 +68,7 @@ object SyncFingerprint {
             if (group.simplifyDebts) "1" else "0",
             group.notes,
             if (group.isArchived) "1" else "0",
+            if (group.isDirect) "1" else "0",
         )
         // Sorted the way iOS sorts a group's members, so both platforms feed the
         // hash the same sequence.

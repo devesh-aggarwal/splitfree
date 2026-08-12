@@ -28,6 +28,42 @@ enum Ledger {
         return me
     }
 
+    // MARK: - Friendships
+
+    /// The two-person group that stands for a friendship, if there is one.
+    static func directPairGroup(
+        with friend: Participant,
+        in context: ModelContext
+    ) -> SpendingGroup? {
+        let user = currentUser(in: context)
+        let groups = (try? context.fetch(FetchDescriptor<SpendingGroup>())) ?? []
+        return groups.first { group in
+            guard group.isDirect else { return false }
+            let ids = Set(group.memberList.map(\.id))
+            return ids == [user.id, friend.id]
+        }
+    }
+
+    /// Creates it if it does not exist yet.
+    @discardableResult
+    static func makeDirectPairGroup(
+        with friend: Participant,
+        in context: ModelContext
+    ) -> SpendingGroup {
+        if let existing = directPairGroup(with: friend, in: context) { return existing }
+
+        let user = currentUser(in: context)
+        let group = SpendingGroup(
+            name: friend.fullName,
+            kind: .other,
+            colorIndex: friend.colorIndex,
+            members: [user, friend]
+        )
+        group.isDirect = true
+        context.insert(group)
+        return group
+    }
+
     // MARK: - Deletion
 
     /// Notes that something was deleted so sync can tell a friend's phone about

@@ -421,3 +421,93 @@ fun JoinGroupScreen(viewModel: LedgerViewModel, token: String, onSignIn: () -> U
         Spacer(Modifier.height(40.dp))
     }
 }
+
+
+/**
+ * Sending someone a link that connects the two of you.
+ *
+ * Underneath, a friendship is a two-person group. The screen never says so, but
+ * it is why this works: sync carries groups, so a friendship with nothing behind
+ * it could never reach the other phone and the friend list would be names that
+ * quietly do nothing.
+ */
+@Composable
+fun InviteFriendScreen(viewModel: LedgerViewModel, onSignIn: () -> Unit, onDone: () -> Unit) {
+    val colors = splitColors
+    val scope = rememberCoroutineScope()
+
+    var name by remember { mutableStateOf("") }
+    var link by remember { mutableStateOf<String?>(null) }
+    var working by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf<String?>(null) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colors.background)
+            .verticalScroll(rememberScrollState())
+            .padding(Metrics.screenPadding),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        Text("Invite a friend", style = MaterialTheme.typography.headlineLarge, color = colors.primaryText)
+
+        if (!viewModel.sync.isSignedIn) {
+            SplitCard {
+                SectionHeader(
+                    "Connecting needs an account",
+                    "Their phone has to be able to reach what the two of you share, which " +
+                        "means it has to live somewhere you can both get to.",
+                )
+                Spacer(Modifier.height(12.dp))
+                PrimaryButton("Sign in") { onSignIn() }
+            }
+        } else if (link == null) {
+            SplitCard {
+                SectionHeader(
+                    "Who are you inviting?",
+                    "Once they accept, expenses between the two of you appear on both phones " +
+                        "and your balance stays in step. Your groups are separate and stay " +
+                        "where they are.",
+                )
+                Spacer(Modifier.height(12.dp))
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Their name") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                Spacer(Modifier.height(12.dp))
+                PrimaryButton("Create invite link", enabled = name.isNotBlank() && !working) {
+                    scope.launch {
+                        working = true
+                        error = null
+                        runCatching { viewModel.inviteFriend(name.trim()) }
+                            .onSuccess { link = it }
+                            .onFailure { error = it.message ?: "Couldn't create the link." }
+                        working = false
+                    }
+                }
+            }
+        } else {
+            SplitCard {
+                SectionHeader(
+                    "Ready to send",
+                    "Anyone with this link can connect with you and see what the two of you " +
+                        "share. It stops working after 14 days.",
+                )
+                Spacer(Modifier.height(12.dp))
+                Text(link!!, style = MaterialTheme.typography.bodySmall, color = colors.secondaryText)
+                Spacer(Modifier.height(12.dp))
+                PrimaryButton("Send the link") { viewModel.shareText(link!!) }
+            }
+        }
+
+        error?.let {
+            SplitCard { Text(it, color = colors.negative, style = MaterialTheme.typography.bodyMedium) }
+        }
+
+        SecondaryButton("Done") { onDone() }
+        Spacer(Modifier.height(40.dp))
+    }
+}

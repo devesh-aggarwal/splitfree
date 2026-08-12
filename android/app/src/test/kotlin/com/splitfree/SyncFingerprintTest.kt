@@ -57,7 +57,7 @@ class SyncFingerprintTest {
             simplifyDebts = true,
         )
         assertEquals(
-            "a6c28a3da58a58f0",
+            "600fa776858d704f",
             SyncFingerprint.forGroup(group, listOf(ana)) { it.id },
         )
     }

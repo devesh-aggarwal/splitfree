@@ -40,6 +40,7 @@ extension SpendingGroup {
             simplifyDebts ? "1" : "0",
             notes,
             isArchived ? "1" : "0",
+            isDirect ? "1" : "0",
         ]
         for person in memberList {
             parts.append(memberID(person).uuidString.lowercased())

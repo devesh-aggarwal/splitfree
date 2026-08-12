@@ -121,6 +121,8 @@ they're signing in on. The app accepts either.
 - Or sign in and share a group, and changes travel both ways. Invite by link,
   optionally handing over an existing member's slot so the expenses already
   recorded against "Marco" become Marco's when he joins.
+- Add a friend by link, without a group. What the two of you share stays in step
+  on both phones.
 - Sharing is per group and always opt-in. An account is optional; the app is
   fully usable without one.
 

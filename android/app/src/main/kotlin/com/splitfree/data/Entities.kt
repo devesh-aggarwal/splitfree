@@ -95,6 +95,14 @@ data class GroupEntity(
      */
     val syncedFingerprint: String = "",
     /**
+     * A two-person group that stands for a friendship. Presented as a friend
+     * rather than as a group, and hidden from the groups list. It exists so that
+     * expenses shared with one person can travel: the sync engine only carries
+     * groups, so a friendship with no group behind it could never reach anybody
+     * else's phone.
+     */
+    val isDirect: Boolean = false,
+    /**
      * Whether this group is synced through an account. Off unless somebody
      * explicitly shares it, which is what keeps the local-only promise true for
      * every group they never shared.

@@ -2982,6 +2982,60 @@
         }
       }
     },
+    "Add without inviting": {
+      "extractionState": "manual",
+      "comment": "Menu item",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir sin invitar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter sans inviter"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinzufügen ohne Einladung"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi senza invitare"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar sem convidar"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "बिना आमंत्रण के जोड़ें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "招待せずに追加"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅添加，不邀请"
+          }
+        }
+      }
+    },
     "Add “%@” as a friend": {
       "extractionState": "manual",
       "localizations": {
@@ -3509,6 +3563,59 @@
           "stringUnit": {
             "state": "translated",
             "value": "任何拿到链接的人都能加入这个群组并看到其中的全部内容。链接在 14 天后失效。"
+          }
+        }
+      }
+    },
+    "Anyone with this link can connect with you and see what the two of you share. It stops working after 14 days.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cualquiera con este enlace puede conectarse contigo y ver lo que compartís. Deja de funcionar a los 14 días."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toute personne disposant de ce lien peut se connecter avec vous et voir ce que vous partagez. Il expire au bout de 14 jours."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wer diesen Link hat, kann sich mit dir verbinden und sehen, was ihr teilt. Nach 14 Tagen funktioniert er nicht mehr."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiunque abbia questo link può connettersi con te e vedere ciò che condividete. Smette di funzionare dopo 14 giorni."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qualquer pessoa com este link pode se conectar com você e ver o que vocês compartilham. Ele para de funcionar depois de 14 dias."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "जिसके पास यह लिंक है वह आपसे जुड़ सकता है और देख सकता है कि आप दोनों क्या साझा करते हैं। यह 14 दिन बाद काम करना बंद कर देता है।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このリンクを持つ人は誰でもあなたとつながり、二人で共有しているものを見られます。14日後に無効になります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "任何拿到此链接的人都能与你建立连接，并看到你们共享的内容。链接在 14 天后失效。"
           }
         }
       }
@@ -6105,6 +6212,59 @@
           "stringUnit": {
             "state": "translated",
             "value": "评论"
+          }
+        }
+      }
+    },
+    "Connecting needs an account": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectar requiere una cuenta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se connecter nécessite un compte"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum Verbinden brauchst du ein Konto"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per connettervi serve un account"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectar exige uma conta"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "जुड़ने के लिए खाता चाहिए"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "つながるにはアカウントが必要です"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "建立连接需要账户"
           }
         }
       }
@@ -12255,6 +12415,60 @@
         }
       }
     },
+    "Invite a friend": {
+      "extractionState": "manual",
+      "comment": "Screen title",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitar a un amigo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inviter un ami"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freund einladen"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invita un amico"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convidar um amigo"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "किसी मित्र को आमंत्रित करें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "友達を招待"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "邀请朋友"
+          }
+        }
+      }
+    },
     "Invite as": {
       "extractionState": "manual",
       "comment": "Picker label",
@@ -12305,6 +12519,60 @@
           "stringUnit": {
             "state": "translated",
             "value": "邀请为"
+          }
+        }
+      }
+    },
+    "Invite by link": {
+      "extractionState": "manual",
+      "comment": "Menu item",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invitar con un enlace"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inviter par lien"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per Link einladen"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invita con un link"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convidar por link"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "लिंक से आमंत्रित करें"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リンクで招待"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通过链接邀请"
           }
         }
       }
@@ -16235,6 +16503,59 @@
         }
       }
     },
+    "Once they accept, expenses between the two of you appear on both phones and your balance stays in step. Your groups are separate and stay where they are.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuando acepten, los gastos entre vosotros aparecerán en ambos teléfonos y vuestro saldo se mantendrá sincronizado. Tus grupos van aparte y se quedan donde están."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une fois qu'ils acceptent, les dépenses entre vous deux apparaissent sur les deux téléphones et votre solde reste synchronisé. Vos groupes sont distincts et ne bougent pas."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sobald sie annehmen, erscheinen Ausgaben zwischen euch auf beiden Geräten und euer Saldo bleibt im Gleichschritt. Deine Gruppen sind davon getrennt und bleiben, wo sie sind."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando accettano, le spese tra voi due compaiono su entrambi i telefoni e il vostro saldo resta allineato. I tuoi gruppi sono separati e restano dove sono."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando aceitarem, as despesas entre vocês dois aparecem nos dois telefones e o saldo fica em sincronia. Seus grupos são separados e continuam onde estão."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "जब वे स्वीकार कर लेंगे, आप दोनों के बीच के खर्च दोनों फ़ोन पर दिखेंगे और आपका बैलेंस एक जैसा रहेगा। आपके समूह अलग हैं और अपनी जगह रहते हैं।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "相手が承諾すると、二人の間の支出が両方の端末に表示され、残高が同期されます。グループはこれとは別で、そのまま残ります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "对方接受后，你们之间的支出会同时出现在两台手机上，余额保持一致。你的群组是独立的，不受影响。"
+          }
+        }
+      }
+    },
     "Only people in this group can be part of the expense.": {
       "extractionState": "manual",
       "localizations": {
@@ -18038,6 +18359,60 @@
           "stringUnit": {
             "state": "translated",
             "value": "正在读取小票…"
+          }
+        }
+      }
+    },
+    "Ready to send": {
+      "extractionState": "manual",
+      "comment": "Section header",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listo para enviar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prêt à envoyer"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bereit zum Senden"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pronto da inviare"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pronto para enviar"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "भेजने के लिए तैयार"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "送信の準備ができました"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可以发送了"
           }
         }
       }
@@ -23042,6 +23417,113 @@
           "stringUnit": {
             "state": "translated",
             "value": "完整版本，包括存储了什么、保存多久，以及如何删除。"
+          }
+        }
+      }
+    },
+    "Their name": {
+      "extractionState": "manual",
+      "comment": "Text field label",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Su nombre"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leur nom"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihr Name"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il loro nome"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O nome dela"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "उनका नाम"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "相手の名前"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "对方的名字"
+          }
+        }
+      }
+    },
+    "Their phone has to be able to reach what the two of you share, which means it has to live somewhere you can both get to.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Su teléfono tiene que poder acceder a lo que compartís, así que debe estar en un lugar al que ambos podáis llegar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leur téléphone doit pouvoir accéder à ce que vous partagez, cela doit donc se trouver quelque part où vous pouvez tous les deux le joindre."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Gerät der anderen Person muss erreichen können, was ihr teilt, also muss es an einem Ort liegen, den ihr beide erreicht."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il loro telefono deve poter raggiungere ciò che condividete, quindi deve trovarsi in un posto accessibile a entrambi."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O telefone dela precisa conseguir acessar o que vocês compartilham, então isso precisa ficar em algum lugar que os dois alcancem."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "उनका फ़ोन उस तक पहुँच सके जो आप दोनों साझा करते हैं, इसके लिए इसे ऐसी जगह होना चाहिए जहाँ आप दोनों पहुँच सकें।"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "相手の端末が二人で共有しているものに接続できる必要があるため、二人ともアクセスできる場所に置く必要があります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "对方的手机需要能访问你们共享的内容，因此它必须存放在你们双方都能访问的地方。"
           }
         }
       }

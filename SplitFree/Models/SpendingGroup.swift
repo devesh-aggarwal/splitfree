@@ -55,6 +55,13 @@ final class SpendingGroup {
     /// be forgotten: if the contents differ, it differs.
     var syncedFingerprint: String = ""
 
+    /// A two-person group that stands for a friendship.
+    ///
+    /// Presented as a friend rather than as a group, and hidden from the groups
+    /// list. It exists so that expenses shared with one person can travel: the
+    /// sync engine only carries groups, so a friendship with no group behind it
+    /// could never reach anybody else's phone.
+    var isDirect: Bool = false
     /// Whether this group is synced through an account. Off by default and set
     /// only when someone explicitly shares the group, which is what keeps the
     /// local-only promise true for everything they never shared.

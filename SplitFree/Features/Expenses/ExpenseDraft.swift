@@ -432,6 +432,19 @@ final class ExpenseDraft {
 
     // MARK: - Saving
 
+    /// The friendship an ungrouped expense belongs to, when there is exactly
+    /// one other person involved and they are linked.
+    private func inferredDirectGroup(in context: ModelContext) -> SpendingGroup? {
+        guard group == nil else { return nil }
+        let user = Ledger.currentUser(in: context)
+        let others = includedIDs.subtracting([user.id])
+        guard others.count == 1,
+              let friendID = others.first,
+              let friend = participant(id: friendID)
+        else { return nil }
+        return Ledger.directPairGroup(with: friend, in: context)
+    }
+
     @discardableResult
     func save(in context: ModelContext, settings: AppSettings, rates: ExchangeRateTable) -> Expense {
         let isNew = editingExpense == nil
@@ -445,7 +458,11 @@ final class ExpenseDraft {
         expense.notes = notes
         expense.category = category
         expense.splitMethod = splitMethod
-        expense.group = group
+        // An expense with no group, shared with exactly one person you are
+        // linked to, belongs in that friendship. The sync engine only carries
+        // groups, so without this the expense stays on this phone and the
+        // friend link silently means nothing.
+        expense.group = group ?? inferredDirectGroup(in: context)
         expense.receiptImageData = receiptImageData
         expense.receiptText = receiptText
         expense.taxMinorUnits = taxMinorUnits

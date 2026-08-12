@@ -42,6 +42,7 @@ import com.splitfree.ui.screens.GroupDetailScreen
 import com.splitfree.ui.screens.GroupEditorScreen
 import com.splitfree.ui.screens.GroupsScreen
 import com.splitfree.ui.screens.InsightsScreen
+import com.splitfree.ui.screens.InviteFriendScreen
 import com.splitfree.ui.screens.JoinGroupScreen
 import com.splitfree.ui.screens.OnboardingScreen
 import com.splitfree.ui.screens.ShareGroupScreen
@@ -179,7 +180,17 @@ private fun RootScaffold(
                     )
                 }
                 composable(Tab.FRIENDS.route) {
-                    FriendsScreen(viewModel)
+                    FriendsScreen(
+                        viewModel,
+                        onInviteFriend = { navController.navigate("invite-friend") },
+                    )
+                }
+                composable("invite-friend") {
+                    InviteFriendScreen(
+                        viewModel,
+                        onSignIn = { navController.navigate("signin") },
+                        onDone = { navController.popBackStack() },
+                    )
                 }
                 composable(Tab.ACTIVITY.route) { ActivityScreen(viewModel) }
                 composable(Tab.INSIGHTS.route) { InsightsScreen(viewModel) }

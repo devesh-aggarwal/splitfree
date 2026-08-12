@@ -74,6 +74,26 @@ class LedgerViewModel(
         repository.stopSharing(groupId)
     }
 
+    /**
+     * Connects with somebody by link, reusing the friend if they are already in
+     * the list so an invite does not create a second copy of someone you owe.
+     */
+    suspend fun inviteFriend(name: String): String {
+        val existing = ledger.value.participants.firstOrNull {
+            it.id != ledger.value.currentUser?.id && it.fullName.equals(name, ignoreCase = true)
+        }
+        val friendId = existing?.id ?: ParticipantEntity(
+            name = name,
+            colorIndex = kotlin.math.abs(name.hashCode()) % 12,
+        ).also { repository.saveParticipant(it) }.id
+        val group = repository.directPairGroup(friendId, createIfMissing = true)
+            ?: throw IllegalStateException("Couldn't set up that friendship.")
+        if (!group.isShared) sync.shareGroup(group.id)
+        // The invite reserves their slot, so anything already recorded against
+        // their name becomes theirs when they accept.
+        return sync.createInviteLink(group.id, friendId)
+    }
+
     /** Opens a link in the browser. */
     fun openUrl(url: String) {
         val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(url))
@@ -218,6 +238,15 @@ class LedgerViewModel(
         tipMinorUnits: Long = 0,
         notes: String = "",
     ) = viewModelScope.launch {
+        // An expense with no group, shared with exactly one person you are
+        // linked to, belongs in that friendship. Sync only carries groups, so
+        // without this the expense stays on this phone.
+        val resolvedGroupId = groupId ?: run {
+            val me = ledger.value.currentUser?.id
+            val others = entries.map { it.participantId }.toSet() - setOfNotNull(me)
+            others.singleOrNull()?.let { repository.directPairGroup(it, createIfMissing = false)?.id }
+        }
+
         val allocations = SplitCalculator.resolve(
             method = splitMethod,
             total = amountMinorUnits,
@@ -238,7 +267,7 @@ class LedgerViewModel(
             date = dateMillis,
             category = category.wireName,
             splitMethod = splitMethod.wireName,
-            groupId = groupId,
+            groupId = resolvedGroupId,
             taxMinorUnits = taxMinorUnits,
             tipMinorUnits = tipMinorUnits,
             baseCurrencyCode = base,
@@ -266,8 +295,8 @@ class LedgerViewModel(
             headline = if (existing == null) "You added ${expense.displayTitle}"
             else "You updated ${expense.displayTitle}",
             detail = impact,
-            groupId = groupId,
-            groupName = ledger.value.group(groupId)?.name ?: "",
+            groupId = resolvedGroupId,
+            groupName = ledger.value.group(resolvedGroupId)?.name ?: "",
             expenseId = expense.id,
         )
     }

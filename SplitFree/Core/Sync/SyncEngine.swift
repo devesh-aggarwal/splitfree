@@ -139,6 +139,7 @@ final class SyncEngine {
             "p_currency_code": group.defaultCurrencyCode,
             "p_simplify_debts": group.simplifyDebts,
             "p_members": members,
+            "p_is_direct": group.isDirect,
         ])
 
         group.isShared = true
@@ -275,6 +276,7 @@ final class SyncEngine {
                 "simplify_debts": group.simplifyDebts,
                 "notes": group.notes,
                 "is_archived": group.isArchived,
+                "is_direct": group.isDirect,
             ])
             pushedGroups.append(group)
         }
@@ -472,6 +474,7 @@ final class SyncEngine {
             group.simplifyDebts = row["simplify_debts"] as? Bool ?? group.simplifyDebts
             group.notes = row["notes"] as? String ?? group.notes
             group.isArchived = row["is_archived"] as? Bool ?? group.isArchived
+            group.isDirect = row["is_direct"] as? Bool ?? group.isDirect
             group.isShared = true
             if let stamp = (row["updated_at"] as? String).flatMap(Self.date(from:)) {
                 group.updatedAt = stamp

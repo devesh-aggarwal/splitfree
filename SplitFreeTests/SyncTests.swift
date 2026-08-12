@@ -193,7 +193,7 @@ struct ExpenseFingerprintTests {
         group.simplifyDebts = true
         context.insert(group)
 
-        #expect(group.syncFingerprint(memberID: \.id) == "a6c28a3da58a58f0")
+        #expect(group.syncFingerprint(memberID: \.id) == "600fa776858d704f")
     }
 
     @Test("A group's fingerprint covers its roster, because the roster is pushed with it")
