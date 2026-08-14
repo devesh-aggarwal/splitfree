@@ -15,7 +15,6 @@ import SwiftData
 final class SyncEngine {
     enum Status: Equatable {
         case unavailable
-        case signedOut
         case idle
         case syncing
         case failed(String)
@@ -23,10 +22,9 @@ final class SyncEngine {
 
     private(set) var status: Status = .unavailable
     private(set) var lastSyncedAt: Date?
-    private(set) var accountEmail: String?
-    private(set) var isSignedIn = false
-    /// Providers the project has enabled, learned from the server on first use.
-    private(set) var availableProviders: Set<String> = []
+    /// True once this device has an identity, which happens the first time it
+    /// shares or joins something.
+    private(set) var hasIdentity = false
 
     private let client: SupabaseClient
     private let defaults: UserDefaults
@@ -50,42 +48,25 @@ final class SyncEngine {
 
     // MARK: - Account
 
-    func refreshAccountState() async {
+    func refreshState() async {
         guard SupabaseConfig.isConfigured else {
             status = .unavailable
-            isSignedIn = false
+            hasIdentity = false
             return
         }
         _ = await client.restoreSession()
-        if await client.isSignedIn, await client.email == nil {
-            await client.refreshUserDetails()
-        }
-        isSignedIn = await client.isSignedIn
-        accountEmail = await client.email
-        status = isSignedIn ? .idle : .signedOut
-        if availableProviders.isEmpty {
-            availableProviders = await client.enabledProviders()
-        }
+        hasIdentity = await client.isSignedIn
+        status = .idle
     }
 
-    func signOut(context: ModelContext) {
-        Task { await client.signOut() }
-        isSignedIn = false
-        accountEmail = nil
-        status = .signedOut
-        cursor = nil
-        lastSyncedAt = nil
-        defaults.removeObject(forKey: Self.lastSyncedKey)
-
-        // Signing out leaves the data where it is. Shared groups become ordinary
-        // local groups again rather than vanishing, because deleting someone's
-        // expense history as a side effect of signing out would be indefensible.
-        let groups = (try? context.fetch(FetchDescriptor<SpendingGroup>())) ?? []
-        for group in groups where group.isShared {
-            group.isShared = false
-            group.syncedFingerprint = ""
-        }
-        try? context.save()
+    /// Makes sure there is an identity before doing something that needs one.
+    ///
+    /// Sharing and joining call this. The UI never does, which is the point:
+    /// there is no screen, and nobody is asked for anything.
+    private func ensureIdentity() async throws {
+        guard SupabaseConfig.isConfigured else { throw SupabaseError.notConfigured }
+        try await client.signInAnonymously()
+        hasIdentity = true
     }
 
     // MARK: - Sync
@@ -94,7 +75,9 @@ final class SyncEngine {
     /// into the one already running.
     func syncNow(context: ModelContext) async {
         guard SupabaseConfig.isConfigured else { status = .unavailable; return }
-        guard await client.isSignedIn else { status = .signedOut; return }
+        // Nothing shared from this device yet, so there is nothing to sync and
+        // no reason to create an identity.
+        guard await client.isSignedIn else { return }
         guard !inFlight else { return }
 
         inFlight = true
@@ -111,12 +94,7 @@ final class SyncEngine {
             defaults.set(now, forKey: Self.lastSyncedKey)
             status = .idle
         } catch let error as SupabaseError {
-            if case .notSignedIn = error {
-                isSignedIn = false
-                status = .signedOut
-            } else {
-                status = .failed(error.localizedDescription)
-            }
+            status = .failed(error.localizedDescription)
         } catch {
             status = .failed(error.localizedDescription)
         }
@@ -125,7 +103,7 @@ final class SyncEngine {
     /// Turns a local group into a shared one and uploads it, keeping every id the
     /// device already uses so its expenses stay attached to the right people.
     func shareGroup(_ group: SpendingGroup, context: ModelContext) async throws {
-        guard await client.isSignedIn else { throw SupabaseError.notSignedIn }
+        try await ensureIdentity()
 
         let members = group.memberList.map { person in
             [
@@ -171,24 +149,20 @@ final class SyncEngine {
         var alreadyMember: Bool
     }
 
-    func createInviteLink(for group: SpendingGroup, claiming member: Participant?) async throws -> URL {
+    func createInvite(for group: SpendingGroup, claiming member: Participant?) async throws -> Invite {
+        try await ensureIdentity()
         var arguments: [String: Any] = ["p_group_id": group.id.uuidString.lowercased()]
         if let member {
             arguments["p_member_id"] = memberID(for: member, in: group).uuidString.lowercased()
         }
         let data = try await client.rpc("create_invite", arguments: arguments)
-        // The function returns a bare JSON string.
-        //
-        // The token goes in the fragment rather than the path or the query.
-        // Browsers never send a fragment to the server, so an invite that gets
-        // opened on the web leaves no copy of the token in anybody's access log.
-        guard let token = (try? JSONSerialization.jsonObject(with: data, options: [.fragmentsAllowed])) as? String,
-              let url = URL(string: "https://devesh-aggarwal.github.io/splitfree/join.html#\(token)")
+        guard let code = (try? JSONSerialization.jsonObject(with: data, options: [.fragmentsAllowed])) as? String
         else { throw SupabaseError.decoding("create_invite") }
-        return url
+        return Invite(code: code)
     }
 
     func previewInvite(token: String) async throws -> InvitePreview {
+        try await ensureIdentity()
         let data = try await client.rpc("preview_invite", arguments: ["p_token": token])
         guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let groupID = (json["group_id"] as? String).flatMap(UUID.init(uuidString:))
@@ -206,7 +180,11 @@ final class SyncEngine {
 
     @discardableResult
     func redeemInvite(token: String, context: ModelContext) async throws -> UUID {
-        let data = try await client.rpc("redeem_invite", arguments: ["p_token": token])
+        try await ensureIdentity()
+        let data = try await client.rpc("redeem_invite", arguments: [
+            "p_token": token,
+            "p_display_name": Ledger.currentUser(in: context).fullName,
+        ])
         guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let groupID = (json["group_id"] as? String).flatMap(UUID.init(uuidString:))
         else { throw SupabaseError.decoding("redeem_invite") }

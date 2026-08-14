@@ -62,10 +62,6 @@ struct RootView: View {
         }
         .task { await bootstrap() }
         .onOpenURL { url in
-            if url.scheme == "splitfree", url.host == "auth-callback" {
-                Task { await completeSignIn(callback: url) }
-                return
-            }
             if let token = SyncEngine.inviteToken(from: url) { inviteToken = InviteToken(token) }
         }
         .sheet(item: $inviteToken) { token in
@@ -142,18 +138,6 @@ struct RootView: View {
         }
     }
 
-    /// Finishes an email or browser sign-in when its link comes back to the app.
-    private func completeSignIn(callback: URL) async {
-        do {
-            _ = try await SupabaseClient.shared.completeOAuth(callback: callback)
-            await sync.refreshAccountState()
-            await sync.syncNow(context: context)
-            Haptics.success()
-        } catch {
-            Haptics.warning()
-        }
-    }
-
     #if DEBUG
     /// Puts the app on the screen the screenshot script asked for.
     private func applyScreenshotArguments() {
@@ -173,7 +157,7 @@ struct RootView: View {
         lock.lockIfNeeded(enabled: settings.requiresBiometricUnlock)
         await exchangeRates.refreshIfNeeded()
         await catchUpRecurring()
-        await sync.refreshAccountState()
+        await sync.refreshState()
         await sync.syncNow(context: context)
     }
 

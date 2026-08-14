@@ -62,14 +62,6 @@ class LedgerViewModel(
 
     fun syncNow() = viewModelScope.launch { sync.syncNow() }
 
-    /** Finishes an email or browser sign-in when its link comes back to the app. */
-    fun completeSignIn(callback: String) = viewModelScope.launch {
-        runCatching { sync.completeOAuth(callback) }
-        sync.syncNow()
-    }
-
-    fun signOut() = viewModelScope.launch { sync.signOut() }
-
     fun stopSharing(groupId: String) = viewModelScope.launch {
         repository.stopSharing(groupId)
     }
@@ -78,7 +70,7 @@ class LedgerViewModel(
      * Connects with somebody by link, reusing the friend if they are already in
      * the list so an invite does not create a second copy of someone you owe.
      */
-    suspend fun inviteFriend(name: String): String {
+    suspend fun inviteFriend(name: String): com.splitfree.sync.Invite {
         val existing = ledger.value.participants.firstOrNull {
             it.id != ledger.value.currentUser?.id && it.fullName.equals(name, ignoreCase = true)
         }
@@ -91,7 +83,7 @@ class LedgerViewModel(
         if (!group.isShared) sync.shareGroup(group.id)
         // The invite reserves their slot, so anything already recorded against
         // their name becomes theirs when they accept.
-        return sync.createInviteLink(group.id, friendId)
+        return sync.createInvite(group.id, friendId)
     }
 
     /** Opens a link in the browser. */

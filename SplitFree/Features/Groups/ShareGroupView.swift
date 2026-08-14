@@ -1,12 +1,11 @@
 import SwiftData
 import SwiftUI
 
-/// Turning a group into a shared one, and handing out links to join it.
+/// Sharing a group, by link or by code.
 ///
-/// Sharing is per group and always deliberate. There is no global "sync
-/// everything" switch, because the honest version of this feature is that a
-/// shared group leaves the device and an unshared one does not, and a single
-/// switch would blur exactly the line people care about.
+/// There is no sign-in. The device gets an identity the first time it shares
+/// something, silently, because row level security needs something to key on and
+/// nothing else does.
 struct ShareGroupView: View {
     @Bindable var group: SpendingGroup
 
@@ -16,21 +15,17 @@ struct ShareGroupView: View {
 
     @State private var isWorking = false
     @State private var errorMessage: String?
-    @State private var link: URL?
+    @State private var invite: Invite?
     @State private var invitee: Participant?
-    @State private var isShowingSignIn = false
 
     var body: some View {
         NavigationStack {
             Form {
-                if !sync.isSignedIn {
-                    signedOutSection
-                } else if group.isShared {
-                    sharedSection
+                if group.isShared {
                     inviteSection
                     stopSection
                 } else {
-                    notSharedSection
+                    startSection
                 }
 
                 if let errorMessage {
@@ -49,45 +44,13 @@ struct ShareGroupView: View {
                 }
             }
             .disabled(isWorking)
-            .sheet(isPresented: $isShowingSignIn) { SignInView() }
         }
     }
 
     // MARK: Sections
 
-    private var signedOutSection: some View {
+    private var startSection: some View {
         Section {
-            VStack(alignment: .leading, spacing: 10) {
-                Text("Sharing needs an account")
-                    .font(.headline)
-                Text("Your friend's phone has to be able to reach this group, which means it has to live somewhere both of you can get to.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-            .padding(.vertical, 4)
-
-            Button(String(localized: "Sign in")) { isShowingSignIn = true }
-        }
-    }
-
-    private var notSharedSection: some View {
-        Section {
-            VStack(alignment: .leading, spacing: 10) {
-                Label(group.displayName, systemImage: group.kind.symbol)
-                    .font(.headline)
-                    .foregroundStyle(group.tint)
-                Text("""
-                     Sharing uploads this group and everything in it: its \
-                     expenses, who paid, who owes, notes, and any payments \
-                     you've recorded. Everyone you invite can see all of it.
-                     """)
-                .font(.subheadline)
-                Text("Your other groups stay on this device.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-            .padding(.vertical, 4)
-
             Button {
                 Task { await share() }
             } label: {
@@ -97,23 +60,8 @@ struct ShareGroupView: View {
                     if isWorking { ProgressView() }
                 }
             }
-        }
-    }
-
-    private var sharedSection: some View {
-        Section {
-            Label {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("This group is shared")
-                    if let lastSyncedAt = sync.lastSyncedAt {
-                        Text(lastSyncedAt, format: .relative(presentation: .named))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-            } icon: {
-                Image(systemName: "checkmark.circle.fill").foregroundStyle(Palette.positive)
-            }
+        } footer: {
+            Text("Everyone you invite sees every expense in this group.")
         }
     }
 
@@ -122,36 +70,32 @@ struct ShareGroupView: View {
             // Inviting someone *as* an existing member is the case that matters:
             // the trip already has four expenses against "Marco", and Marco
             // should walk into those rather than a blank slot beside them.
-            Picker(String(localized: "Invite as"), selection: $invitee) {
-                Text("A new person").tag(Participant?.none)
-                ForEach(unclaimedMembers) { person in
-                    Text(person.fullName).tag(Participant?.some(person))
+            if !unclaimedMembers.isEmpty {
+                Picker(String(localized: "Invite as"), selection: $invitee) {
+                    Text("A new person").tag(Participant?.none)
+                    ForEach(unclaimedMembers) { person in
+                        Text(person.fullName).tag(Participant?.some(person))
+                    }
                 }
             }
 
             Button {
-                Task { await makeLink() }
+                Task { await makeInvite() }
             } label: {
                 HStack {
-                    Text("Create invite link")
+                    Text(invite == nil ? "Create an invite" : "Create another")
                     Spacer()
                     if isWorking { ProgressView() }
                 }
             }
 
-            if let link {
-                ShareLink(item: link) {
-                    Label(String(localized: "Send the link"), systemImage: "square.and.arrow.up")
-                }
-                Text(link.absoluteString)
-                    .font(.caption.monospaced())
-                    .foregroundStyle(.secondary)
-                    .textSelection(.enabled)
+            if let invite {
+                JoinCodeView(invite: invite)
             }
         } header: {
             Text("Invite someone")
         } footer: {
-            Text("Anyone with the link can join this group and see everything in it. It stops working after 14 days.")
+            Text("Anyone with the code can join. It expires in 14 days.")
         }
     }
 
@@ -166,11 +110,10 @@ struct ShareGroupView: View {
                 Text("Stop sharing on this device")
             }
         } footer: {
-            Text("This group goes back to being local to your phone. It stays on the server for everyone else you invited, and their copies keep working.")
+            Text("The group stays on your phone. Everyone else keeps their copy.")
         }
     }
 
-    /// Members who haven't signed in yet, so their slot is still up for grabs.
     private var unclaimedMembers: [Participant] {
         group.memberList.filter { !$0.isCurrentUser && $0.remoteUserID == nil }
     }
@@ -178,25 +121,178 @@ struct ShareGroupView: View {
     // MARK: Actions
 
     private func share() async {
+        await perform {
+            try await sync.shareGroup(group, context: context)
+            invite = try await sync.createInvite(for: group, claiming: nil)
+        }
+    }
+
+    private func makeInvite() async {
+        await perform { invite = try await sync.createInvite(for: group, claiming: invitee) }
+    }
+
+    private func perform(_ work: () async throws -> Void) async {
         isWorking = true
         errorMessage = nil
         defer { isWorking = false }
         do {
-            try await sync.shareGroup(group, context: context)
+            try await work()
             Haptics.success()
         } catch {
             errorMessage = error.localizedDescription
             Haptics.warning()
         }
     }
+}
 
-    private func makeLink() async {
+/// A join code, big enough to read out, with the link behind the share button.
+struct JoinCodeView: View {
+    let invite: Invite
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(invite.formattedCode)
+                .font(.system(.title, design: .monospaced).weight(.semibold))
+                .kerning(2)
+                .textSelection(.enabled)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(Palette.accentSoft, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+
+            ShareLink(item: invite.url) {
+                Label(String(localized: "Send a link"), systemImage: "square.and.arrow.up")
+            }
+        }
+        .padding(.vertical, 4)
+    }
+}
+
+/// Accepting an invite, whether it arrived as a link or as a typed code.
+struct JoinGroupView: View {
+    /// Pre-filled when the sheet was opened by a link.
+    var token: String?
+
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var context
+    @Environment(SyncEngine.self) private var sync
+
+    @State private var code = ""
+    @State private var preview: SyncEngine.InvitePreview?
+    @State private var isWorking = false
+    @State private var errorMessage: String?
+    @FocusState private var isTyping: Bool
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                if let preview {
+                    previewSection(preview)
+                } else {
+                    codeSection
+                }
+
+                if let errorMessage {
+                    Section {
+                        Label(errorMessage, systemImage: "exclamationmark.triangle.fill")
+                            .font(.subheadline)
+                            .foregroundStyle(Palette.negative)
+                    }
+                }
+            }
+            .navigationTitle(String(localized: "Join a group"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(String(localized: "Cancel")) { dismiss() }
+                }
+            }
+            .disabled(isWorking)
+            .task {
+                if let token { await look(up: token) } else { isTyping = true }
+            }
+        }
+    }
+
+    private var codeSection: some View {
+        Section {
+            TextField(String(localized: "ABCDE-FGHIJ"), text: $code)
+                .font(.system(.title3, design: .monospaced))
+                .textInputAutocapitalization(.characters)
+                .autocorrectionDisabled()
+                .focused($isTyping)
+                .submitLabel(.go)
+                .onSubmit { Task { await look(up: code) } }
+
+            Button {
+                Task { await look(up: code) }
+            } label: {
+                HStack {
+                    Text("Find the group")
+                    Spacer()
+                    if isWorking { ProgressView() }
+                }
+            }
+            .disabled(code.filter(\.isLetter).isEmpty && code.filter(\.isNumber).isEmpty)
+        } footer: {
+            Text("Enter the code a friend sent you.")
+        }
+    }
+
+    private func previewSection(_ preview: SyncEngine.InvitePreview) -> some View {
+        Section {
+            VStack(alignment: .leading, spacing: 6) {
+                Label(preview.groupName, systemImage: preview.groupKind.symbol)
+                    .font(.title3.weight(.semibold))
+                Text(String(localized: "^[\(preview.memberCount) member](inflect: true)", comment: "Number of people in a group"))
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                if let name = preview.claimsMemberName {
+                    Text(String(
+                        format: String(localized: "You'll join as %@.", comment: "Member name"),
+                        name
+                    ))
+                    .font(.subheadline)
+                }
+            }
+            .padding(.vertical, 4)
+
+            Button {
+                Task { await join() }
+            } label: {
+                HStack {
+                    Text(preview.alreadyMember ? "Open the group" : "Join")
+                    Spacer()
+                    if isWorking { ProgressView() }
+                }
+            }
+        } footer: {
+            Text("Everyone in this group sees every expense in it.")
+        }
+    }
+
+    // MARK: Actions
+
+    private func look(up raw: String) async {
         isWorking = true
         errorMessage = nil
         defer { isWorking = false }
         do {
-            link = try await sync.createInviteLink(for: group, claiming: invitee)
+            preview = try await sync.previewInvite(token: raw)
+            code = raw
+        } catch {
+            errorMessage = error.localizedDescription
+            Haptics.warning()
+        }
+    }
+
+    private func join() async {
+        isWorking = true
+        errorMessage = nil
+        defer { isWorking = false }
+        do {
+            try await sync.redeemInvite(token: code, context: context)
             Haptics.success()
+            dismiss()
         } catch {
             errorMessage = error.localizedDescription
             Haptics.warning()
@@ -208,127 +304,4 @@ struct ShareGroupView: View {
 struct InviteToken: Identifiable {
     let id: String
     init(_ token: String) { self.id = token }
-}
-
-/// Accepting an invite. Shows what the link points at before joining, so nobody
-/// has to tap "Join" on a group they can't see.
-struct JoinGroupView: View {
-    let token: String
-
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var context
-    @Environment(SyncEngine.self) private var sync
-
-    @State private var preview: SyncEngine.InvitePreview?
-    @State private var isWorking = true
-    @State private var errorMessage: String?
-    @State private var isShowingSignIn = false
-
-    var body: some View {
-        NavigationStack {
-            Form {
-                if let preview {
-                    previewSection(preview)
-                    if sync.isSignedIn {
-                        joinSection(preview)
-                    } else {
-                        Section {
-                            Button(String(localized: "Sign in to join")) { isShowingSignIn = true }
-                        } footer: {
-                            Text("Joining a shared group needs an account, so the group knows who you are.")
-                        }
-                    }
-                } else if isWorking {
-                    Section { HStack { ProgressView(); Text("Checking the link").padding(.leading, 8) } }
-                }
-
-                if let errorMessage {
-                    Section {
-                        Label(errorMessage, systemImage: "exclamationmark.triangle.fill")
-                            .font(.subheadline)
-                            .foregroundStyle(Palette.negative)
-                    }
-                }
-            }
-            .navigationTitle(String(localized: "Join group"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(String(localized: "Not now")) { dismiss() }
-                }
-            }
-            .task { await load() }
-            .sheet(isPresented: $isShowingSignIn) {
-                SignInView()
-            }
-            .onChange(of: sync.isSignedIn) { _, signedIn in
-                if signedIn { Task { await load() } }
-            }
-        }
-    }
-
-    private func previewSection(_ preview: SyncEngine.InvitePreview) -> some View {
-        Section {
-            VStack(alignment: .leading, spacing: 8) {
-                Label(preview.groupName, systemImage: preview.groupKind.symbol)
-                    .font(.title3.weight(.semibold))
-                Text(memberCountText(preview.memberCount))
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                if let name = preview.claimsMemberName {
-                    Text(String(
-                        format: String(localized: "You'll join as %@, so the expenses already recorded against that name become yours.", comment: "Member name"),
-                        name
-                    ))
-                    .font(.subheadline)
-                }
-            }
-            .padding(.vertical, 4)
-        }
-    }
-
-    private func joinSection(_ preview: SyncEngine.InvitePreview) -> some View {
-        Section {
-            Button {
-                Task { await join() }
-            } label: {
-                HStack {
-                    Text(preview.alreadyMember ? "Open the group" : "Join")
-                    Spacer()
-                    if isWorking { ProgressView() }
-                }
-            }
-        } footer: {
-            Text("Everyone in this group can see every expense in it, including the ones you add.")
-        }
-    }
-
-    private func memberCountText(_ count: Int) -> String {
-        String(localized: "^[\(count) member](inflect: true)", comment: "Number of people in a group")
-    }
-
-    private func load() async {
-        isWorking = true
-        errorMessage = nil
-        defer { isWorking = false }
-        do {
-            preview = try await sync.previewInvite(token: token)
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-    }
-
-    private func join() async {
-        isWorking = true
-        errorMessage = nil
-        defer { isWorking = false }
-        do {
-            try await sync.redeemInvite(token: token, context: context)
-            Haptics.success()
-            dismiss()
-        } catch {
-            errorMessage = error.localizedDescription
-            Haptics.warning()
-        }
-    }
 }

@@ -14,6 +14,7 @@ struct GroupsListView: View {
 
     @State private var filter: BalanceFilter = .all
     @State private var isPresentingNewGroup = false
+    @State private var isPresentingJoin = false
     @State private var path = NavigationPath()
     @State private var showsArchived = false
     @State private var searchQuery = ""
@@ -124,7 +125,14 @@ struct GroupsListView: View {
                 ToolbarItem(placement: .primaryAction) {
                     // Text, not another "+". The floating button owns the plus
                     // glyph, and two of them side by side reads as a duplicate.
-                    Button { isPresentingNewGroup = true } label: {
+                    Menu {
+                        Button { isPresentingNewGroup = true } label: {
+                            Label("New group", systemImage: "plus")
+                        }
+                        Button { isPresentingJoin = true } label: {
+                            Label("Join with a code", systemImage: "arrow.right.circle")
+                        }
+                    } label: {
                         Text("New group")
                     }
                 }
@@ -132,6 +140,7 @@ struct GroupsListView: View {
             .sheet(isPresented: $isPresentingNewGroup) {
                 GroupEditorView(group: nil)
             }
+            .sheet(isPresented: $isPresentingJoin) { JoinGroupView() }
             .sheet(item: $editorContext) { context in
                 ExpenseEditorView(context: context)
             }

@@ -36,14 +36,6 @@
                 <data android:scheme="file" android:mimeType="application/json" />
             </intent-filter>
 
-            <!-- Coming back from a browser sign-in. -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="splitfree" android:host="auth-callback" />
-            </intent-filter>
-
             <!-- An invite link, opened from a message. -->
             <!--
               The web link is handled by a page that bounces into the custom

@@ -43,9 +43,6 @@ enum SupabaseConfig {
 
     static var isConfigured: Bool { url != nil && anonKey != nil }
 
-    /// Where an OAuth provider sends the browser back to. Must match the URL
-    /// scheme in Info.plist and the redirect list in the Supabase dashboard.
-    static let redirectURI = "splitfree://auth-callback"
 }
 
 // MARK: - Session
@@ -55,7 +52,6 @@ struct SupabaseSession: Codable, Equatable {
     var refreshToken: String
     var expiresAt: Date
     var userID: String
-    var email: String?
 
     /// Treated as expired a minute early, so a request never leaves with a token
     /// that dies in flight.
@@ -158,130 +154,28 @@ actor SupabaseClient {
 
     var isSignedIn: Bool { current != nil }
     var userID: String? { current?.userID }
-    var email: String? { current?.email }
 
     func restoreSession() -> SupabaseSession? {
         current = SessionStore.load()
         return current
     }
 
-    // MARK: Auth
+    // MARK: Identity
 
-    /// Starts an email sign-in.
+    /// Gets an identity without asking anybody for anything.
     ///
-    /// One request produces both a link and a six-digit code; which of them the
-    /// email actually shows is decided by the project's email template. The
-    /// stock template shows only the link, so the link is the path that works
-    /// without configuring anything, and `redirect_to` is what brings that link
-    /// back into the app instead of to a web page.
-    func sendEmailCode(to email: String) async throws {
-        // `redirect_to` is a query parameter. GoTrue ignores it in the body, and
-        // ignores it silently: the email still arrives, the link still works,
-        // and it opens the project's website instead of the app.
-        let redirect = SupabaseConfig.redirectURI
-            .addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
-        _ = try await request(
-            path: "/auth/v1/otp?redirect_to=\(redirect)",
-            method: "POST",
-            body: ["email": email, "create_user": true],
-            authorized: false
-        )
-    }
-
-    func verifyEmailCode(email: String, code: String) async throws -> SupabaseSession {
-        let data = try await request(
-            path: "/auth/v1/verify",
-            method: "POST",
-            body: ["email": email, "token": code, "type": "email"],
-            authorized: false
-        )
+    /// Sharing needs row level security to have something to key on, and that
+    /// is all it needs. There is no email, no password and no screen: the first
+    /// time somebody shares or joins, the device quietly becomes a user.
+    ///
+    /// The trade is recovery. Lose the device and the session goes with it, and
+    /// a friend has to send a fresh code. On iPhone the Keychain usually
+    /// survives a restore, so in practice this bites rarely.
+    @discardableResult
+    func signInAnonymously() async throws -> SupabaseSession {
+        if let current, !current.isExpired { return current }
+        let data = try await request(path: "/auth/v1/signup", method: "POST", body: [:], authorized: false)
         return try store(tokenResponse: data)
-    }
-
-    /// Exchanges an Apple identity token for a Supabase session. The token comes
-    /// from `ASAuthorizationAppleIDProvider`, so the user never leaves the app.
-    func signInWithApple(idToken: String, nonce: String?) async throws -> SupabaseSession {
-        var body: [String: Any] = ["provider": "apple", "id_token": idToken]
-        if let nonce { body["nonce"] = nonce }
-        let data = try await request(
-            path: "/auth/v1/token?grant_type=id_token",
-            method: "POST",
-            body: body,
-            authorized: false
-        )
-        return try store(tokenResponse: data)
-    }
-
-    /// Which sign-in providers the project actually has switched on.
-    ///
-    /// Asked rather than assumed, because a button for a provider nobody
-    /// configured is a button that fails when tapped, and App Review taps every
-    /// button. Email is always available.
-    func enabledProviders() async -> Set<String> {
-        guard let data = try? await request(path: "/auth/v1/settings", method: "GET", authorized: false),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let external = json["external"] as? [String: Any]
-        else { return [] }
-        return Set(external.compactMap { key, value in (value as? Bool) == true ? key : nil })
-    }
-
-    /// The URL to open in a browser for a provider that has no native flow.
-    nonisolated func oauthURL(provider: String) -> URL? {
-        guard let base = SupabaseConfig.url else { return nil }
-        var components = URLComponents(
-            url: base.appendingPathComponent("/auth/v1/authorize"),
-            resolvingAgainstBaseURL: false
-        )
-        components?.queryItems = [
-            URLQueryItem(name: "provider", value: provider),
-            URLQueryItem(name: "redirect_to", value: SupabaseConfig.redirectURI),
-        ]
-        return components?.url
-    }
-
-    /// Completes a browser OAuth round trip. Supabase returns the tokens in the
-    /// URL fragment.
-    func completeOAuth(callback: URL) throws -> SupabaseSession {
-        guard let fragment = callback.fragment else {
-            throw SupabaseError.network(String(localized: "Sign-in was cancelled."))
-        }
-        var values: [String: String] = [:]
-        for pair in fragment.split(separator: "&") {
-            let parts = pair.split(separator: "=", maxSplits: 1)
-            guard parts.count == 2 else { continue }
-            values[String(parts[0])] = String(parts[1]).removingPercentEncoding
-        }
-        guard let accessToken = values["access_token"],
-              let refreshToken = values["refresh_token"]
-        else {
-            throw SupabaseError.network(values["error_description"] ?? String(localized: "Sign-in failed."))
-        }
-        let expiresIn = Double(values["expires_in"] ?? "3600") ?? 3600
-        let session = SupabaseSession(
-            accessToken: accessToken,
-            refreshToken: refreshToken,
-            expiresAt: Date().addingTimeInterval(expiresIn),
-            userID: Self.userID(fromJWT: accessToken) ?? "",
-            email: nil
-        )
-        current = session
-        SessionStore.save(session)
-        return session
-    }
-
-    /// Fills in the account's email after a link or browser sign-in.
-    ///
-    /// Those flows hand back tokens in a URL fragment and nothing else, so the
-    /// account row would otherwise read "Signed in" and leave someone with two
-    /// addresses unable to tell which one they used.
-    func refreshUserDetails() async {
-        guard current != nil,
-              let data = try? await request(path: "/auth/v1/user", method: "GET", authorized: true),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let email = json["email"] as? String, !email.isEmpty
-        else { return }
-        current?.email = email
-        if let current { SessionStore.save(current) }
     }
 
     func signOut() {
@@ -296,10 +190,7 @@ actor SupabaseClient {
             let refresh_token: String
             let expires_in: Double?
             let user: User?
-            struct User: Decodable {
-                let id: String
-                let email: String?
-            }
+            struct User: Decodable { let id: String }
         }
         guard let payload = try? JSONDecoder().decode(Payload.self, from: data) else {
             throw SupabaseError.decoding("token")
@@ -308,37 +199,18 @@ actor SupabaseClient {
             accessToken: payload.access_token,
             refreshToken: payload.refresh_token,
             expiresAt: Date().addingTimeInterval(payload.expires_in ?? 3600),
-            userID: payload.user?.id ?? Self.userID(fromJWT: payload.access_token) ?? "",
-            email: payload.user?.email
+            userID: payload.user?.id ?? ""
         )
         current = session
         SessionStore.save(session)
         return session
     }
 
-    /// Reads `sub` out of the JWT payload. Only used when the token endpoint
-    /// doesn't echo the user back; the value is not trusted for anything
-    /// security-sensitive, which the server decides for itself.
-    private nonisolated static func userID(fromJWT token: String) -> String? {
-        let segments = token.split(separator: ".")
-        guard segments.count > 1 else { return nil }
-        var base64 = String(segments[1])
-            .replacingOccurrences(of: "-", with: "+")
-            .replacingOccurrences(of: "_", with: "/")
-        while base64.count % 4 != 0 { base64.append("=") }
-        guard let data = Data(base64Encoded: base64),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-        else { return nil }
-        return json["sub"] as? String
-    }
-
     private func validSession() async throws -> SupabaseSession {
-        guard let existing = current else { throw SupabaseError.notSignedIn }
+        guard let existing = current else { return try await signInAnonymously() }
         guard existing.isExpired else { return existing }
 
-        if let refreshTask {
-            return try await refreshTask.value
-        }
+        if let refreshTask { return try await refreshTask.value }
         let task = Task<SupabaseSession, Error> {
             let data = try await request(
                 path: "/auth/v1/token?grant_type=refresh_token",
@@ -353,9 +225,10 @@ actor SupabaseClient {
         do {
             return try await task.value
         } catch {
-            // A refresh token that no longer works means the session is over.
+            // A dead refresh token is not worth surfacing when the identity is
+            // disposable. Take a fresh one.
             signOut()
-            throw SupabaseError.notSignedIn
+            return try await signInAnonymously()
         }
     }
 

@@ -12,14 +12,5 @@
 	<array>
 		<string>CloudKit</string>
 	</array>
-	<!--
-	  Required because the app offers Google sign-in. Apple's guideline 4.8 says
-	  any app with a third-party sign-in must offer Sign in with Apple too, so
-	  these two ship together or neither does.
-	-->
-	<key>com.apple.developer.applesignin</key>
-	<array>
-		<string>Default</string>
-	</array>
 </dict>
 </plist>

@@ -181,7 +181,7 @@ struct AboutView: View {
         ("square.and.arrow.down", String(localized: "Import a bank CSV")),
         ("square.and.arrow.up", String(localized: "Export everything as CSV, any time")),
         ("icloud", String(localized: "iCloud sync across your own devices")),
-        ("person.2.badge.key", String(localized: "Share a group with friends, on iPhone or Android")),
+        ("person.2", String(localized: "Share a group with friends, no sign-up")),
         ("wifi.slash", String(localized: "Works completely offline")),
         ("creditcard", String(localized: "Hand off to Venmo, PayPal, Cash App or UPI")),
         ("faceid", String(localized: "Face ID lock")),
@@ -232,7 +232,7 @@ struct AboutView: View {
                     Card {
                         VStack(alignment: .leading, spacing: 10) {
                             SectionHeader(String(localized: "Your data"))
-                            Text("By default, everything lives in the app's own store on this device. Turn on iCloud sync and it also goes to your private iCloud database, which only you can read.\n\nSharing a group is the one thing that changes that. A shared group is uploaded to SplitFree's server so your friends' phones can reach it: its expenses, who paid, who owes, and the names you gave people. Everyone in that group can read all of it. Groups you never share never leave this device.\n\nThere is no analytics SDK, no advertising, and nobody is sold anything about how you spend. Signing in is optional, and the app is fully usable without ever doing it.")
+                            Text("Everything lives on this device, and in your own iCloud if you turn sync on.\n\nSharing a group uploads that group so your friends' phones can reach it. Nothing else leaves. There are no accounts, no analytics and no adverts.")
                                 .font(Typography.rowSubtitle)
                                 .foregroundStyle(Palette.secondaryText)
                                 .fixedSize(horizontal: false, vertical: true)
@@ -242,10 +242,6 @@ struct AboutView: View {
                     Card {
                         VStack(alignment: .leading, spacing: 10) {
                             SectionHeader(String(localized: "Privacy policy"))
-                            Text("The full version, including what is stored, for how long, and how to delete it.")
-                                .font(Typography.rowSubtitle)
-                                .foregroundStyle(Palette.secondaryText)
-                                .fixedSize(horizontal: false, vertical: true)
                             Link(destination: URL(string: "https://devesh-aggarwal.github.io/splitfree/privacy.html")!) {
                                 Text("Read the privacy policy")
                             }

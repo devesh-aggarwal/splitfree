@@ -39,7 +39,6 @@ class SyncEngine(
 ) {
     sealed interface Status {
         data object Unavailable : Status
-        data object SignedOut : Status
         data object Idle : Status
         data object Syncing : Status
         data class Failed(val message: String) : Status
@@ -59,87 +58,36 @@ class SyncEngine(
     private val lock = Mutex()
 
     private val _status = MutableStateFlow<Status>(
-        if (!SupabaseConfig.isConfigured) Status.Unavailable
-        else if (client.isSignedIn) Status.Idle
-        else Status.SignedOut
+        if (SupabaseConfig.isConfigured) Status.Idle else Status.Unavailable
     )
     val status: StateFlow<Status> = _status.asStateFlow()
 
     private val _lastSyncedAt = MutableStateFlow(prefs.getLong(KEY_LAST_SYNCED, 0L).takeIf { it > 0 })
     val lastSyncedAt: StateFlow<Long?> = _lastSyncedAt.asStateFlow()
 
-    val isConfigured: Boolean get() = SupabaseConfig.isConfigured
-    val isSignedIn: Boolean get() = client.isSignedIn
-    val accountEmail: String? get() = client.email
-
-    /** Providers the project has enabled, learned from the server on first use. */
-    private val _providers = MutableStateFlow<Set<String>>(emptySet())
-    val providers: StateFlow<Set<String>> = _providers.asStateFlow()
-
-    suspend fun refreshProviders() {
-        if (_providers.value.isEmpty() && SupabaseConfig.isConfigured) {
-            _providers.value = client.enabledProviders()
-        }
-    }
-
     /** The server time of the last successful pull, as the server phrased it. */
     private var cursor: String?
         get() = prefs.getString(KEY_CURSOR, null)
         set(value) { prefs.edit().putString(KEY_CURSOR, value).apply() }
 
-    // MARK: - Account
+    // MARK: - Identity
 
-    fun refreshAccountState() {
-        _status.value = when {
-            !SupabaseConfig.isConfigured -> Status.Unavailable
-            client.isSignedIn -> Status.Idle
-            else -> Status.SignedOut
-        }
-    }
+    val isConfigured: Boolean get() = SupabaseConfig.isConfigured
 
-    suspend fun signOut() {
-        client.signOut()
-        cursor = null
-        prefs.edit().remove(KEY_LAST_SYNCED).apply()
-        _lastSyncedAt.value = null
-        _status.value = Status.SignedOut
+    /** True once this device has an identity, which happens on first share or join. */
+    val hasIdentity: Boolean get() = client.isSignedIn
 
-        // Signing out leaves the data where it is. Shared groups become ordinary
-        // local groups rather than vanishing: deleting somebody's expense history
-        // as a side effect of signing out would be indefensible.
-        for (group in dao.allGroups().filter { it.isShared }) {
-            dao.upsertGroup(group.copy(isShared = false, syncedFingerprint = ""))
-        }
-        dao.deleteAllTombstones()
-    }
-
-    // MARK: - Sign-in
-
-    suspend fun sendEmailCode(email: String) = client.sendEmailCode(email)
-
-    suspend fun verifyEmailCode(email: String, code: String) {
-        client.verifyEmailCode(email, code)
-        refreshAccountState()
+    fun refreshState() {
+        _status.value = if (SupabaseConfig.isConfigured) Status.Idle else Status.Unavailable
     }
 
     /**
-     * Hands a provider sign-in to a Custom Tab.
-     *
-     * An in-app browser tab rather than a WebView: it shares the real browser's
-     * cookie jar, so somebody already signed in to Google taps once instead of
-     * typing a password, and the address bar is visible, so they can see whose
-     * sign-in page they are actually on.
+     * Makes sure there is an identity before doing something that needs one.
+     * Sharing and joining call this; the UI never does.
      */
-    fun openOAuth(context: Context, provider: String) {
-        val intent = androidx.browser.customtabs.CustomTabsIntent.Builder().build()
-        intent.launchUrl(context, android.net.Uri.parse(client.oauthUrl(provider)))
-    }
-
-    /** Finishes the round trip when the browser sends us back. */
-    suspend fun completeOAuth(callback: String) {
-        client.completeOAuth(callback)
-        client.refreshUserDetails()
-        refreshAccountState()
+    private suspend fun ensureIdentity() {
+        if (!SupabaseConfig.isConfigured) throw SupabaseException("This build isn't set up for sharing.")
+        client.signInAnonymously()
     }
 
     // MARK: - Sync
@@ -147,7 +95,9 @@ class SyncEngine(
     /** Runs a full cycle. Overlapping calls collapse into the one already running. */
     suspend fun syncNow() {
         if (!SupabaseConfig.isConfigured) { _status.value = Status.Unavailable; return }
-        if (!client.isSignedIn) { _status.value = Status.SignedOut; return }
+        // Nothing shared from this device yet, so there is nothing to sync and
+        // no reason to create an identity.
+        if (!client.isSignedIn) return
         if (!lock.tryLock()) return
 
         _status.value = Status.Syncing
@@ -161,11 +111,7 @@ class SyncEngine(
             _lastSyncedAt.value = now
             _status.value = Status.Idle
         } catch (error: Exception) {
-            _status.value = if (error.message == SupabaseClient.SIGNED_OUT) {
-                Status.SignedOut
-            } else {
-                Status.Failed(error.message ?: "Sync failed.")
-            }
+            _status.value = Status.Failed(error.message ?: "Sync failed.")
         } finally {
             lock.unlock()
         }
@@ -176,7 +122,7 @@ class SyncEngine(
      * device already uses so its expenses stay attached to the right people.
      */
     suspend fun shareGroup(groupId: String) {
-        if (!client.isSignedIn) throw SupabaseException(SupabaseClient.SIGNED_OUT)
+        ensureIdentity()
         val group = dao.group(groupId) ?: return
         val members = membersOf(group)
         val ids = idMap(group, members)
@@ -218,18 +164,17 @@ class SyncEngine(
 
     // MARK: - Invites
 
-    suspend fun createInviteLink(groupId: String, claimingMemberId: String?): String {
+    suspend fun createInvite(groupId: String, claimingMemberId: String?): Invite {
+        ensureIdentity()
         val arguments = JSONObject().put("p_group_id", groupId)
         if (claimingMemberId != null) arguments.put("p_member_id", claimingMemberId)
-        val token = client.rpc("create_invite", arguments).trim().trim('"')
-        if (token.isBlank()) throw SupabaseException("The server did not return an invite.")
-        // The token goes in the fragment rather than the path or the query.
-        // Browsers never send a fragment to the server, so an invite opened on
-        // the web leaves no copy of the token in anybody's access log.
-        return "https://devesh-aggarwal.github.io/splitfree/join.html#$token"
+        val code = client.rpc("create_invite", arguments).trim().trim('"')
+        if (code.isBlank()) throw SupabaseException("The server did not return an invite.")
+        return Invite(code)
     }
 
     suspend fun previewInvite(token: String): InvitePreview {
+        ensureIdentity()
         val json = JSONObject(client.rpc("preview_invite", JSONObject().put("p_token", token)))
         return InvitePreview(
             groupId = json.optString("group_id"),
@@ -242,7 +187,15 @@ class SyncEngine(
     }
 
     suspend fun redeemInvite(token: String): String {
-        val json = JSONObject(client.rpc("redeem_invite", JSONObject().put("p_token", token)))
+        ensureIdentity()
+        val json = JSONObject(
+            client.rpc(
+                "redeem_invite",
+                JSONObject()
+                    .put("p_token", token)
+                    .put("p_display_name", dao.currentUser()?.fullName ?: ""),
+            )
+        )
         val groupId = json.optString("group_id")
         // The group and everything in it arrive on the next pull. Reaching for it
         // now rather than waiting for a timer is what makes joining feel like the

@@ -4,8 +4,8 @@ Split shared expenses with friends, flatmates and travel companions. Every
 feature Splitwise keeps behind Splitwise Pro is here: receipt scanning, currency
 conversion, itemized bills, charts, expense search, unlimited expenses.
 
-No ads, no subscription, no paid tier. Native apps for iOS and Android that read
-and write the same ledger.
+All features free, with no ads, no subscription and no paid tier. Native apps for
+iOS and Android that read and write the same ledger.
 
 Groups stay on the device. Sharing one with a friend is a separate, deliberate
 act that uploads that group so their phone can reach it; everything else never
@@ -14,65 +14,36 @@ leaves. [PRIVACY.md](PRIVACY.md) says exactly what is sent when.
 iOS 18+, SwiftUI and SwiftData, no third-party dependencies. Android 8+, Compose
 and Room. Postgres on Supabase for the parts that are shared.
 
-## Turning sync on
+## Turning sharing on
 
-Skip this and both apps still work. They keep every group on the device, no
-sign-in screen appears, and nothing is sent anywhere. Sync is the only part that
-needs setting up.
+Skip this and both apps still work. Every group stays on the device and nothing
+is sent anywhere. Sharing is the only part that needs a backend.
 
-**1. Deploy the database.** Either connect the repo to Supabase's GitHub
-integration, which applies `supabase/migrations` on every push, or run it
-yourself:
+**1. Deploy the database.**
 
 ```bash
 supabase link --project-ref <your-project-ref>
 supabase db push
 ```
 
-**2. Give the apps your project's address.** From the Supabase dashboard, under
-Project Settings → API, copy the project URL and the anon (public) key into:
+**2. Give the apps your project's address.** From Project Settings, then API,
+copy the project URL and the publishable key into:
 
-- `Config/Supabase.xcconfig` for iOS — write the host **without** `https://`
+- `Config/Supabase.xcconfig` for iOS, host written **without** `https://`
 - `android/supabase.properties` for Android
 
-Both files are committed, blank. Both values are safe to commit: the anon key
-grants nothing on its own, because every table denies by default and row-level
-security decides the rest.
+Both are committed blank. Both values are safe to commit: the publishable key
+grants nothing on its own, because every table denies by default.
 
-**3. Set up sign-in.** In the dashboard, under Authentication:
+**3. Turn on anonymous sign-ins.** Authentication, then Sign In / Providers,
+then "Allow anonymous sign-ins".
 
-- **URL Configuration → Redirect URLs** → add `splitfree://auth-callback`.
-  This one is required, and skipping it fails silently: the sign-in email still
-  arrives and its link still works, but it opens your project's website instead
-  of the app, because the server quietly substitutes its own site URL for a
-  redirect it hasn't been told to allow.
-- **Providers** → Email is on by default and needs nothing else. Enable Apple
-  and Google only if you want those buttons; each needs credentials from Apple
-  and Google respectively. Apple requires Sign in with Apple in any app offering
-  another third-party sign-in, so on iOS those two travel together.
+Sharing needs the server to tell one device from another. Nobody is asked for
+anything: the first time a device shares or joins, it is issued a random
+identifier. There is no sign-in screen anywhere in the app.
 
-Email sign-in works at this point: the app sends a link, and tapping it signs you
-in. You do **not** need to touch the email templates or set up SMTP.
-
-**4. Check it.** With a local stack running, `supabase/tests/contract_test.sh`
-sends the same requests the apps send and tells you which part is wrong.
-
-### Before real people use it
-
-Supabase's built-in email sender is for development. It only delivers to
-addresses belonging to your own Supabase organization, and it is rate-limited to
-a couple of messages an hour, so anybody else who tries to sign in gets nothing
-and no error. It also cannot be customised, which is why the dashboard tells you
-to set up SMTP before editing a template.
-
-Connecting any SMTP provider fixes both. The free tiers of Resend, Brevo and
-Postmark are all far past what this app needs. It is a setting, not a paid plan:
-Authentication → Emails → SMTP Settings.
-
-Once SMTP is connected you can also paste `supabase/templates/magic_link.html`
-into the Magic Link template. It adds a six-digit code alongside the link, which
-is useful when someone opens their email on a different device from the one
-they're signing in on. The app accepts either.
+**4. Check it.** `supabase/tests/contract_test.sh` sends the same requests the
+apps send, against a local stack or a real project.
 
 ## Features
 
@@ -118,11 +89,10 @@ they're signing in on. The app accepts either.
 
 - Export a `.splitfree` file and hand it to anyone, on either platform. It is a
   snapshot, and merges rather than duplicates when re-imported.
-- Or sign in and share a group, and changes travel both ways. Invite by link,
-  optionally handing over an existing member's slot so the expenses already
-  recorded against "Marco" become Marco's when he joins.
-- Add a friend by link, without a group. What the two of you share stays in step
-  on both phones.
+- Or share a group with a ten character code and changes travel both ways. No
+  account, no email, no sign-up. A code can hand over an existing member's slot,
+  so the expenses already recorded against "Marco" become Marco's when he joins.
+- Connect with one person the same way, without a group.
 - Sharing is per group and always opt-in. An account is optional; the app is
   fully usable without one.
 
@@ -174,7 +144,7 @@ xcodebuild test -project SplitFree.xcodeproj -scheme SplitFree \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
-80 tests, all pure logic, no UI. They cover exact-sum guarantees for every split
+83 tests, all pure logic, no UI. They cover exact-sum guarantees for every split
 method, balance netting, settlement, debt simplification, multi-currency
 separation, currency precision, amount parsing, receipt parsing, bank-CSV import
 and the sync fingerprints.
@@ -182,7 +152,7 @@ and the sync fingerprints.
 ```bash
 cd android && ./gradlew :app:testDebugUnitTest    # 52 tests
 supabase test db                                  # 24 assertions on the schema and policies
-supabase/tests/contract_test.sh                   # 19 assertions on what the clients send
+supabase/tests/contract_test.sh                   # 20 assertions on what the clients send
 ```
 
 Several of these exist because they caught real bugs. The receipt parser read
@@ -209,7 +179,7 @@ SplitFree/         iOS app
   DesignSystem/    Palette, typography, components, money fields, chart palette
   Features/        One folder per screen area
   Resources/       Asset catalog, Localizable.xcstrings
-SplitFreeTests/    80 tests
+SplitFreeTests/    83 tests
 android/           Android app, same core ported line for line
 supabase/          Schema, row-level security, sync functions, tests
 Config/            Info.plist and the backend xcconfig

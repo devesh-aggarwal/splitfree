@@ -46,7 +46,6 @@ import com.splitfree.ui.screens.InviteFriendScreen
 import com.splitfree.ui.screens.JoinGroupScreen
 import com.splitfree.ui.screens.OnboardingScreen
 import com.splitfree.ui.screens.ShareGroupScreen
-import com.splitfree.ui.screens.SignInScreen
 import com.splitfree.ui.theme.SplitFreeTheme
 import com.splitfree.ui.theme.splitColors
 
@@ -90,10 +89,6 @@ class MainActivity : ComponentActivity() {
 
     private fun handleLink(url: String?) {
         if (url == null) return
-        if (url.startsWith("splitfree://auth-callback")) {
-            viewModel.completeSignIn(url)
-            return
-        }
         com.splitfree.sync.SyncEngine.inviteToken(url)?.let { pendingInvite.value = it }
     }
 }
@@ -177,6 +172,7 @@ private fun RootScaffold(
                         viewModel = viewModel,
                         onOpenGroup = { navController.navigate("group/$it") },
                         onNewGroup = { navController.navigate("group/new/edit") },
+                        onJoinGroup = { navController.navigate("join") },
                     )
                 }
                 composable(Tab.FRIENDS.route) {
@@ -188,14 +184,13 @@ private fun RootScaffold(
                 composable("invite-friend") {
                     InviteFriendScreen(
                         viewModel,
-                        onSignIn = { navController.navigate("signin") },
                         onDone = { navController.popBackStack() },
                     )
                 }
                 composable(Tab.ACTIVITY.route) { ActivityScreen(viewModel) }
                 composable(Tab.INSIGHTS.route) { InsightsScreen(viewModel) }
                 composable(Tab.ACCOUNT.route) {
-                    AccountScreen(viewModel, onSignIn = { navController.navigate("signin") })
+                    AccountScreen(viewModel)
                 }
 
                 composable("group/{groupId}") { entry ->
@@ -217,18 +212,13 @@ private fun RootScaffold(
                     ShareGroupScreen(
                         viewModel = viewModel,
                         groupId = entry.arguments?.getString("groupId").orEmpty(),
-                        onSignIn = { navController.navigate("signin") },
                         onDone = { navController.popBackStack() },
                     )
-                }
-                composable("signin") {
-                    SignInScreen(viewModel, onDone = { navController.popBackStack() })
                 }
                 composable("join/{token}") { entry ->
                     JoinGroupScreen(
                         viewModel = viewModel,
                         token = entry.arguments?.getString("token").orEmpty(),
-                        onSignIn = { navController.navigate("signin") },
                         onDone = {
                             pendingInvite.value = null
                             navController.popBackStack()

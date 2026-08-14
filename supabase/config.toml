@@ -178,7 +178,10 @@ refresh_token_reuse_interval = 10
 # Allow/disallow new user signups to your project.
 enable_signup = true
 # Allow/disallow anonymous sign-ins to your project.
-enable_anonymous_sign_ins = false
+# Sharing needs an identity so row level security has something to key on, but
+# it does not need a person's email. The app signs in anonymously the first time
+# somebody shares or joins, and never shows a sign-in screen.
+enable_anonymous_sign_ins = true
 # Allow/disallow testing manual linking of accounts
 enable_manual_linking = false
 # Passwords shorter than this value will be rejected as weak. Minimum 6, recommended 8 or more.

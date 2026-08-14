@@ -51,6 +51,29 @@ struct SyncFingerprintTests {
     }
 }
 
+@Suite("Join codes")
+struct JoinCodeTests {
+
+    /// A code is read aloud and typed back in. Grouping it in fives is the
+    /// difference between that working and not.
+    @Test("A ten character code is shown in two groups of five")
+    func formatting() {
+        #expect(Invite(code: "ABCDEFGHJK").formattedCode == "ABCDE-FGHJK")
+    }
+
+    @Test("Anything that is not a code character is dropped from the display")
+    func formattingIgnoresPunctuation() {
+        #expect(Invite(code: "abcde-fghjk").formattedCode == "ABCDE-FGHJK")
+    }
+
+    @Test("The link carries the code in the fragment, where servers never see it")
+    func linkShape() {
+        let url = Invite(code: "ABCDEFGHJK").url
+        #expect(url.fragment == "ABCDEFGHJK")
+        #expect(url.host == "devesh-aggarwal.github.io")
+    }
+}
+
 @Suite("Invite links")
 struct InviteLinkTests {
 

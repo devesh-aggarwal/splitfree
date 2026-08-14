@@ -45,17 +45,10 @@ check() { # check <description> <condition-result>
 
 json() { python3 -c 'import json,sys; print(json.load(sys.stdin))' 2>/dev/null; }
 
-# Creates a confirmed user and returns an access token, the way a real sign-in
-# would. Uses the admin API because there is no inbox to read here.
+# An identity, the way the apps get one: anonymously, with nothing typed in.
 make_user() {
-  local email="$1" password="pw-$RANDOM-$RANDOM"
-  curl -sS -X POST "$API/auth/v1/admin/users" \
-    -H "apikey: $SERVICE" -H "Authorization: Bearer $SERVICE" \
-    -H "Content-Type: application/json" \
-    -d "{\"email\":\"$email\",\"password\":\"$password\",\"email_confirm\":true}" > /dev/null
-  curl -sS -X POST "$API/auth/v1/token?grant_type=password" \
-    -H "apikey: $ANON" -H "Content-Type: application/json" \
-    -d "{\"email\":\"$email\",\"password\":\"$password\"}" \
+  curl -sS -X POST "$API/auth/v1/signup" \
+    -H "apikey: $ANON" -H "Content-Type: application/json" -d '{}' \
     | sed -n 's/.*"access_token":"\([^"]*\)".*/\1/p'
 }
 
@@ -73,8 +66,8 @@ upsert() { # upsert <token> <table> <on_conflict> <json-array>
 }
 
 stamp="$(date +%s)$RANDOM"
-ana_token="$(make_user "ana-$stamp@example.com")"
-ben_token="$(make_user "ben-$stamp@example.com")"
+ana_token="$(make_user)"
+ben_token="$(make_user)"
 
 if [[ -z "$ana_token" || -z "$ben_token" ]]; then
   echo "Could not sign in test users." >&2
@@ -197,8 +190,16 @@ printf '%s' "$ben_pull" | grep -q "$expense_id" \
 
 # --- Invites ----------------------------------------------------------------
 token="$(rpc "$ana_token" create_invite "{\"p_group_id\":\"$group_id\",\"p_member_id\":\"$marco_member\"}" | tr -d '"')"
-[[ ${#token} -eq 32 ]] && check "create_invite returns a 32-character token" ok \
-  || check "create_invite returns a 32-character token (got '${token}')" no
+[[ ${#token} -eq 10 ]] && check "create_invite returns a ten character join code" ok \
+  || check "create_invite returns a ten character join code (got '${token}')" no
+
+# People retype these from a screen. A dash they did or did not include should
+# never be the reason it fails.
+lower="$(printf '%s' "$token" | tr 'A-Z' 'a-z')"
+dashed="${lower:0:5}-${lower:5}"
+printf '%s' "$(rpc "$ben_token" preview_invite "{\"p_token\":\"$dashed\"}")" | grep -q '"group_name"' \
+  && check "a code is found however it was typed, dashes and case included" ok \
+  || check "a code is found however it was typed, dashes and case included" no
 
 preview="$(rpc "$ben_token" preview_invite "{\"p_token\":\"$token\"}")"
 printf '%s' "$preview" | grep -q '"group_name": *"Lisbon Trip"' \

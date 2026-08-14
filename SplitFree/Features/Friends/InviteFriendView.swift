@@ -16,19 +16,16 @@ struct InviteFriendView: View {
     @Environment(SyncEngine.self) private var sync
 
     @State private var name = ""
-    @State private var link: URL?
+    @State private var invite: Invite?
     @State private var isWorking = false
     @State private var errorMessage: String?
-    @State private var isShowingSignIn = false
     @FocusState private var isNaming: Bool
 
     var body: some View {
         NavigationStack {
             Form {
-                if !sync.isSignedIn {
-                    signedOutSection
-                } else if let link {
-                    readySection(link)
+                if let invite {
+                    readySection(invite)
                 } else {
                     nameSection
                 }
@@ -49,7 +46,6 @@ struct InviteFriendView: View {
                 }
             }
             .disabled(isWorking)
-            .sheet(isPresented: $isShowingSignIn) { SignInView() }
             .onAppear {
                 name = friend?.fullName ?? ""
                 isNaming = friend == nil
@@ -58,21 +54,6 @@ struct InviteFriendView: View {
     }
 
     // MARK: Sections
-
-    private var signedOutSection: some View {
-        Section {
-            VStack(alignment: .leading, spacing: 10) {
-                Text("Connecting needs an account")
-                    .font(.headline)
-                Text("Their phone has to be able to reach what the two of you share, which means it has to live somewhere you can both get to.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-            .padding(.vertical, 4)
-
-            Button(String(localized: "Sign in")) { isShowingSignIn = true }
-        }
-    }
 
     private var nameSection: some View {
         Section {
@@ -92,24 +73,17 @@ struct InviteFriendView: View {
             }
             .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
         } footer: {
-            Text("Once they accept, expenses between the two of you appear on both phones and your balance stays in step. Your groups are separate and stay where they are.")
+            Text("Once they join, what the two of you share stays in step on both phones.")
         }
     }
 
-    private func readySection(_ link: URL) -> some View {
+    private func readySection(_ invite: Invite) -> some View {
         Section {
-            ShareLink(item: link) {
-                Label(String(localized: "Send the link"), systemImage: "square.and.arrow.up")
-                    .font(.body.weight(.semibold))
-            }
-            Text(link.absoluteString)
-                .font(.caption.monospaced())
-                .foregroundStyle(.secondary)
-                .textSelection(.enabled)
+            JoinCodeView(invite: invite)
         } header: {
-            Text("Ready to send")
+            Text("Send this to them")
         } footer: {
-            Text("Anyone with this link can connect with you and see what the two of you share. It stops working after 14 days.")
+            Text("Anyone with the code can connect with you. It expires in 14 days.")
         }
     }
 
@@ -145,7 +119,7 @@ struct InviteFriendView: View {
             }
             // The invite reserves their slot, so anything already recorded
             // against their name becomes theirs when they accept.
-            link = try await sync.createInviteLink(for: group, claiming: person)
+            invite = try await sync.createInvite(for: group, claiming: person)
             Haptics.success()
         } catch {
             errorMessage = error.localizedDescription

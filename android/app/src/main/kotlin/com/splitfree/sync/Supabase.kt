@@ -48,8 +48,6 @@ object SupabaseConfig {
 
     val isConfigured: Boolean get() = url.isNotBlank() && anonKey.isNotBlank()
 
-    /** Must match the intent filter in the manifest and the Supabase redirect list. */
-    const val REDIRECT_URI = "splitfree://auth-callback"
 }
 
 class SupabaseException(message: String) : Exception(message)
@@ -59,7 +57,6 @@ data class Session(
     val refreshToken: String,
     val expiresAtMillis: Long,
     val userId: String,
-    val email: String?,
 ) {
     /** Treated as expired a minute early, so a request never leaves with a token that dies in flight. */
     val isExpired: Boolean get() = System.currentTimeMillis() >= expiresAtMillis - 60_000
@@ -106,95 +103,18 @@ class SupabaseClient(context: Context) {
 
     val isSignedIn: Boolean get() = current != null
     val userId: String? get() = current?.userId
-    val email: String? get() = current?.email
 
-    // MARK: - Auth
+    // MARK: - Identity
 
     /**
-     * Starts an email sign-in.
+     * Gets an identity without asking anybody for anything.
      *
-     * One request produces both a link and a six-digit code; which of them the
-     * email shows is decided by the project's email template. The stock template
-     * shows only the link, so the link is the path that works without
-     * configuring anything, and `redirect_to` is what brings that link back
-     * into the app instead of to a web page.
+     * Sharing needs row level security to have something to key on, and that is
+     * all it needs. No email, no password, no screen.
      */
-    suspend fun sendEmailCode(email: String) {
-        // `redirect_to` is a query parameter. GoTrue ignores it in the body, and
-        // ignores it silently: the email still arrives, the link still works,
-        // and it opens the project's website instead of the app.
-        val redirect = URLEncoder.encode(SupabaseConfig.REDIRECT_URI, "UTF-8")
-        request(
-            path = "/auth/v1/otp?redirect_to=$redirect",
-            method = "POST",
-            body = JSONObject().put("email", email).put("create_user", true),
-            authorized = false,
-        )
-    }
-
-    suspend fun verifyEmailCode(email: String, code: String): Session {
-        val body = JSONObject().put("email", email).put("token", code).put("type", "email")
-        return storeSession(JSONObject(request("/auth/v1/verify", "POST", body, authorized = false)))
-    }
-
-    /**
-     * Which sign-in providers the project actually has switched on.
-     *
-     * Asked rather than assumed, because a button for a provider nobody
-     * configured is a button that fails when tapped. Email is always available.
-     */
-    suspend fun enabledProviders(): Set<String> = runCatching {
-        val external = JSONObject(request("/auth/v1/settings", "GET", authorized = false))
-            .optJSONObject("external") ?: return emptySet()
-        external.keys().asSequence().filter { external.optBoolean(it) }.toSet()
-    }.getOrDefault(emptySet())
-
-    /** The URL to open in a browser for a provider with no native flow. */
-    fun oauthUrl(provider: String): String {
-        val redirect = URLEncoder.encode(SupabaseConfig.REDIRECT_URI, "UTF-8")
-        return "${SupabaseConfig.url}/auth/v1/authorize?provider=$provider&redirect_to=$redirect"
-    }
-
-    /** Completes a browser OAuth round trip. Supabase returns tokens in the fragment. */
-    fun completeOAuth(callback: String): Session {
-        val fragment = callback.substringAfter('#', "")
-        if (fragment.isBlank()) throw SupabaseException("Sign-in was cancelled.")
-
-        val values = fragment.split("&").mapNotNull { pair ->
-            val parts = pair.split("=", limit = 2)
-            if (parts.size == 2) parts[0] to java.net.URLDecoder.decode(parts[1], "UTF-8") else null
-        }.toMap()
-
-        val access = values["access_token"]
-        val refresh = values["refresh_token"]
-        if (access == null || refresh == null) {
-            throw SupabaseException(values["error_description"] ?: "Sign-in failed.")
-        }
-        val expiresIn = values["expires_in"]?.toLongOrNull() ?: 3600
-        val session = Session(
-            accessToken = access,
-            refreshToken = refresh,
-            expiresAtMillis = System.currentTimeMillis() + expiresIn * 1000,
-            userId = userIdFromJwt(access).orEmpty(),
-            email = null,
-        )
-        writeSession(session)
-        return session
-    }
-
-    /**
-     * Fills in the account's email after a link or browser sign-in. Those flows
-     * hand back tokens in a URL fragment and nothing else, so the account row
-     * would otherwise read "Signed in" and leave someone with two addresses
-     * unable to tell which one they used.
-     */
-    suspend fun refreshUserDetails() {
-        val session = current ?: return
-        runCatching {
-            val json = JSONObject(request("/auth/v1/user", "GET", authorized = true))
-            val email = json.optString("email").takeIf { it.isNotBlank() } ?: return
-            writeSession(session.copy(email = email))
-        }
+    suspend fun signInAnonymously(): Session {
+        current?.let { if (!it.isExpired) return it }
+        return storeSession(JSONObject(request("/auth/v1/signup", "POST", JSONObject(), authorized = false)))
     }
 
     fun signOut() {
@@ -205,15 +125,12 @@ class SupabaseClient(context: Context) {
     private fun storeSession(payload: JSONObject): Session {
         val access = payload.optString("access_token")
         val refresh = payload.optString("refresh_token")
-        if (access.isBlank() || refresh.isBlank()) throw SupabaseException("The server sent an unusable sign-in.")
-
-        val user = payload.optJSONObject("user")
+        if (access.isBlank() || refresh.isBlank()) throw SupabaseException("The server sent an unusable session.")
         val session = Session(
             accessToken = access,
             refreshToken = refresh,
             expiresAtMillis = System.currentTimeMillis() + payload.optLong("expires_in", 3600) * 1000,
-            userId = user?.optString("id").takeUnless { it.isNullOrBlank() } ?: userIdFromJwt(access).orEmpty(),
-            email = user?.optString("email").takeUnless { it.isNullOrBlank() },
+            userId = payload.optJSONObject("user")?.optString("id").orEmpty(),
         )
         writeSession(session)
         return session
@@ -226,7 +143,6 @@ class SupabaseClient(context: Context) {
             .putString("refresh", session.refreshToken)
             .putLong("expires", session.expiresAtMillis)
             .putString("user", session.userId)
-            .putString("email", session.email)
             .apply()
     }
 
@@ -238,32 +154,15 @@ class SupabaseClient(context: Context) {
             refreshToken = refresh,
             expiresAtMillis = prefs.getLong("expires", 0),
             userId = prefs.getString("user", "").orEmpty(),
-            email = prefs.getString("email", null),
         )
     }
 
-    /**
-     * Reads `sub` out of the JWT payload, for the case where the token endpoint
-     * does not echo the user back. Nothing security-sensitive rests on it; the
-     * server decides who you are for itself.
-     */
-    private fun userIdFromJwt(token: String): String? = runCatching {
-        val payload = token.split(".").getOrNull(1) ?: return null
-        val decoded = android.util.Base64.decode(
-            payload,
-            android.util.Base64.URL_SAFE or android.util.Base64.NO_PADDING or android.util.Base64.NO_WRAP,
-        )
-        JSONObject(String(decoded, Charsets.UTF_8)).optString("sub").takeIf { it.isNotBlank() }
-    }.getOrNull()
-
     private suspend fun validSession(): Session {
-        val existing = current ?: throw SupabaseException(SIGNED_OUT)
+        val existing = current ?: return signInAnonymously()
         if (!existing.isExpired) return existing
 
-        // Serialised, so ten parallel requests do not each spend the refresh
-        // token and invalidate the other nine.
         return refreshLock.withLock {
-            val latest = current ?: throw SupabaseException(SIGNED_OUT)
+            val latest = current ?: return@withLock signInAnonymously()
             if (!latest.isExpired) return@withLock latest
             try {
                 storeSession(
@@ -277,9 +176,10 @@ class SupabaseClient(context: Context) {
                     )
                 )
             } catch (error: Exception) {
-                // A refresh token that no longer works means the session is over.
+                // A dead refresh token is not worth surfacing when the identity
+                // is disposable. Take a fresh one.
                 signOut()
-                throw SupabaseException(SIGNED_OUT)
+                signInAnonymously()
             }
         }
     }

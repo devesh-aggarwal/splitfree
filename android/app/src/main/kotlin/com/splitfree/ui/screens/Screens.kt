@@ -147,6 +147,7 @@ fun GroupsScreen(
     viewModel: LedgerViewModel,
     onOpenGroup: (String) -> Unit,
     onNewGroup: () -> Unit,
+    onJoinGroup: () -> Unit = {},
 ) {
     val colors = splitColors
     val ledger by viewModel.ledger.collectAsState()
@@ -168,6 +169,9 @@ fun GroupsScreen(
                 Text("Groups", style = MaterialTheme.typography.headlineLarge, color = colors.primaryText)
                 Spacer(Modifier.weight(1f))
                 // Text, not another "+": the floating button owns that glyph.
+                TextButton(onClick = onJoinGroup) {
+                    Text("Join", color = colors.secondaryText)
+                }
                 TextButton(onClick = onNewGroup) {
                     Text("New group", color = colors.accent, fontWeight = FontWeight.SemiBold)
                 }
@@ -565,7 +569,7 @@ fun InsightsScreen(viewModel: LedgerViewModel) {
 // MARK: - Account
 
 @Composable
-fun AccountScreen(viewModel: LedgerViewModel, onSignIn: () -> Unit = {}) {
+fun AccountScreen(viewModel: LedgerViewModel) {
     val colors = splitColors
     val ledger by viewModel.ledger.collectAsState()
     val settings by viewModel.settings.collectAsState()
@@ -626,46 +630,23 @@ fun AccountScreen(viewModel: LedgerViewModel, onSignIn: () -> Unit = {}) {
             }
         }
 
-        if (viewModel.sync.isConfigured) {
-            SplitCard {
-                if (viewModel.sync.isSignedIn) {
-                    SectionHeader(
-                        viewModel.sync.accountEmail ?: "Signed in",
-                        when (val state = syncStatus) {
-                            is SyncEngine.Status.Syncing -> "Syncing"
-                            is SyncEngine.Status.Failed -> state.message
-                            else -> "Shared groups stay in step with your friends."
-                        },
-                    )
-                    Spacer(Modifier.height(12.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        SecondaryButton("Sync now") { viewModel.syncNow() }
-                        SecondaryButton("Sign out") { viewModel.signOut() }
-                    }
-                } else {
-                    SectionHeader(
-                        "Sign in to share groups",
-                        "Optional. Everything works without it.",
-                    )
-                    Spacer(Modifier.height(12.dp))
-                    PrimaryButton("Sign in") { onSignIn() }
-                }
-            }
-        }
-
         SplitCard(padding = PaddingValues(18.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Filled.Verified, null, tint = colors.accent)
                 Spacer(Modifier.width(8.dp))
-                Text("Everything is included", fontWeight = FontWeight.SemiBold, color = colors.primaryText)
+                Text("Free forever", fontWeight = FontWeight.SemiBold, color = colors.primaryText)
             }
             Spacer(Modifier.height(8.dp))
             Text(
-                "No subscription, no upgrade screen, no adverts, no limits on expenses, " +
-                    "and nothing held back for a paid tier.",
+                "All features of SplitFree are completely free to use. If you'd like to " +
+                    "support me, please consider rating the app or buying me a coffee!",
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.secondaryText,
             )
+            Spacer(Modifier.height(12.dp))
+            SecondaryButton("Buy me a coffee") {
+                viewModel.openUrl("https://buymeacoffee.com/devesha")
+            }
         }
 
         SplitCard {
@@ -716,13 +697,23 @@ fun AccountScreen(viewModel: LedgerViewModel, onSignIn: () -> Unit = {}) {
         }
 
         SplitCard {
+            SectionHeader("About the app")
+            Spacer(Modifier.height(8.dp))
             Text(
-                "By default, everything lives on this device. Sharing a group is the one thing " +
-                    "that changes that: a shared group is uploaded to SplitFree's server so your " +
-                    "friends' phones can reach it, and everyone in it can read all of it. Groups " +
-                    "you never share never leave this phone.\n\n" +
-                    "There is no analytics SDK, no advertising, and nobody is sold anything about " +
-                    "how you spend. Signing in is optional and the app is fully usable without it.",
+                "SplitFree is made by Devesh. It is free, open source, and has no adverts, " +
+                    "no subscription and no paid tier.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = colors.secondaryText,
+            )
+            Spacer(Modifier.height(12.dp))
+            SecondaryButton("Buy me a coffee") {
+                viewModel.openUrl("https://buymeacoffee.com/devesha")
+            }
+            Spacer(Modifier.height(16.dp))
+            Text(
+                "Everything lives on this device. Sharing a group is the one thing " +
+                    "that changes that: it is uploaded so your friends' phones can reach it. " +
+                    "There are no accounts, no analytics and no adverts.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.secondaryText,
             )

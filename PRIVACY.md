@@ -1,122 +1,89 @@
 # Privacy policy
 
-Last updated: 12 August 2026
+Last updated: 14 August 2026
 
-SplitFree is a bill-splitting app for iPhone and Android. This policy describes
-what it stores, what it sends, and what you can do about it. It is written to be
-read rather than to be defensible, and it describes what the code actually does.
-The code is public, so you can check.
+SplitFree is a bill-splitting app for iPhone and Android, made by Devesh. This
+describes what it stores and what it sends. The code is public, so you can check.
 
 ## The short version
 
-Everything you type stays on your phone unless you deliberately share a group
-with someone. If you never sign in, SplitFree never sends anything anywhere.
+There are no accounts. You never give SplitFree your name, your email or a
+password, because it never asks.
 
-There are no adverts, no analytics, no tracking, and no third party is sold or
-given anything about how you spend.
+Everything you type stays on your phone unless you deliberately share a group.
+There are no adverts, no analytics and no tracking.
 
 ## What stays on your device
 
-By default, all of it: your groups, expenses, who paid, who owes what, payments
-you have recorded, friends' names, receipt photos, notes, recurring rules and
-your settings.
+All of it, by default: groups, expenses, who paid, who owes what, payments,
+friends' names, receipt photos, notes and settings.
 
-On iPhone you can turn on iCloud sync, which copies that data to **your own**
-private iCloud database. That is between you and Apple; the developers of
-SplitFree cannot read it.
+On iPhone you can turn on iCloud sync, which copies that to your own private
+iCloud database. That is between you and Apple.
 
 ## What happens when you share a group
 
-Sharing a group is the only thing that sends your data to a SplitFree server.
-It is per group, it always takes an explicit tap, and the app tells you what it
-means before you do it.
+Sharing is the only thing that sends anything to a SplitFree server. It is per
+group and always takes a deliberate tap.
 
-When you share a group, this is uploaded:
+Uploaded: the group's name, type and currency; the names you gave its members;
+its expenses, including titles, notes, amounts, dates, categories and who owes
+what; and any payments recorded in it.
 
-- The group's name, type, colour, currency, notes and archived state
-- The display names and colours of everyone in it
-- Every expense in it: title, notes, total, currency, date, category, how it was
-  split, any tax and tip, and the exact amounts each person paid and owes
-- Any line items on those expenses, and who they were assigned to
-- Every settle-up payment recorded in it: who paid whom, how much, when, by what
-  method, and any note
-- Which account created each row
+Never uploaded: receipt photos, profile pictures, your payment handles, recurring
+rules, your activity history, and any group you have not shared.
 
-**Everyone you invite to that group can read all of it.** That is the point of
-sharing; there is no partial view.
+Everyone in a shared group can read all of it. That is what sharing means.
 
-These are **not** uploaded, ever, for any group:
+## Identity
 
-- Receipt photos and the text read off them
-- Profile photos and group cover images
-- Your Venmo, PayPal, Cash App or UPI handles
-- Recurring expense rules and saved split templates
-- Your activity history
-- Groups you have not shared, and one-off expenses between you and a friend
-  outside any group
+Sharing needs the server to tell one device from another, so the first time you
+share or join, your device is issued a random identifier. No email, no name,
+nothing you typed. It is not connected to you, and it is not used anywhere else.
 
-## Accounts
+Losing your phone means losing that identifier. Your groups stay on the server
+for everyone else, and a friend can send you a fresh code to get back in.
 
-You only need an account to share a group. Everything else works signed out, and
-the app never asks you to sign in to keep using it.
+## Join codes
 
-If you do sign in, we store your email address and an account identifier. You can
-sign in with an emailed code, with Apple, or with Google. If you use Apple or
-Google, that provider tells us your identifier and email and learns that you
-signed in to SplitFree; it does not learn anything about your expenses.
+A code is valid for 14 days. **Anyone holding it can join that group and see
+everything in it**, so send it only to the person it is for.
 
-Signing out leaves everything on your phone. Shared groups become ordinary local
-groups and simply stop travelling.
-
-## Invite links
-
-An invite link contains a random token that is valid for 14 days. **Anyone who
-has the link can join that group and see everything in it**, so treat it like the
-group itself and send it only to the person it is for.
-
-The token is placed in the link's fragment (after the `#`). Browsers never send
-a fragment to a web server, so opening an invite in a browser does not leave a
-copy of the token in anyone's access log.
+In a link, the code sits after the `#`. Browsers never send that part to a
+server, so opening an invite on the web reveals nothing to anyone.
 
 ## Who else is involved
 
-- **Supabase** hosts the database and handles sign-in. Shared-group data is
-  stored there.
-- **Apple** and **Google**, only if you choose to sign in with them.
-- **open.er-api.com** provides currency exchange rates. The app asks for the
-  daily rate table and sends nothing about you. It works offline with rates built
-  into the app, and you can turn currency conversion off entirely.
+- **Supabase** hosts the database. Shared-group data is stored there.
+- **open.er-api.com** provides exchange rates. It is asked for the daily rate
+  table and told nothing about you. The app works offline without it.
 
-There is no analytics SDK, no crash reporter, no advertising network and no data
-broker. Nothing in the app measures how you use it.
+No analytics SDK, no crash reporter, no advertising network, no data broker.
 
-## How long it is kept, and how to get rid of it
+## Deleting things
 
-Data in a shared group is kept while the group exists. Deleting an expense, a
-payment or a whole group removes it and records a marker so the deletion reaches
-everyone else's phone; those markers are discarded after 30 days.
+Deleting an expense, a payment or a group removes it and tells everyone else's
+phone to do the same.
 
-- **Stop sharing one group:** open the group, tap the sharing button, and choose
-  "Stop sharing on this device". Your copy stays; it stops travelling.
-- **Erase everything on this phone:** Account, then "Erase all data".
-- **Delete your account and everything on the server:** open an issue at
-  [github.com/devesh-aggarwal/splitfree/issues](https://github.com/devesh-aggarwal/splitfree/issues),
-  or write to the address on that GitHub profile if you would rather not ask in
-  public. Deletion happens within 30 days.
+- **Stop sharing a group:** open it, tap the share button, choose "Stop sharing
+  on this device". Your copy stays.
+- **Erase everything here:** Account, then "Erase all data".
+- **Remove your data from the server:** open an issue at
+  [github.com/devesh-aggarwal/splitfree/issues](https://github.com/devesh-aggarwal/splitfree/issues).
+  Deletion happens within 30 days.
 
-Deleting your account does not remove expenses from other members' phones. They
+Deleting your own data does not remove expenses from other members' phones. They
 have their own copies, and a shared group belongs to everyone in it.
 
 ## Children
 
-SplitFree is not directed at children under 13, and we do not knowingly collect
+SplitFree is not directed at children under 13 and does not knowingly collect
 anything from them.
 
 ## Changes
 
-If this policy changes in a way that affects what is collected or who can see it,
-the app will say so before the change takes effect rather than quietly updating
-this page.
+If this changes in a way that affects what is collected or who can see it, the
+app will say so before it takes effect.
 
 ## Contact
 
