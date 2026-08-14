@@ -46,7 +46,13 @@ Then in the Supabase dashboard, under Authentication:
    link, for someone reading their email on a different device from the one they
    are signing in on. The apps accept either.
 
-## Two things that are easy to get wrong
+## Three things that are easy to get wrong
+
+The schema uses **core Postgres only**. `gen_random_uuid()` has been built in
+since Postgres 13; `uuid_generate_v4()` has not, and needs uuid-ossp, which
+Supabase installs into the `extensions` schema where a migration's search path
+cannot see it. The result is a schema that applies on a local stack and fails on
+the first hosted deploy with "function uuid_generate_v4() does not exist".
 
 `redirect_to` is a **query parameter** on `/auth/v1/otp`, not a body field. Sent
 in the body it is ignored silently and the link falls back to `site_url`.

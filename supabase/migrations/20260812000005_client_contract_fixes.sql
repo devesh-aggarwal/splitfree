@@ -9,13 +9,16 @@
 -- 1. Invite tokens
 -- ---------------------------------------------------------------------------
 
--- `gen_random_bytes` lives in the `extensions` schema on Supabase, and
--- `create_invite` pins `search_path = public` — correctly, since a mutable
--- search_path on a function is how privilege escalation gets in. The result was
--- that every attempt to create an invite failed with "function
--- gen_random_bytes(integer) does not exist".
+-- Invite tokens were built with `gen_random_bytes`, which lives in the
+-- `extensions` schema on Supabase while `create_invite` pins
+-- `search_path = public` — correctly, since a mutable search_path on a function
+-- is how privilege escalation gets in. Every attempt to create an invite failed
+-- with "function gen_random_bytes(integer) does not exist".
 --
--- Fixed by naming the schema rather than by loosening the search path.
+-- Naming the schema fixes it, but leaves the function depending on an extension
+-- being installed somewhere specific. `gen_random_uuid()` is core Postgres, so
+-- this depends on nothing: a v4 UUID with its dashes stripped is 32 hex
+-- characters carrying 122 bits from the same cryptographic source.
 
 create or replace function public.create_invite(
   p_group_id uuid,
@@ -34,8 +37,7 @@ begin
     raise exception 'Not a member of that group';
   end if;
 
-  -- 32 hex characters from a cryptographically secure source.
-  v_token := encode(extensions.gen_random_bytes(16), 'hex');
+  v_token := replace(gen_random_uuid()::text, '-', '');
 
   insert into public.group_invites (group_id, token, member_id, created_by, expires_at)
   values (

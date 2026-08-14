@@ -202,7 +202,7 @@ begin
 
   if v_member_id is null then
     -- No reserved slot, or someone beat us to it. Create a fresh one.
-    v_member_id := uuid_generate_v4();
+    v_member_id := gen_random_uuid();
     insert into public.group_members (group_id, member_id, user_id, display_name)
     values (v_invite.group_id, v_member_id, auth.uid(), v_display_name);
   end if;

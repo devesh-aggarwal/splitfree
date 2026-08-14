@@ -23,7 +23,14 @@
 --    before Marco has an account, or ever. `group_members.user_id` stays null
 --    until a real account claims that slot through an invite.
 
-create extension if not exists "uuid-ossp";
+-- Everything here uses core Postgres only. `gen_random_uuid()` has been built
+-- in since Postgres 13, so no extension is required.
+--
+-- The obvious alternative, `uuid_generate_v4()`, needs uuid-ossp, which is
+-- installed into the `extensions` schema on Supabase and is not on the search
+-- path a migration runs with. It works on a local stack and fails on a hosted
+-- project with "function uuid_generate_v4() does not exist", which is a
+-- miserable way to find out.
 
 -- ---------------------------------------------------------------------------
 -- Helpers
@@ -106,7 +113,7 @@ create trigger on_auth_user_created
 -- ---------------------------------------------------------------------------
 
 create table public.groups (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   name text not null default '',
   kind text not null default 'other',
   color_index int not null default 0,
@@ -158,7 +165,7 @@ create unique index group_members_one_slot_per_user
 -- ---------------------------------------------------------------------------
 
 create table public.expenses (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   group_id uuid not null references public.groups on delete cascade,
   title text not null default '',
   notes text not null default '',
@@ -206,7 +213,7 @@ create index expenses_updated_at_idx on public.expenses (updated_at);
 -- ---------------------------------------------------------------------------
 
 create table public.settlements (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   group_id uuid references public.groups on delete cascade,
   from_member_id uuid not null,
   to_member_id uuid not null,
@@ -238,7 +245,7 @@ create index settlements_updated_at_idx on public.settlements (updated_at);
 -- ---------------------------------------------------------------------------
 
 create table public.group_invites (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   group_id uuid not null references public.groups on delete cascade,
   token text not null unique,
   -- The member slot this invite claims. Null means "create a new slot", which
