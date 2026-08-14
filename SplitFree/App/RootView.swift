@@ -40,11 +40,21 @@ struct RootView: View {
     @State private var hidesFloatingAction = false
     @State private var inviteToken: InviteToken?
 
+    /// Onboarding would otherwise be the only screen the screenshot script ever
+    /// photographs, since AppSettings is built before the seeder can run.
+    private var isScreenshotRun: Bool {
+        #if DEBUG
+        DemoData.isRequested
+        #else
+        false
+        #endif
+    }
+
     var body: some View {
         Group {
             if settings.requiresBiometricUnlock && !lock.isUnlocked {
                 LockScreen()
-            } else if !settings.hasCompletedOnboarding {
+            } else if !settings.hasCompletedOnboarding && !isScreenshotRun {
                 OnboardingView()
             } else {
                 mainInterface
@@ -144,8 +154,21 @@ struct RootView: View {
         }
     }
 
+    #if DEBUG
+    /// Puts the app on the screen the screenshot script asked for.
+    private func applyScreenshotArguments() {
+        guard DemoData.isRequested else { return }
+        if let tab = DemoData.startTab, let match = AppTab(rawValue: tab) {
+            selectedTab = match
+        }
+    }
+    #endif
+
     private func bootstrap() async {
         Ledger.currentUser(in: context)
+        #if DEBUG
+        applyScreenshotArguments()
+        #endif
         Haptics.isEnabled = settings.hapticsEnabled
         lock.lockIfNeeded(enabled: settings.requiresBiometricUnlock)
         await exchangeRates.refreshIfNeeded()

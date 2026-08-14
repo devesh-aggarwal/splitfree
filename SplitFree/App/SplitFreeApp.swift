@@ -13,6 +13,14 @@ struct SplitFreeApp: App {
     init() {
         container = SplitFreeApp.makeContainer()
         Haptics.prepare()
+
+        #if DEBUG
+        // Only when launched with -seedDemoData, which nothing but the
+        // screenshot script does.
+        if DemoData.isRequested {
+            DemoData.seed(into: ModelContext(container))
+        }
+        #endif
     }
 
     var body: some Scene {

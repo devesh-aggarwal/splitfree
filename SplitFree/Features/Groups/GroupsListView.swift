@@ -14,6 +14,7 @@ struct GroupsListView: View {
 
     @State private var filter: BalanceFilter = .all
     @State private var isPresentingNewGroup = false
+    @State private var path = NavigationPath()
     @State private var showsArchived = false
     @State private var searchQuery = ""
     @State private var editorContext: ExpenseEditorContext?
@@ -53,7 +54,7 @@ struct GroupsListView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ScrollView {
                 LazyVStack(spacing: 16, pinnedViews: []) {
                     OverallBalanceCard(summary: snapshot.overall)
@@ -101,6 +102,17 @@ struct GroupsListView: View {
             .navigationDestination(for: SpendingGroup.self) { group in
                 GroupDetailView(group: group)
             }
+            #if DEBUG
+            // Screenshots want the group screen, and a launch argument gets
+            // there without a tap that would break the next time this list
+            // changes shape.
+            .task {
+                guard DemoData.opensFirstGroup, path.isEmpty,
+                      let first = visibleGroups.first
+                else { return }
+                path.append(first)
+            }
+            #endif
             .searchable(text: $searchQuery, placement: .navigationBarDrawer(displayMode: .automatic), prompt: Text("Search expenses"))
             .searchScopes($filter) { EmptyView() }
             .overlay {
