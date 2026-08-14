@@ -25,3 +25,9 @@ supabase/.temp/
 
 # macOS
 .DS_Store
+
+# Store submission working files. Draft copy and screenshots are yours to keep
+# private until you decide otherwise; they are not part of the source anyone
+# cloning this needs.
+APP_STORE.md
+screenshots/

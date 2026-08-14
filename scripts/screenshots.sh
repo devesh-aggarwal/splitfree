@@ -7,6 +7,9 @@
 # photographing the wrong thing. The seeded ledger comes from DemoData.swift,
 # which exists only in debug builds.
 #
+# Output is gitignored. Screenshots and store copy are working files, not
+# something anybody cloning this repo needs.
+#
 # Run:  scripts/screenshots.sh
 
 set -euo pipefail
