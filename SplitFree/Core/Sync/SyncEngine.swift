@@ -25,6 +25,8 @@ final class SyncEngine {
     private(set) var lastSyncedAt: Date?
     private(set) var accountEmail: String?
     private(set) var isSignedIn = false
+    /// Providers the project has enabled, learned from the server on first use.
+    private(set) var availableProviders: Set<String> = []
 
     private let client: SupabaseClient
     private let defaults: UserDefaults
@@ -61,6 +63,9 @@ final class SyncEngine {
         isSignedIn = await client.isSignedIn
         accountEmail = await client.email
         status = isSignedIn ? .idle : .signedOut
+        if availableProviders.isEmpty {
+            availableProviders = await client.enabledProviders()
+        }
     }
 
     func signOut(context: ModelContext) {
@@ -178,7 +183,7 @@ final class SyncEngine {
         // Browsers never send a fragment to the server, so an invite that gets
         // opened on the web leaves no copy of the token in anybody's access log.
         guard let token = (try? JSONSerialization.jsonObject(with: data, options: [.fragmentsAllowed])) as? String,
-              let url = URL(string: "https://splitfree.app/join#\(token)")
+              let url = URL(string: "https://devesh-aggarwal.github.io/splitfree/join.html#\(token)")
         else { throw SupabaseError.decoding("create_invite") }
         return url
     }
@@ -218,7 +223,7 @@ final class SyncEngine {
         if url.scheme == "splitfree", url.host == "join" {
             return url.fragment ?? url.lastPathComponent
         }
-        if url.host?.hasSuffix("splitfree.app") == true, url.path.hasPrefix("/join") {
+        if url.host?.hasSuffix("github.io") == true, url.path.contains("/join") {
             return url.fragment
         }
         return nil

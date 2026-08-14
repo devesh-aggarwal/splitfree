@@ -246,7 +246,7 @@ struct AboutView: View {
                                 .font(Typography.rowSubtitle)
                                 .foregroundStyle(Palette.secondaryText)
                                 .fixedSize(horizontal: false, vertical: true)
-                            Link(destination: URL(string: "https://splitfree.app/privacy")!) {
+                            Link(destination: URL(string: "https://devesh-aggarwal.github.io/splitfree/privacy.html")!) {
                                 Text("Read the privacy policy")
                             }
                             .buttonStyle(SecondaryButtonStyle())

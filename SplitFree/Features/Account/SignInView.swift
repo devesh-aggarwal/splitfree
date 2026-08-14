@@ -31,7 +31,7 @@ struct SignInView: View {
 
                 if stage == .choosing {
                     emailSection
-                    providerSection
+                    if !sync.availableProviders.isEmpty { providerSection }
                 } else {
                     codeSection
                 }
@@ -108,8 +108,26 @@ struct SignInView: View {
         }
     }
 
+    @ViewBuilder
     private var providerSection: some View {
         Section {
+            if sync.availableProviders.contains("apple") {
+                appleButton
+            }
+            if sync.availableProviders.contains("google") {
+                Button {
+                    Task { await startGoogle() }
+                } label: {
+                    Label(String(localized: "Continue with Google"), systemImage: "globe")
+                }
+            }
+        } header: {
+            Text("Or")
+        }
+    }
+
+    private var appleButton: some View {
+        Group {
             SignInWithAppleButton(.signIn) { request in
                 let nonce = Self.randomNonce()
                 appleNonce = nonce
@@ -121,14 +139,6 @@ struct SignInView: View {
             .signInWithAppleButtonStyle(.black)
             .frame(height: 46)
             .listRowInsets(EdgeInsets())
-
-            Button {
-                Task { await startGoogle() }
-            } label: {
-                Label(String(localized: "Continue with Google"), systemImage: "globe")
-            }
-        } header: {
-            Text("Or")
         }
     }
 

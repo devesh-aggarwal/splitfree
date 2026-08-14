@@ -99,9 +99,10 @@ everyone else's phone; those markers are discarded after 30 days.
 - **Stop sharing one group:** open the group, tap the sharing button, and choose
   "Stop sharing on this device". Your copy stays; it stops travelling.
 - **Erase everything on this phone:** Account, then "Erase all data".
-- **Delete your account and everything on the server:** email
-  privacy@splitfree.app from the address you signed in with, and it will be
-  deleted within 30 days.
+- **Delete your account and everything on the server:** open an issue at
+  [github.com/devesh-aggarwal/splitfree/issues](https://github.com/devesh-aggarwal/splitfree/issues),
+  or write to the address on that GitHub profile if you would rather not ask in
+  public. Deletion happens within 30 days.
 
 Deleting your account does not remove expenses from other members' phones. They
 have their own copies, and a shared group belongs to everyone in it.
@@ -119,4 +120,4 @@ this page.
 
 ## Contact
 
-privacy@splitfree.app
+[github.com/devesh-aggarwal/splitfree/issues](https://github.com/devesh-aggarwal/splitfree/issues)

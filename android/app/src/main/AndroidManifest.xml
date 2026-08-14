@@ -45,11 +45,16 @@
             </intent-filter>
 
             <!-- An invite link, opened from a message. -->
-            <intent-filter android:autoVerify="true">
+            <!--
+              The web link is handled by a page that bounces into the custom
+              scheme below. Verifying the https link directly would need an
+              assetlinks.json at the domain root, which a GitHub project page
+              cannot serve, so the redirect is the path that actually works.
+            -->
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="splitfree.app" android:pathPrefix="/join" />
                 <data android:scheme="splitfree" android:host="join" />
             </intent-filter>
         </activity>

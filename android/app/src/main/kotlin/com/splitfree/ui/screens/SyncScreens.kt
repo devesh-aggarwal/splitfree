@@ -66,6 +66,8 @@ fun SignInScreen(viewModel: LedgerViewModel, onDone: () -> Unit) {
 
     // The magic link comes back through MainActivity, whichever screen is up.
     val syncStatus by viewModel.sync.status.collectAsState()
+    val providers by viewModel.sync.providers.collectAsState()
+    LaunchedEffect(Unit) { viewModel.sync.refreshProviders() }
     LaunchedEffect(syncStatus) {
         if (viewModel.sync.isSignedIn) onDone()
     }
@@ -132,11 +134,13 @@ fun SignInScreen(viewModel: LedgerViewModel, onDone: () -> Unit) {
                 }
             }
 
-            SplitCard {
-                SectionHeader("Or", "Sign in with an account you already have.")
-                Spacer(Modifier.height(12.dp))
-                SecondaryButton("Continue with Google") {
-                    viewModel.sync.openOAuth(context, "google")
+            if (providers.contains("google")) {
+                SplitCard {
+                    SectionHeader("Or", "Sign in with an account you already have.")
+                    Spacer(Modifier.height(12.dp))
+                    SecondaryButton("Continue with Google") {
+                        viewModel.sync.openOAuth(context, "google")
+                    }
                 }
             }
         } else {

@@ -212,6 +212,19 @@ actor SupabaseClient {
         return try store(tokenResponse: data)
     }
 
+    /// Which sign-in providers the project actually has switched on.
+    ///
+    /// Asked rather than assumed, because a button for a provider nobody
+    /// configured is a button that fails when tapped, and App Review taps every
+    /// button. Email is always available.
+    func enabledProviders() async -> Set<String> {
+        guard let data = try? await request(path: "/auth/v1/settings", method: "GET", authorized: false),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let external = json["external"] as? [String: Any]
+        else { return [] }
+        return Set(external.compactMap { key, value in (value as? Bool) == true ? key : nil })
+    }
+
     /// The URL to open in a browser for a provider that has no native flow.
     nonisolated func oauthURL(provider: String) -> URL? {
         guard let base = SupabaseConfig.url else { return nil }

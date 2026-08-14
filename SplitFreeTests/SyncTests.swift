@@ -56,7 +56,7 @@ struct InviteLinkTests {
 
     @Test("A web link carries its token in the fragment, where servers never see it")
     func webLink() {
-        let url = URL(string: "https://splitfree.app/join#abc123")!
+        let url = URL(string: "https://devesh-aggarwal.github.io/splitfree/join.html#abc123")!
         #expect(SyncEngine.inviteToken(from: url) == "abc123")
     }
 

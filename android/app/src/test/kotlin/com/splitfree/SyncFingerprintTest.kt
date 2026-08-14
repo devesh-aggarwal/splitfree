@@ -83,7 +83,7 @@ class InviteLinkTest {
 
     @Test
     fun `a web link carries its token in the fragment, where servers never see it`() {
-        assertEquals("abc123", SyncEngine.inviteToken("https://splitfree.app/join#abc123"))
+        assertEquals("abc123", SyncEngine.inviteToken("https://devesh-aggarwal.github.io/splitfree/join.html#abc123"))
     }
 
     @Test

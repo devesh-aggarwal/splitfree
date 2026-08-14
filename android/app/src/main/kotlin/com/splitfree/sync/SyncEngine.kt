@@ -72,6 +72,16 @@ class SyncEngine(
     val isSignedIn: Boolean get() = client.isSignedIn
     val accountEmail: String? get() = client.email
 
+    /** Providers the project has enabled, learned from the server on first use. */
+    private val _providers = MutableStateFlow<Set<String>>(emptySet())
+    val providers: StateFlow<Set<String>> = _providers.asStateFlow()
+
+    suspend fun refreshProviders() {
+        if (_providers.value.isEmpty() && SupabaseConfig.isConfigured) {
+            _providers.value = client.enabledProviders()
+        }
+    }
+
     /** The server time of the last successful pull, as the server phrased it. */
     private var cursor: String?
         get() = prefs.getString(KEY_CURSOR, null)
@@ -216,7 +226,7 @@ class SyncEngine(
         // The token goes in the fragment rather than the path or the query.
         // Browsers never send a fragment to the server, so an invite opened on
         // the web leaves no copy of the token in anybody's access log.
-        return "https://splitfree.app/join#$token"
+        return "https://devesh-aggarwal.github.io/splitfree/join.html#$token"
     }
 
     suspend fun previewInvite(token: String): InvitePreview {
@@ -744,7 +754,7 @@ class SyncEngine(
         fun inviteToken(url: String): String? {
             val fragment = url.substringAfter('#', "").takeIf { it.isNotBlank() } ?: return null
             if (url.startsWith("splitfree://join")) return fragment
-            if (url.contains("splitfree.app/join")) return fragment
+            if (url.contains("/splitfree/join")) return fragment
             return null
         }
 

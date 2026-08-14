@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SplitFree privacy policy</title>
+<meta name="description" content="What SplitFree stores, what it sends, and what you can do about it.">
+<link rel="stylesheet" href="_style.css">
+</head>
+<body>
+<main>
+  <header><span class="mark">S</span><a href="./">SplitFree</a></header>
+  <h1>Privacy policy</h1>
+  <p>Last updated: 12 August 2026</p>
+  <p>SplitFree is a bill-splitting app for iPhone and Android. This policy describes what it stores, what it sends, and what you can do about it. It is written to be read rather than to be defensible, and it describes what the code actually does. The code is public, so you can check.</p>
+  <h2>The short version</h2>
+  <p>Everything you type stays on your phone unless you deliberately share a group with someone. If you never sign in, SplitFree never sends anything anywhere.</p>
+  <p>There are no adverts, no analytics, no tracking, and no third party is sold or given anything about how you spend.</p>
+  <h2>What stays on your device</h2>
+  <p>By default, all of it: your groups, expenses, who paid, who owes what, payments you have recorded, friends&#x27; names, receipt photos, notes, recurring rules and your settings.</p>
+  <p>On iPhone you can turn on iCloud sync, which copies that data to <strong>your own</strong> private iCloud database. That is between you and Apple; the developers of SplitFree cannot read it.</p>
+  <h2>What happens when you share a group</h2>
+  <p>Sharing a group is the only thing that sends your data to a SplitFree server. It is per group, it always takes an explicit tap, and the app tells you what it means before you do it.</p>
+  <p>When you share a group, this is uploaded:</p>
+  <ul>
+    <li>The group&#x27;s name, type, colour, currency, notes and archived state</li>
+    <li>The display names and colours of everyone in it</li>
+    <li>Every expense in it: title, notes, total, currency, date, category, how it was</li>
+  <p>split, any tax and tip, and the exact amounts each person paid and owes</p>
+    <li>Any line items on those expenses, and who they were assigned to</li>
+    <li>Every settle-up payment recorded in it: who paid whom, how much, when, by what</li>
+  <p>method, and any note</p>
+    <li>Which account created each row</li>
+  </ul>
+  <p><strong>Everyone you invite to that group can read all of it.</strong> That is the point of sharing; there is no partial view.</p>
+  <p>These are <strong>not</strong> uploaded, ever, for any group:</p>
+  <ul>
+    <li>Receipt photos and the text read off them</li>
+    <li>Profile photos and group cover images</li>
+    <li>Your Venmo, PayPal, Cash App or UPI handles</li>
+    <li>Recurring expense rules and saved split templates</li>
+    <li>Your activity history</li>
+    <li>Groups you have not shared, and one-off expenses between you and a friend</li>
+  <p>outside any group</p>
+  </ul>
+  <h2>Accounts</h2>
+  <p>You only need an account to share a group. Everything else works signed out, and the app never asks you to sign in to keep using it.</p>
+  <p>If you do sign in, we store your email address and an account identifier. You can sign in with an emailed code, with Apple, or with Google. If you use Apple or Google, that provider tells us your identifier and email and learns that you signed in to SplitFree; it does not learn anything about your expenses.</p>
+  <p>Signing out leaves everything on your phone. Shared groups become ordinary local groups and simply stop travelling.</p>
+  <h2>Invite links</h2>
+  <p>An invite link contains a random token that is valid for 14 days. <strong>Anyone who has the link can join that group and see everything in it</strong>, so treat it like the group itself and send it only to the person it is for.</p>
+  <p>The token is placed in the link&#x27;s fragment (after the <code>#</code>). Browsers never send a fragment to a web server, so opening an invite in a browser does not leave a copy of the token in anyone&#x27;s access log.</p>
+  <h2>Who else is involved</h2>
+  <ul>
+    <li><strong>Supabase</strong> hosts the database and handles sign-in. Shared-group data is</li>
+  <p>stored there.</p>
+    <li><strong>Apple</strong> and <strong>Google</strong>, only if you choose to sign in with them.</li>
+    <li><strong>open.er-api.com</strong> provides currency exchange rates. The app asks for the</li>
+  <p>daily rate table and sends nothing about you. It works offline with rates built into the app, and you can turn currency conversion off entirely.</p>
+  </ul>
+  <p>There is no analytics SDK, no crash reporter, no advertising network and no data broker. Nothing in the app measures how you use it.</p>
+  <h2>How long it is kept, and how to get rid of it</h2>
+  <p>Data in a shared group is kept while the group exists. Deleting an expense, a payment or a whole group removes it and records a marker so the deletion reaches everyone else&#x27;s phone; those markers are discarded after 30 days.</p>
+  <ul>
+    <li><strong>Stop sharing one group:</strong> open the group, tap the sharing button, and choose</li>
+  <p>&quot;Stop sharing on this device&quot;. Your copy stays; it stops travelling.</p>
+    <li><strong>Erase everything on this phone:</strong> Account, then &quot;Erase all data&quot;.</li>
+    <li><strong>Delete your account and everything on the server:</strong> open an issue at</li>
+  <p><a href="https://github.com/devesh-aggarwal/splitfree/issues">github.com/devesh-aggarwal/splitfree/issues</a>, or write to the address on that GitHub profile if you would rather not ask in public. Deletion happens within 30 days.</p>
+  </ul>
+  <p>Deleting your account does not remove expenses from other members&#x27; phones. They have their own copies, and a shared group belongs to everyone in it.</p>
+  <h2>Children</h2>
+  <p>SplitFree is not directed at children under 13, and we do not knowingly collect anything from them.</p>
+  <h2>Changes</h2>
+  <p>If this policy changes in a way that affects what is collected or who can see it, the app will say so before the change takes effect rather than quietly updating this page.</p>
+  <h2>Contact</h2>
+  <p><a href="https://github.com/devesh-aggarwal/splitfree/issues">github.com/devesh-aggarwal/splitfree/issues</a></p>
+  <footer>
+    <p><a href="./">About SplitFree</a> &middot;
+       <a href="https://github.com/devesh-aggarwal/splitfree">Source</a> &middot;
+       <a href="https://github.com/devesh-aggarwal/splitfree/issues">Support</a></p>
+    <p class="meta">This page is generated from PRIVACY.md in the repository.</p>
+  </footer>
+</main>
+</body>
+</html>

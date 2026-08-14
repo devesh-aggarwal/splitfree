@@ -137,6 +137,18 @@ class SupabaseClient(context: Context) {
         return storeSession(JSONObject(request("/auth/v1/verify", "POST", body, authorized = false)))
     }
 
+    /**
+     * Which sign-in providers the project actually has switched on.
+     *
+     * Asked rather than assumed, because a button for a provider nobody
+     * configured is a button that fails when tapped. Email is always available.
+     */
+    suspend fun enabledProviders(): Set<String> = runCatching {
+        val external = JSONObject(request("/auth/v1/settings", "GET", authorized = false))
+            .optJSONObject("external") ?: return emptySet()
+        external.keys().asSequence().filter { external.optBoolean(it) }.toSet()
+    }.getOrDefault(emptySet())
+
     /** The URL to open in a browser for a provider with no native flow. */
     fun oauthUrl(provider: String): String {
         val redirect = URLEncoder.encode(SupabaseConfig.REDIRECT_URI, "UTF-8")
