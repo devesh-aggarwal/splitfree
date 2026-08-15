@@ -21,8 +21,20 @@ DERIVED="${TMPDIR:-/tmp}/splitfree-shots"
 
 # The simulator renders these natively at the sizes App Store Connect wants,
 # so nothing is resized afterwards and nothing is soft.
-IPHONE="iPhone 17 Pro Max"    # 6.9 inch, 1320 x 2868
-IPAD="iPad Pro 13-inch (M5)"  # 13 inch,  2064 x 2752
+# App Store Connect shows a slot per display class and rejects anything whose
+# pixel dimensions are not on its list, so each of these is rendered natively at
+# a size that slot accepts rather than resized afterwards.
+#
+#   device                | folder      | accepted by
+#   iPhone 17 Pro Max     | iphone-6.9  | 6.9 inch slot, 1320 x 2868
+#   iPhone 14 Plus        | iphone-6.5  | 6.5 inch slot, 1284 x 2778
+#   iPad Pro 13-inch (M5) | ipad-13     | 13 inch slot,  2064 x 2752
+DEVICES=(
+  "iPhone 17 Pro Max|iphone-6.9"
+  "iPhone 14 Plus|iphone-6.5"
+  "iPad Pro 13-inch (M5)|ipad-13"
+)
+BUILD_ON="iPhone 17 Pro Max"
 
 say() { printf '\n\033[1m%s\033[0m\n' "$*"; }
 
@@ -68,11 +80,11 @@ ROUTE
 
 say "Building"
 xcodebuild -project SplitFree.xcodeproj -scheme SplitFree \
-  -destination "platform=iOS Simulator,name=$IPHONE" \
+  -destination "platform=iOS Simulator,name=$BUILD_ON" \
   -derivedDataPath "$DERIVED" build >/dev/null
 APP="$DERIVED/Build/Products/Debug-iphonesimulator/SplitFree.app"
 
-for pair in "$IPHONE|iphone-6.9" "$IPAD|ipad-13"; do
+for pair in "${DEVICES[@]}"; do
   device="${pair%%|*}"; folder="${pair##*|}"
   say "$device"
   udid="$(udid_for "$device")"
