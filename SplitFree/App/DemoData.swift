@@ -49,41 +49,41 @@ enum DemoData {
         let jonas = person("Jonas Weber", colorIndex: 1, in: context)
 
         // A trip, mid-flight: some people owe, some are owed, nothing settled.
-        let lisbon = SpendingGroup(
-            name: "Lisbon Trip",
+        let portland = SpendingGroup(
+            name: "Portland Trip",
             kind: .trip,
             colorIndex: 2,
             members: [you, marco, priya, jonas],
-            defaultCurrencyCode: "EUR"
+            defaultCurrencyCode: "USD"
         )
-        lisbon.notes = "Flat is on Rua da Bica. Check-out is 11am Sunday."
-        context.insert(lisbon)
+        portland.notes = "Place is on NW 23rd. Check-out is 11am Sunday."
+        context.insert(portland)
 
-        add("Flat for four nights", 84000, .hotel, daysAgo: 6, paidBy: you,
-            among: [you, marco, priya, jonas], in: lisbon, context: context)
-        add("Dinner at Ramiro", 14250, .diningOut, daysAgo: 4, paidBy: marco,
-            among: [you, marco, priya, jonas], in: lisbon, context: context)
-        add("Tram passes", 3600, .publicTransit, daysAgo: 4, paidBy: priya,
-            among: [you, marco, priya, jonas], in: lisbon, context: context)
-        add("Tiles museum", 5000, .activities, daysAgo: 2, paidBy: you,
-            among: [you, priya], in: lisbon, context: context)
-        add("Pastéis de nata", 1080, .diningOut, daysAgo: 1, paidBy: jonas,
-            among: [you, marco, priya, jonas], in: lisbon, context: context)
+        add("Hotel, three nights", 84000, .hotel, daysAgo: 6, paidBy: you,
+            among: [you, marco, priya, jonas], in: portland, context: context)
+        add("Dinner downtown", 14250, .diningOut, daysAgo: 4, paidBy: marco,
+            among: [you, marco, priya, jonas], in: portland, context: context)
+        add("Transit passes", 3600, .publicTransit, daysAgo: 4, paidBy: priya,
+            among: [you, marco, priya, jonas], in: portland, context: context)
+        add("Art museum", 5000, .activities, daysAgo: 2, paidBy: you,
+            among: [you, priya], in: portland, context: context)
+        add("Coffee and pastries", 1080, .diningOut, daysAgo: 1, paidBy: jonas,
+            among: [you, marco, priya, jonas], in: portland, context: context)
 
         // A flat share, so the groups list is not one row of one kind.
         let flat = SpendingGroup(
-            name: "Wallace Road",
+            name: "Oak Street",
             kind: .home,
             colorIndex: 0,
             members: [you, jonas],
-            defaultCurrencyCode: "GBP"
+            defaultCurrencyCode: "USD"
         )
         context.insert(flat)
         add("Rent, February", 142000, .rent, daysAgo: 12, paidBy: you,
             among: [you, jonas], in: flat, context: context)
-        add("Broadband", 3200, .internet, daysAgo: 9, paidBy: jonas,
+        add("Internet", 3200, .internet, daysAgo: 9, paidBy: jonas,
             among: [you, jonas], in: flat, context: context)
-        add("Weekly shop", 6740, .groceries, daysAgo: 3, paidBy: you,
+        add("Groceries", 6740, .groceries, daysAgo: 3, paidBy: you,
             among: [you, jonas], in: flat, context: context)
 
         let brunch = SpendingGroup(
@@ -91,7 +91,7 @@ enum DemoData {
             kind: .event,
             colorIndex: 4,
             members: [you, marco, priya],
-            defaultCurrencyCode: "EUR"
+            defaultCurrencyCode: "USD"
         )
         context.insert(brunch)
         add("Brunch", 9600, .diningOut, daysAgo: 8, paidBy: priya,
@@ -102,7 +102,7 @@ enum DemoData {
             from: marco,
             to: you,
             amountMinorUnits: 4200,
-            currencyCode: "EUR",
+            currencyCode: "USD",
             date: Date().addingTimeInterval(-2 * 86400),
             method: .venmo,
             group: brunch
