@@ -67,7 +67,7 @@ final class AppLockState {
 
         var error: NSError?
         guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else {
-            // No passcode set means nothing to authenticate against — don't
+            // No passcode set means nothing to authenticate against - don't
             // strand the user outside their own data.
             isUnlocked = true
             return

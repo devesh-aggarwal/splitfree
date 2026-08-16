@@ -1,5 +1,4 @@
 import SwiftData
-import StoreKit
 import SwiftUI
 
 struct AccountView: View {
@@ -22,7 +21,13 @@ struct AccountView: View {
     @State private var exportURL: URL?
     @State private var showsResetConfirmation = false
 
-    @Environment(\.requestReview) private var requestReview
+    @Environment(\.openURL) private var openURL
+
+    /// The numeric Apple ID of the app on the App Store, used for the
+    /// write-review deep link. `requestReview` is silently ignored on
+    /// TestFlight and rate-limited in production, so an explicit "rate"
+    /// button needs the direct route.
+    private static let appStoreID = "6801583096"
 
     private var user: Participant { Ledger.currentUser(in: context) }
 
@@ -35,7 +40,6 @@ struct AccountView: View {
                     preferencesCard
                     dataCard
                     aboutCard
-                    aboutTheAppCard
                     Color.clear.frame(height: 30)
                 }
                 .padding(.horizontal, Metrics.screenPadding)
@@ -63,7 +67,7 @@ struct AccountView: View {
                     Text("Erase all data")
                 }
             } message: {
-                Text("Every group, expense, payment and friend will be deleted from this device. This can't be undone — export a CSV first if you want a copy.")
+                Text("Every group, expense, payment and friend will be deleted from this device. This can't be undone. Export a CSV first if you want a copy.")
             }
         }
     }
@@ -116,27 +120,14 @@ struct AccountView: View {
                     }
                     .buttonStyle(SecondaryButtonStyle())
 
-                    Button { requestReview() } label: { Text("Rate the app") }
+                    Button {
+                        if let url = URL(string: "https://apps.apple.com/app/id\(Self.appStoreID)?action=write-review") {
+                            openURL(url)
+                        }
+                    } label: { Text("Rate the app") }
                         .buttonStyle(SecondaryButtonStyle())
                 }
                 .padding(.top, 2)
-            }
-        }
-    }
-
-    private var aboutTheAppCard: some View {
-        Card(padding: 18) {
-            VStack(alignment: .leading, spacing: 10) {
-                SectionHeader(String(localized: "About the app"))
-                Text("SplitFree is made by Devesh. It is free, open source, and has no adverts, no subscription and no paid tier.")
-                    .font(Typography.rowSubtitle)
-                    .foregroundStyle(Palette.secondaryText)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                Link(destination: URL(string: "https://buymeacoffee.com/devesha")!) {
-                    Text("Buy me a coffee")
-                }
-                .buttonStyle(SecondaryButtonStyle())
             }
         }
     }
@@ -182,18 +173,6 @@ struct AccountView: View {
                 divider
 
                 appearanceRow
-
-                divider
-
-                toggleRow(
-                    symbol: "hand.tap",
-                    title: String(localized: "Haptics"),
-                    subtitle: String(localized: "A small nudge when something is saved or settled."),
-                    isOn: Binding(
-                        get: { settings.hapticsEnabled },
-                        set: { settings.hapticsEnabled = $0 }
-                    )
-                )
 
                 divider
 
@@ -340,9 +319,7 @@ struct AccountView: View {
     }
 
     private var appVersion: String {
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
-        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
-        return "\(version) (\(build))"
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
     }
 
     // MARK: - Row helpers

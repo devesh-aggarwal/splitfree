@@ -56,7 +56,7 @@ enum Palette {
         dark: #colorLiteral(red: 0.235, green: 0.114, blue: 0.106, alpha: 1)
     )
 
-    /// Settled up — intentionally quiet.
+    /// Settled up - intentionally quiet.
     static let neutral = dynamic(
         light: #colorLiteral(red: 0.435, green: 0.463, blue: 0.494, alpha: 1),
         dark: #colorLiteral(red: 0.612, green: 0.639, blue: 0.667, alpha: 1)

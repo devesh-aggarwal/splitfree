@@ -47,7 +47,7 @@ struct RecurringSplitPlan: Codable, Hashable, Sendable {
     var shares: [Entry] = []
 }
 
-/// A rule that materialises an `Expense` on a schedule — rent, utilities,
+/// A rule that materialises an `Expense` on a schedule - rent, utilities,
 /// a shared subscription.
 @Model
 final class RecurringRule {

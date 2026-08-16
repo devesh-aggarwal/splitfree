@@ -166,7 +166,7 @@ struct ActivityView: View {
         selectedExpense = expense
     }
 
-    /// Clears the feed only — expenses, payments and balances are untouched.
+    /// Clears the feed only - expenses, payments and balances are untouched.
     private func clearAll() {
         withAnimation(Motion.smooth) {
             for entry in entries { context.delete(entry) }

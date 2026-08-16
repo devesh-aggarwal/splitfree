@@ -14,7 +14,7 @@ enum SplitMethod: String, CaseIterable, Codable, Identifiable, Sendable {
     case exact
     /// Percentages that must total 100.
     case percent
-    /// Relative shares — "Ana counts double".
+    /// Relative shares - "Ana counts double".
     case shares
     /// Even split, then a per-person plus or minus adjustment.
     case adjustment

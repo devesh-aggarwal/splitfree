@@ -19,6 +19,13 @@ struct FriendDetailView: View {
     @State private var selectedExpense: Expense?
     @State private var isPresentingSettle = false
     @State private var isPresentingEdit = false
+    @State private var isPresentingInvite = false
+
+    /// A fresh invite can be created any time until the friend accepts one,
+    /// so losing the first link is never fatal.
+    private var canInvite: Bool {
+        SupabaseConfig.isConfigured && friend.remoteUserID == nil
+    }
 
     private var user: Participant { Ledger.currentUser(in: context) }
 
@@ -52,12 +59,12 @@ struct FriendDetailView: View {
         return TimelineGrouping.sections(from: entries)
     }
 
-    /// Groups you're both in — useful context for where the balance came from.
+    /// Groups you're both in - useful context for where the balance came from.
     private var sharedGroups: [SpendingGroup] {
         var seen = Set<UUID>()
         var result: [SpendingGroup] = []
         for expense in sharedExpenses {
-            guard let group = expense.group, seen.insert(group.id).inserted else { continue }
+            guard let group = expense.group, !group.isDirect, seen.insert(group.id).inserted else { continue }
             result.append(group)
         }
         return result
@@ -68,6 +75,10 @@ struct FriendDetailView: View {
             LazyVStack(spacing: 16) {
                 header
                 actionRow
+
+                if canInvite {
+                    inviteCard
+                }
 
                 if !sharedGroups.isEmpty {
                     sharedGroupsCard
@@ -101,6 +112,11 @@ struct FriendDetailView: View {
                     Button { isPresentingEdit = true } label: {
                         Label("Edit friend", systemImage: "pencil")
                     }
+                    if canInvite {
+                        Button { isPresentingInvite = true } label: {
+                            Label("Invite by link", systemImage: "link")
+                        }
+                    }
                     Divider()
                     Button(role: .destructive) { archive() } label: {
                         Label("Remove friend", systemImage: "person.badge.minus")
@@ -113,6 +129,7 @@ struct FriendDetailView: View {
         .sheet(item: $editorContext) { ExpenseEditorView(context: $0) }
         .sheet(item: $selectedExpense) { ExpenseDetailView(expense: $0) }
         .sheet(isPresented: $isPresentingEdit) { FriendEditorView(friend: friend) }
+        .sheet(isPresented: $isPresentingInvite) { InviteFriendView(friend: friend) }
         .sheet(isPresented: $isPresentingSettle) {
             let net = summary.net
             let code = net.nonZeroCurrencies.first ?? settings.baseCurrencyCode
@@ -197,6 +214,32 @@ struct FriendDetailView: View {
             .buttonStyle(PrimaryButtonStyle(isProminent: false))
             .disabled(summary.isSettled)
         }
+    }
+
+    private var inviteCard: some View {
+        Button { isPresentingInvite = true } label: {
+            Card {
+                HStack(spacing: 12) {
+                    Image(systemName: "link")
+                        .foregroundStyle(Palette.accent)
+                        .frame(width: 24)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(String(format: String(localized: "Invite %@ to SplitFree", comment: "Friend name"), friend.firstName))
+                            .font(Typography.rowTitle)
+                            .foregroundStyle(Palette.primaryText)
+                        Text("Send a link so your shared expenses reach their phone.")
+                            .font(Typography.caption)
+                            .foregroundStyle(Palette.secondaryText)
+                            .multilineTextAlignment(.leading)
+                    }
+                    Spacer(minLength: 4)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Palette.tertiaryText)
+                }
+            }
+        }
+        .buttonStyle(RowButtonStyle())
     }
 
     private var sharedGroupsCard: some View {

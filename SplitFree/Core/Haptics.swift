@@ -7,56 +7,46 @@ import UIKit
 /// navigation.
 @MainActor
 enum Haptics {
-    static var isEnabled = true
-
     private static let impactLight = UIImpactFeedbackGenerator(style: .light)
     private static let impactMedium = UIImpactFeedbackGenerator(style: .medium)
     private static let impactRigid = UIImpactFeedbackGenerator(style: .rigid)
     private static let selection = UISelectionFeedbackGenerator()
     private static let notification = UINotificationFeedbackGenerator()
 
-    /// A value changed under the user's finger — toggling a person into a split.
+    /// A value changed under the user's finger, like toggling a person into a split.
     static func selectionChanged() {
-        guard isEnabled else { return }
         selection.selectionChanged()
     }
 
-    /// A light confirmation — adding a line item, stepping a share count.
+    /// A light confirmation, like adding a line item or stepping a share count.
     static func tick() {
-        guard isEnabled else { return }
         impactLight.impactOccurred()
     }
 
-    /// A firmer confirmation — a sheet committed.
+    /// A firmer confirmation: a sheet committed.
     static func commit() {
-        guard isEnabled else { return }
         impactMedium.impactOccurred()
     }
 
-    /// Something snapped into place — the split now balances exactly.
+    /// Something snapped into place: the split now balances exactly.
     static func snap() {
-        guard isEnabled else { return }
         impactRigid.impactOccurred()
     }
 
     static func success() {
-        guard isEnabled else { return }
         notification.notificationOccurred(.success)
     }
 
     static func warning() {
-        guard isEnabled else { return }
         notification.notificationOccurred(.warning)
     }
 
     static func error() {
-        guard isEnabled else { return }
         notification.notificationOccurred(.error)
     }
 
     /// Warms the haptic engine so the first tap isn't late.
     static func prepare() {
-        guard isEnabled else { return }
         impactLight.prepare()
         selection.prepare()
     }

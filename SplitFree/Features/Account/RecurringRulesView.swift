@@ -22,7 +22,7 @@ struct RecurringRulesView: View {
                         EmptyStateView(
                             symbol: "arrow.triangle.2.circlepath",
                             title: String(localized: "No recurring expenses"),
-                            message: String(localized: "When you add an expense, turn on “Repeat this expense” and it'll be created for you on schedule — rent, bills, the shared streaming account.")
+                            message: String(localized: "When you add an expense, turn on “Repeat this expense” and it'll be created for you on schedule: rent, bills, the shared streaming account.")
                         )
                     } else {
                         InfoBanner(
@@ -168,7 +168,7 @@ struct AboutView: View {
 
     private let included: [(String, String)] = [
         ("person.3.fill", String(localized: "Unlimited groups and friends")),
-        ("infinity", String(localized: "Unlimited expenses — no monthly cap")),
+        ("infinity", String(localized: "Unlimited expenses with no monthly cap")),
         ("equal", String(localized: "Equal, exact, percentage, share and plus/minus splits")),
         ("list.bullet.rectangle", String(localized: "Itemize a bill line by line")),
         ("doc.viewfinder", String(localized: "Scan a receipt and read the items off it")),
@@ -231,8 +231,23 @@ struct AboutView: View {
 
                     Card {
                         VStack(alignment: .leading, spacing: 10) {
+                            SectionHeader(String(localized: "Support SplitFree"))
+                            Text("SplitFree is free to use, yet I incur costs for the server and Apple Developer membership. If SplitFree has helped you, please consider buying me a coffee!")
+                                .font(Typography.rowSubtitle)
+                                .foregroundStyle(Palette.secondaryText)
+                                .fixedSize(horizontal: false, vertical: true)
+
+                            Link(destination: URL(string: "https://buymeacoffee.com/devesha")!) {
+                                Text("Buy me a coffee")
+                            }
+                            .buttonStyle(SecondaryButtonStyle())
+                        }
+                    }
+
+                    Card {
+                        VStack(alignment: .leading, spacing: 10) {
                             SectionHeader(String(localized: "Your data"))
-                            Text("Everything lives on this device, and in your own iCloud if you turn sync on.\n\nSharing a group uploads that group so your friends' phones can reach it. Nothing else leaves. There are no accounts, no analytics and no adverts.")
+                            Text("Everything lives on this device, and in your own iCloud if you turn sync on.\n\nSharing a group uploads that group so your friends' phones can reach it. Nothing else leaves. SplitFree works without an account and collects nothing about you.")
                                 .font(Typography.rowSubtitle)
                                 .foregroundStyle(Palette.secondaryText)
                                 .fixedSize(horizontal: false, vertical: true)

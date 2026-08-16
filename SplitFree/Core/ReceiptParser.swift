@@ -7,7 +7,7 @@ import Vision
 /// Receipts have no standard format, so this is heuristic by design: it looks
 /// for lines that end in something money-shaped, treats the text to the left as
 /// the item name, and recognises a handful of keywords for the summary lines.
-/// Whatever it gets wrong is trivially fixable in the itemization editor — the
+/// Whatever it gets wrong is trivially fixable in the itemization editor - the
 /// goal is to save typing, not to be authoritative.
 enum ReceiptParser {
 
@@ -76,7 +76,7 @@ enum ReceiptParser {
                 continue
             }
             if matches(lowered, keywords: totalKeywords) {
-                // Prefer the last total seen — receipts often print a running
+                // Prefer the last total seen - receipts often print a running
                 // total above and the amount actually due below.
                 result.totalMinorUnits = amount
                 continue
@@ -133,7 +133,7 @@ enum ReceiptParser {
         return (label, abs(minorUnits))
     }
 
-    /// Matches 12.50, 1,234.56, 12,50, $8.00, £4 — with or without a symbol.
+    /// Matches 12.50, 1,234.56, 12,50, $8.00, £4 - with or without a symbol.
     private static let amountPattern = #"[$€£¥₹₽₩฿]?\s?\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{1,2})\s?[$€£¥₹₽₩฿]?"#
 
     /// "2 x Latte" or "Latte x2" → quantity 2.

@@ -6,7 +6,7 @@ import SwiftUI
 /// The working copy of an expense while it's being written.
 ///
 /// Nothing is committed to the store until `save` is called, so backing out of
-/// the editor leaves no trace — including on an expense being edited.
+/// the editor leaves no trace - including on an expense being edited.
 @Observable
 @MainActor
 final class ExpenseDraft {
@@ -30,7 +30,7 @@ final class ExpenseDraft {
 
     // MARK: - People
 
-    /// Everyone who could be part of this expense — group members, or the
+    /// Everyone who could be part of this expense - group members, or the
     /// friends chosen for a groupless expense.
     var candidates: [Participant] = []
     /// Who is actually splitting it.
@@ -284,7 +284,7 @@ final class ExpenseDraft {
             && (!usesMultiplePayers || payerRemainder == 0)
     }
 
-    /// "Split equally between 4 people" — the one-line summary on the main form.
+    /// "Split equally between 4 people" - the one-line summary on the main form.
     var splitSummaryText: String {
         let count = includedIDs.count
         switch splitMethod {
@@ -379,7 +379,7 @@ final class ExpenseDraft {
         splitValues = updated
     }
 
-    /// Redistributes percentages so they hit exactly 100 — the "even it out"
+    /// Redistributes percentages so they hit exactly 100 - the "even it out"
     /// affordance on the split sheet.
     func balancePercentages() {
         let ids = Array(includedIDs)

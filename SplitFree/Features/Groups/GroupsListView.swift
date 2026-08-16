@@ -39,12 +39,14 @@ struct GroupsListView: View {
         }
     }
 
+    // Direct pair groups are the transport behind friendships. They belong on
+    // the Friends tab, so the group screens never show them.
     private var activeGroups: [SpendingGroup] {
-        groups.filter { !$0.isArchived }
+        groups.filter { !$0.isArchived && !$0.isDirect }
     }
 
     private var archivedGroups: [SpendingGroup] {
-        groups.filter(\.isArchived)
+        groups.filter { $0.isArchived && !$0.isDirect }
     }
 
     private var visibleGroups: [SpendingGroup] {
@@ -275,7 +277,7 @@ struct OverallBalanceCard: View {
                         .lineLimit(1)
                 }
 
-                // Only worth breaking out when money is moving both ways —
+                // Only worth breaking out when money is moving both ways -
                 // otherwise the chip just repeats the headline.
                 if !summary.owedToYou.isSettled && !summary.youOwe.isSettled {
                     HStack(spacing: 10) {

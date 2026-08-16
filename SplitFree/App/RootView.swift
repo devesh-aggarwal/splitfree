@@ -153,7 +153,6 @@ struct RootView: View {
         #if DEBUG
         applyScreenshotArguments()
         #endif
-        Haptics.isEnabled = settings.hapticsEnabled
         lock.lockIfNeeded(enabled: settings.requiresBiometricUnlock)
         await exchangeRates.refreshIfNeeded()
         await catchUpRecurring()
@@ -172,7 +171,7 @@ struct RootView: View {
     }
 }
 
-/// The floating action button. Deliberately a single, unmissable affordance —
+/// The floating action button. Deliberately a single, unmissable affordance -
 /// adding an expense is the thing people open this app to do.
 struct AddExpenseButton: View {
     var action: () -> Void

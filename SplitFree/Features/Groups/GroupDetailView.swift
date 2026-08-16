@@ -231,7 +231,7 @@ struct GroupDetailView: View {
     }
 
     /// The other mode's payment count, so the toggle can say what it would buy
-    /// you. Only the opposite sheet is computed — the current one is already to
+    /// you. Only the opposite sheet is computed - the current one is already to
     /// hand.
     private var simplifySubtitle: String {
         let current = sheet.debts.count

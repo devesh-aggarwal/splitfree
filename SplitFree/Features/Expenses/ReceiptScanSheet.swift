@@ -146,7 +146,7 @@ struct ReceiptScanSheet: View {
                     if parsed.items.isEmpty {
                         InfoBanner(
                             symbol: "exclamationmark.triangle.fill",
-                            text: String(localized: "No line items were recognized. The photo will still be attached — you can add the items by hand."),
+                            text: String(localized: "No line items were recognized. The photo will still be attached, and you can add the items by hand."),
                             tint: Palette.categoryOrange
                         )
                     } else {

@@ -1,7 +1,7 @@
 import Foundation
 import SwiftData
 
-/// CSV export. Everything you put into SplitFree can be taken back out —
+/// CSV export. Everything you put into SplitFree can be taken back out -
 /// no account, no export tier, no lock-in.
 @MainActor
 enum GroupExporter {

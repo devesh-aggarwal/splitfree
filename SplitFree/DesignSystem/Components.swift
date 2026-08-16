@@ -38,7 +38,7 @@ struct AvatarView: View {
     }
 }
 
-/// Overlapping avatars with a "+N" cap — the group row's at-a-glance roster.
+/// Overlapping avatars with a "+N" cap - the group row's at-a-glance roster.
 struct AvatarStack: View {
     var participants: [Participant]
     var size: CGFloat = Metrics.avatarSmall
@@ -91,7 +91,7 @@ struct CategoryBadge: View {
     }
 }
 
-/// Group identity tile — cover photo if set, otherwise a tinted glyph.
+/// Group identity tile - cover photo if set, otherwise a tinted glyph.
 struct GroupBadge: View {
     var group: SpendingGroup
     var size: CGFloat = 48
@@ -268,7 +268,7 @@ struct SecondaryButtonStyle: ButtonStyle {
     }
 }
 
-/// A selectable pill — split methods, category filters, date ranges.
+/// A selectable pill - split methods, category filters, date ranges.
 struct ChipButton: View {
     var title: String
     var systemImage: String?

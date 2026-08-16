@@ -142,7 +142,7 @@ struct BalanceEngineTests {
         let c = Participant(name: "C")
         [a, b, c].forEach(context.insert)
 
-        // A pays for B, B pays for C, C pays for A — all $10.
+        // A pays for B, B pays for C, C pays for A - all $10.
         addExpense(context, total: 1000, paidBy: [(a, 1000)], owedBy: [(b, 1000)])
         addExpense(context, total: 1000, paidBy: [(b, 1000)], owedBy: [(c, 1000)])
         addExpense(context, total: 1000, paidBy: [(c, 1000)], owedBy: [(a, 1000)])

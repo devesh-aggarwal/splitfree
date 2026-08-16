@@ -55,7 +55,10 @@ struct ItemizationSheet: View {
                 ToolbarItem(placement: .keyboard) {
                     HStack {
                         Spacer()
-                        Button { isEditingText = false } label: { Text("Done") }
+                        Button {
+                            isEditingText = false
+                            UIApplication.dismissKeyboard()
+                        } label: { Text("Done") }
                     }
                 }
             }
@@ -279,7 +282,7 @@ struct ItemizationSheet: View {
         }
     }
 
-    /// What each person would owe if this itemization were applied — shown even
+    /// What each person would owe if this itemization were applied - shown even
     /// while the expense is still using another split method.
     private func previewAmount(for id: UUID) -> Int {
         let allocations = SplitCalculator.itemized(
@@ -320,7 +323,7 @@ struct ItemizationSheet: View {
         item.wrappedValue.assigneeIDs = (ids == draft.includedIDs) ? [] : ids
     }
 
-    /// Switching to itemized here is the point of the sheet — otherwise the
+    /// Switching to itemized here is the point of the sheet - otherwise the
     /// items would be recorded but not actually drive who owes what.
     private func apply() {
         draft.lineItems.removeAll { $0.name.isEmpty && $0.amountMinorUnits == 0 }

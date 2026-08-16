@@ -33,7 +33,7 @@ struct NetPosition: Hashable {
     func amount(in currencyCode: String) -> Int { byCurrency[currencyCode] ?? 0 }
 
     /// Collapses every currency into one figure using the supplied rates.
-    /// Only meaningful for headline totals — never for settling up.
+    /// Only meaningful for headline totals - never for settling up.
     func converted(to baseCode: String, rates: ExchangeRateTable) -> Money {
         let total = byCurrency.reduce(0) { partial, entry in
             partial + rates.convert(minorUnits: entry.value, from: entry.key, to: baseCode)
@@ -65,7 +65,7 @@ struct BalanceSheet {
 /// Derives balances from expenses and settlements.
 ///
 /// Two modes, matching what people expect:
-/// - **Detailed** keeps the actual pairwise history — if you paid for Ana's
+/// - **Detailed** keeps the actual pairwise history - if you paid for Ana's
 ///   dinner and Ben paid for yours, you owe Ben and Ana owes you.
 /// - **Simplified** collapses the graph so the group settles in the fewest
 ///   possible payments, even if that means paying someone you never dined with.

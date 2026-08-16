@@ -12,7 +12,7 @@ enum RecurrenceService {
 
     struct CatchUpResult {
         var createdCount: Int = 0
-        /// "Rent, Internet" — the titles that were created, for the toast.
+        /// "Rent, Internet" - the titles that were created, for the toast.
         var summary: String = ""
     }
 

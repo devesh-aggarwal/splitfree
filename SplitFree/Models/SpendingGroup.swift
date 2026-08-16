@@ -78,7 +78,7 @@ final class SpendingGroup {
     /// against that slot land on you rather than on a duplicate stranger.
     var myMemberIDRaw: String = ""
     var isArchived: Bool = false
-    /// Free-form shared notes — the group "whiteboard".
+    /// Free-form shared notes - the group "whiteboard".
     var notes: String = ""
     /// When on, balances are collapsed into the fewest possible payments.
     /// Defaults on; the group's settings screen turns it off.
@@ -143,7 +143,7 @@ extension SpendingGroup {
         name.isEmpty ? String(localized: "Untitled group") : name
     }
 
-    /// Expenses and settlements interleaved, newest first — the group timeline.
+    /// Expenses and settlements interleaved, newest first - the group timeline.
     var timeline: [LedgerEntry] {
         let entries = expenseList.map { LedgerEntry.expense($0) }
             + settlementList.map { LedgerEntry.settlement($0) }

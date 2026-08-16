@@ -558,7 +558,7 @@ struct GroupMembersView: View {
 
 // MARK: - Notes
 
-/// The group whiteboard — the address of the rental, the wifi password, who's
+/// The group whiteboard - the address of the rental, the wifi password, who's
 /// bringing what.
 struct GroupNotesView: View {
     @Bindable var group: SpendingGroup
@@ -577,7 +577,7 @@ struct GroupNotesView: View {
                     .focused($isFocused)
                     .overlay(alignment: .topLeading) {
                         if group.notes.isEmpty {
-                            Text("Anything the group should remember — the rental address, the wifi password, who's driving.")
+                            Text("Anything the group should remember: the rental address, the wifi password, who's driving.")
                                 .font(Typography.rowSubtitle)
                                 .foregroundStyle(Palette.tertiaryText)
                                 .padding(.horizontal, Metrics.screenPadding + 5)

@@ -109,7 +109,7 @@ enum PaymentLinks {
             .replacingOccurrences(of: "$", with: "")
     }
 
-    /// "24.50" — plain decimal, no symbol, which is what every scheme expects.
+    /// "24.50" - plain decimal, no symbol, which is what every scheme expects.
     private static func majorUnitsString(_ amount: Money) -> String {
         let digits = Currency.fractionDigits(for: amount.currencyCode)
         if digits == 0 { return String(abs(amount.minorUnits)) }

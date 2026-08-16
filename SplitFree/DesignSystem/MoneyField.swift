@@ -1,8 +1,9 @@
 import SwiftUI
+import UIKit
 
 /// A money input that edits minor units directly.
 ///
-/// The text the user sees is always a valid formatted amount — there is no state
+/// The text the user sees is always a valid formatted amount - there is no state
 /// where the field shows something that isn't a number. Typing appends digits
 /// from the right, the way a card terminal or calculator behaves, so "1250"
 /// becomes $12.50 without anyone hunting for the decimal point.
@@ -13,7 +14,7 @@ struct MoneyField: View {
     var alignment: TextAlignment = .center
     var tint: Color = Palette.primaryText
     var placeholderZero: Bool = true
-    /// Opens the keypad as soon as the field appears — used on the new-expense
+    /// Opens the keypad as soon as the field appears - used on the new-expense
     /// screen, where the amount is always the first thing you type.
     var focusesOnAppear: Bool = false
 
@@ -44,15 +45,20 @@ struct MoneyField: View {
                     if expected != digits { digits = expected }
                 }
 
-            Text(displayText)
-                .font(font)
-                .foregroundStyle(minorUnits == 0 && placeholderZero ? Palette.tertiaryText : tint)
-                .monospacedDigit()
-                .contentTransition(.numericText())
-                .frame(maxWidth: .infinity, alignment: frameAlignment)
-                .contentShape(Rectangle())
-                .onTapGesture { isFocused = true }
-                .animation(Motion.quick, value: minorUnits)
+            HStack(spacing: 1) {
+                Text(displayText)
+                    .font(font)
+                    .foregroundStyle(minorUnits == 0 && placeholderZero ? Palette.tertiaryText : tint)
+                    .monospacedDigit()
+                    .contentTransition(.numericText())
+                    .animation(Motion.quick, value: minorUnits)
+                if isFocused {
+                    BlinkingCaret(font: font)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: frameAlignment)
+            .contentShape(Rectangle())
+            .onTapGesture { isFocused = true }
         }
         .onAppear {
             digits = minorUnits == 0 ? "" : String(minorUnits)
@@ -81,6 +87,45 @@ struct MoneyField: View {
         case .trailing: .trailing
         default: .center
         }
+    }
+}
+
+/// The insertion caret the hidden text field can't show. Sized by the font it
+/// sits beside, so it works at any scale from the big amount entry down to
+/// inline row fields.
+struct BlinkingCaret: View {
+    var font: Font
+
+    @State private var isVisible = true
+
+    var body: some View {
+        Text(verbatim: "0")
+            .font(font)
+            .monospacedDigit()
+            .hidden()
+            .overlay(
+                Capsule()
+                    .fill(Palette.accent)
+                    .frame(width: 2.5)
+                    .padding(.vertical, 1)
+                    .opacity(isVisible ? 1 : 0)
+            )
+            .frame(width: 3)
+            .onAppear {
+                withAnimation(.easeInOut(duration: 0.5).repeatForever(autoreverses: true)) {
+                    isVisible = false
+                }
+            }
+            .accessibilityHidden(true)
+    }
+}
+
+extension UIApplication {
+    /// Dismisses whichever keyboard is up, no matter which view owns the focus.
+    /// SwiftUI focus state can't reach the hidden field inside `MoneyField`
+    /// from an enclosing screen, so the keyboard toolbars use this instead.
+    static func dismissKeyboard() {
+        shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 

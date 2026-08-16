@@ -59,7 +59,10 @@ struct SplitEditorSheet: View {
                 ToolbarItem(placement: .keyboard) {
                     HStack {
                         Spacer()
-                        Button { isEditingValue = false } label: { Text("Done") }
+                        Button {
+                            isEditingValue = false
+                            UIApplication.dismissKeyboard()
+                        } label: { Text("Done") }
                     }
                 }
             }
@@ -403,7 +406,7 @@ struct SplitEditorSheet: View {
     // MARK: - Actions
 
     /// Leaves already-typed amounts alone and spreads whatever's left over the
-    /// people still on zero — or over everyone if all are set.
+    /// people still on zero - or over everyone if all are set.
     private func splitRemainingEvenly() {
         let ids = Array(draft.includedIDs)
         guard !ids.isEmpty else { return }
