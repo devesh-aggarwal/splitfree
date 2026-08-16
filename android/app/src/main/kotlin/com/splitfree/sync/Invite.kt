@@ -16,5 +16,5 @@ data class Invite(val code: String) {
             return if (clean.length == 10) "${clean.take(5)}-${clean.drop(5)}" else clean
         }
 
-    val url: String get() = "https://devesh-aggarwal.github.io/splitfree/join.html#$code"
+    val url: String get() = "https://splitfree.dev/join#$code"
 }

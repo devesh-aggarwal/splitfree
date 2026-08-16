@@ -17,7 +17,7 @@ struct Invite: Equatable {
     }
 
     var url: URL {
-        URL(string: "https://devesh-aggarwal.github.io/splitfree/join.html#\(code)")!
+        URL(string: "https://splitfree.dev/join#\(code)")!
     }
 }
 

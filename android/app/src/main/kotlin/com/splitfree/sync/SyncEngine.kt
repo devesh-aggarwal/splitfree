@@ -707,6 +707,8 @@ class SyncEngine(
         fun inviteToken(url: String): String? {
             val fragment = url.substringAfter('#', "").takeIf { it.isNotBlank() } ?: return null
             if (url.startsWith("splitfree://join")) return fragment
+            if (url.startsWith("https://splitfree.dev/join")) return fragment
+            // Links minted by builds that predate splitfree.dev.
             if (url.contains("/splitfree/join")) return fragment
             return null
         }
