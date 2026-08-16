@@ -719,7 +719,7 @@ fun AccountScreen(viewModel: LedgerViewModel) {
             )
             Spacer(Modifier.height(12.dp))
             SecondaryButton("Read the privacy policy") {
-                viewModel.openUrl("https://devesh-aggarwal.github.io/splitfree/privacy.html")
+                viewModel.openUrl("https://splitfree.dev/privacy")
             }
         }
 

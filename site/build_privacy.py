@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Renders PRIVACY.md into docs/privacy.html.
+"""Renders PRIVACY.md into site/privacy.html.
 
 The policy is written once, in the repository root, because the App Store needs
 a URL and anybody reading the source deserves the same text. Keeping two copies
 by hand is how they end up disagreeing, and a privacy policy that disagrees with
 itself is worse than not having one.
 
-Run after editing PRIVACY.md:  python3 docs/build_privacy.py
+Run after editing PRIVACY.md:  python3 site/build_privacy.py
 """
 
 import html
@@ -15,7 +15,7 @@ import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "PRIVACY.md"
-TARGET = ROOT / "docs" / "privacy.html"
+TARGET = ROOT / "site" / "privacy.html"
 
 TEMPLATE = """<!doctype html>
 <html lang="en">

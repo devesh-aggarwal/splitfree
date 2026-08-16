@@ -201,7 +201,10 @@ final class SyncEngine {
         if url.scheme == "splitfree", url.host == "join" {
             return url.fragment ?? url.lastPathComponent
         }
-        if url.host?.hasSuffix("github.io") == true, url.path.contains("/join") {
+        // splitfree.dev is the current home; github.io links from older
+        // builds keep working for as long as the old page redirects.
+        if url.host == "splitfree.dev" || url.host?.hasSuffix("github.io") == true,
+           url.path.contains("/join") {
             return url.fragment
         }
         return nil

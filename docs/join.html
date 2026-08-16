@@ -9,51 +9,22 @@
 </head>
 <body>
 <main>
-  <header><span class="mark">S</span><a href="./">SplitFree</a></header>
+  <header><span class="mark">S</span><a href="https://splitfree.dev/">SplitFree</a></header>
 
-  <h1>You have been invited</h1>
-  <p class="sub" id="lede">Opening SplitFree.</p>
+  <h1>One moment</h1>
+  <p class="sub">This invite now lives at splitfree.dev. Taking you there.</p>
 
   <div class="card">
-    <p id="hint">If nothing happens, tap the button below.</p>
-    <p><a class="btn" id="open" href="#">Open in SplitFree</a></p>
-    <p class="meta" id="fallback" style="display:none">
-      Do not have the app yet? Install SplitFree first, then open this link
-      again, or type the code into Groups, then Join with a code.
-    </p>
+    <p><a class="btn" id="open" href="https://splitfree.dev/join">Continue to splitfree.dev</a></p>
   </div>
-
-  <footer>
-    <p class="meta">
-      This page never sees your invite. The token sits after the # in the
-      address, and browsers do not send that part to a server, so it goes
-      straight from your address bar into the app.
-    </p>
-    <p><a href="privacy.html">Privacy</a> &middot; <a href="./">About SplitFree</a></p>
-  </footer>
 </main>
 
 <script>
-  // The token lives in the fragment, which is exactly why this page can be
-  // static and hosted anywhere: the server is never told what the invite is.
-  var token = (location.hash || "").replace(/^#/, "");
-  var target = token ? "splitfree://join#" + token : "splitfree://join";
-  var open = document.getElementById("open");
-  open.setAttribute("href", target);
-
-  if (!token) {
-    document.getElementById("lede").textContent = "That link is missing its invite code.";
-    document.getElementById("hint").textContent =
-      "Ask whoever invited you to send the whole link, including everything after the # sign.";
-    open.style.display = "none";
-  } else {
-    // Try immediately. If the app is not installed nothing happens, which is
-    // why the button stays on screen rather than being a redirect gamble.
-    window.location.href = target;
-    setTimeout(function () {
-      document.getElementById("fallback").style.display = "block";
-    }, 1500);
-  }
+  // The invite token sits in the fragment, which browsers never send to any
+  // server. location.replace keeps it intact on the way to the new home.
+  var target = "https://splitfree.dev/join" + (location.hash || "");
+  document.getElementById("open").setAttribute("href", target);
+  location.replace(target);
 </script>
 </body>
 </html>

@@ -70,7 +70,7 @@ struct JoinCodeTests {
     func linkShape() {
         let url = Invite(code: "ABCDEFGHJK").url
         #expect(url.fragment == "ABCDEFGHJK")
-        #expect(url.host == "devesh-aggarwal.github.io")
+        #expect(url.host == "splitfree.dev")
     }
 }
 
@@ -79,6 +79,12 @@ struct InviteLinkTests {
 
     @Test("A web link carries its token in the fragment, where servers never see it")
     func webLink() {
+        let url = URL(string: "https://splitfree.dev/join#abc123")!
+        #expect(SyncEngine.inviteToken(from: url) == "abc123")
+    }
+
+    @Test("Links from builds that predate splitfree.dev still resolve")
+    func legacyWebLink() {
         let url = URL(string: "https://devesh-aggarwal.github.io/splitfree/join.html#abc123")!
         #expect(SyncEngine.inviteToken(from: url) == "abc123")
     }

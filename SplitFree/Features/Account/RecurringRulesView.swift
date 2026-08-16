@@ -257,7 +257,7 @@ struct AboutView: View {
                     Card {
                         VStack(alignment: .leading, spacing: 10) {
                             SectionHeader(String(localized: "Privacy policy"))
-                            Link(destination: URL(string: "https://devesh-aggarwal.github.io/splitfree/privacy.html")!) {
+                            Link(destination: URL(string: "https://splitfree.dev/privacy")!) {
                                 Text("Read the privacy policy")
                             }
                             .buttonStyle(SecondaryButtonStyle())
