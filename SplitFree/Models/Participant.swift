@@ -1,7 +1,7 @@
 import Foundation
 import SwiftData
 
-/// A person who can pay for or owe part of an expense — you, or one of your friends.
+/// A person who can pay for or owe part of an expense - you, or one of your friends.
 ///
 /// Exactly one `Participant` has `isCurrentUser == true`; it is created on first launch
 /// and can never be deleted.
@@ -11,7 +11,7 @@ final class Participant {
     var name: String = ""
     var email: String = ""
     var phone: String = ""
-    /// Index into `Palette.avatarColors` — keeps avatars stable and CloudKit-cheap.
+    /// Index into `Palette.avatarColors` - keeps avatars stable and CloudKit-cheap.
     var colorIndex: Int = 0
     /// Optional profile photo, downscaled before storage.
     @Attribute(.externalStorage) var avatarData: Data?
@@ -42,7 +42,7 @@ final class Participant {
     @Relationship(inverse: \SpendingGroup.members) var groups: [SpendingGroup]? = []
 
     // CloudKit refuses to load a store where any relationship lacks an inverse,
-    // and it fails at load time rather than complaining at build time — so
+    // and it fails at load time rather than complaining at build time - so
     // without these the app silently falls back to a local-only store and iCloud
     // sync never happens at all. They exist to be the other end of a
     // relationship, not because anything reads them.
@@ -71,7 +71,7 @@ final class Participant {
 }
 
 extension Participant {
-    /// "You" for the current user, otherwise their first name — matches how the
+    /// "You" for the current user, otherwise their first name - matches how the
     /// rest of the UI refers to people in sentences.
     var displayName: String {
         if isCurrentUser { return String(localized: "You", comment: "Refers to the current user") }

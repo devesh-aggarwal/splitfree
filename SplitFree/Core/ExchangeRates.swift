@@ -46,7 +46,7 @@ struct ExchangeRateTable: Codable, Sendable, Equatable {
 ///
 /// Rates are cached on disk and the bundled snapshot is always available, so
 /// conversion works on a plane with no signal. A refresh is attempted at most
-/// once every six hours, and a failure is never fatal — we just keep using
+/// once every six hours, and a failure is never fatal - we just keep using
 /// whatever we already have.
 @Observable
 @MainActor
@@ -94,7 +94,7 @@ final class ExchangeRateService {
                 try? data.write(to: cacheURL, options: .atomic)
             }
         } catch {
-            // Keep the previous table — stale rates beat no rates.
+            // Keep the previous table - stale rates beat no rates.
             lastError = error.localizedDescription
         }
     }
@@ -138,7 +138,7 @@ final class ExchangeRateService {
     }
 
     /// Approximate rates shipped with the app so conversion always works offline.
-    /// These are a snapshot, not live quotes — the UI labels them as such and any
+    /// These are a snapshot, not live quotes - the UI labels them as such and any
     /// successful refresh replaces them.
     nonisolated static let bundledTable = ExchangeRateTable(
         baseCode: "USD",

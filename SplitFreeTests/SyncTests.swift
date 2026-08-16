@@ -12,7 +12,7 @@ struct SyncFingerprintTests {
     /// the same inputs.
     ///
     /// If the two implementations ever drift apart, each app decides the other's
-    /// rows have changed and pushes them back, forever — with no error, no wrong
+    /// rows have changed and pushes them back, forever - with no error, no wrong
     /// number on screen, and nothing to notice except a group that never stops
     /// syncing. That is why this is pinned to fixed values rather than to
     /// "whatever this platform computes twice in a row".

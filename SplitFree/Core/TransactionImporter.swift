@@ -105,7 +105,7 @@ enum TransactionImporter {
                 spendMinorUnits = debit != 0 ? abs(debit) : nil
             } else if let amountIndex = mapping.amountIndex, amountIndex < fields.count {
                 // A single amount column signs spending negative by convention,
-                // but not every bank agrees — so a positive amount is only
+                // but not every bank agrees - so a positive amount is only
                 // treated as income when the description also reads like one.
                 let amount = CurrencyFormatting.parse(fields[amountIndex], currencyCode: currency) ?? 0
                 let isIncome = amount > 0 && looksLikeCredit(fields[descriptionIndex])

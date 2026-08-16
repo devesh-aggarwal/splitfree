@@ -223,7 +223,7 @@ final class SyncEngine {
                 ])
                 tombstone.isPushed = true
             } catch SupabaseError.http(let code, _) where (400..<500).contains(code) {
-                // The server will not accept this tombstone and never will —
+                // The server will not accept this tombstone and never will -
                 // the row was never uploaded, or the group is gone. Retrying it
                 // on every sync forever helps nobody.
                 tombstone.isPushed = true
@@ -726,7 +726,7 @@ final class SyncEngine {
     nonisolated static func timestamp(_ date: Date) -> String { outbound.string(from: date) }
 
     /// Parses a Postgres `timestamptz`, which arrives with up to six fractional
-    /// digits — more than `ISO8601DateFormatter` will accept.
+    /// digits - more than `ISO8601DateFormatter` will accept.
     nonisolated static func date(from string: String) -> Date? {
         var value = string
         if let dot = value.firstIndex(of: "."),

@@ -3,7 +3,7 @@ import Foundation
 /// Turns "how should this be divided" into exact per-person minor-unit amounts.
 ///
 /// Every function here guarantees the allocated amounts sum **exactly** to the
-/// total. Remainders are never dropped or rounded away — they are handed out one
+/// total. Remainders are never dropped or rounded away - they are handed out one
 /// minor unit at a time by the largest-remainder method, so a $10.00 bill split
 /// three ways comes out as 3.34 / 3.33 / 3.33 rather than 3.33 × 3 and a lost cent.
 enum SplitCalculator {
@@ -121,7 +121,7 @@ enum SplitCalculator {
     // MARK: - Exact amounts
 
     /// Passes typed amounts through unchanged. Any shortfall or overage is the
-    /// caller's problem to surface — `exactRemainder` reports it.
+    /// caller's problem to surface - `exactRemainder` reports it.
     static func exact(entries: [(id: UUID, amount: Int)]) -> [Allocation] {
         entries.map {
             Allocation(participantID: $0.id, amountMinorUnits: $0.amount, weight: Double($0.amount))
@@ -190,7 +190,7 @@ enum SplitCalculator {
             (id: id, amount: (subtotals[id] ?? 0) + (extraAllocations[id] ?? 0))
         }
 
-        // Reconcile against the stated total — receipts round, ours must not.
+        // Reconcile against the stated total - receipts round, ours must not.
         let drift = total - amounts.reduce(0) { $0 + $1.amount }
         if drift != 0 {
             let correction = distributeEvenly(total: drift, count: amounts.count)

@@ -1,7 +1,7 @@
 import Foundation
 import SwiftData
 
-/// How a settle-up payment was made. Only used as a label — SplitFree never
+/// How a settle-up payment was made. Only used as a label - SplitFree never
 /// touches money itself, it just records what happened and can hand off to
 /// the payment app of your choice.
 enum PaymentMethod: String, CaseIterable, Codable, Identifiable, Sendable {

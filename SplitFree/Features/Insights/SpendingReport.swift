@@ -39,7 +39,7 @@ struct SpendingReport {
     private let baseCode: String
 
     /// Past this many bars, the tail is folded into "Other" rather than given
-    /// its own slot — nobody can read a ninth category.
+    /// its own slot - nobody can read a ninth category.
     private static let sliceLimit = 8
 
     var isEmpty: Bool { count == 0 }
@@ -101,7 +101,7 @@ struct SpendingReport {
             previousTotal = previous.reduce(0) { $0 + amount($1) }
         }
 
-        // Monthly series — every month in the window appears, including empty
+        // Monthly series - every month in the window appears, including empty
         // ones, so a quiet month reads as a gap rather than disappearing.
         let grouped = Dictionary(grouping: relevant) { expense in
             calendar.date(from: calendar.dateComponents([.year, .month], from: expense.date)) ?? expense.date
@@ -136,7 +136,7 @@ struct SpendingReport {
             categoryTotals.map { Slice(id: $0.key.rawValue, label: $0.key.title, amount: $0.value, category: $0.key) }
         )
 
-        // People — who you actually shared bills with.
+        // People - who you actually shared bills with.
         var personTotals: [UUID: (Participant, Int)] = [:]
         for expense in relevant {
             let value = amount(expense)

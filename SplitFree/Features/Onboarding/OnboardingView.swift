@@ -1,7 +1,7 @@
 import SwiftData
 import SwiftUI
 
-/// Three screens: what this is, who you are, and what currency you think in.
+/// Three screens: what this is, who you are, and your default currency.
 /// Then straight into the app.
 struct OnboardingView: View {
     @Environment(\.modelContext) private var context
@@ -82,7 +82,7 @@ struct OnboardingView: View {
 
             VStack(spacing: 8) {
                 promise(symbol: "nosign", text: String(localized: "No adverts, ever"))
-                promise(symbol: "creditcard.trianglebadge.exclamationmark", text: String(localized: "No subscription, no paid tier"))
+                promise(symbol: "creditcard.trianglebadge.exclamationmark", text: String(localized: "No subscription or paid tier"))
                 promise(symbol: "lock.shield", text: String(localized: "Your data stays yours"))
             }
             .padding(.top, 4)
@@ -147,12 +147,12 @@ struct OnboardingView: View {
         VStack(spacing: 22) {
             Spacer()
 
-            Text("Which currency do you think in?")
+            Text("Choose your default currency")
                 .font(.title.weight(.bold))
                 .foregroundStyle(Palette.primaryText)
                 .multilineTextAlignment(.center)
 
-            Text("Individual expenses can be in any of 150+ currencies — this is just the one your totals are shown in.")
+            Text("Your totals are shown in this currency. Individual expenses can still be in any of 150+ currencies.")
                 .font(.body)
                 .foregroundStyle(Palette.secondaryText)
                 .multilineTextAlignment(.center)

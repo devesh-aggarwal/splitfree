@@ -11,7 +11,7 @@ struct Currency: Identifiable, Hashable, Sendable {
 
     var id: String { code }
 
-    /// "US Dollar (USD)" — used for accessibility labels and search.
+    /// "US Dollar (USD)" - used for accessibility labels and search.
     var searchText: String { "\(name) \(code) \(symbol)".lowercased() }
 }
 

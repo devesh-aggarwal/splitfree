@@ -1,7 +1,7 @@
 import Foundation
 import SwiftData
 
-/// A reusable split — "Rent: Ana 60%, me 40%" — so a recurring shape doesn't
+/// A reusable split - "Rent: Ana 60%, me 40%" - so a recurring shape doesn't
 /// have to be re-entered every time.
 @Model
 final class SplitTemplate {
@@ -16,7 +16,7 @@ final class SplitTemplate {
     /// Set when this template should be pre-selected for new expenses in its group.
     var isDefaultForGroup: Bool = false
 
-    /// JSON-encoded `RecurringSplitPlan` — same shape as a recurring rule's plan.
+    /// JSON-encoded `RecurringSplitPlan` - same shape as a recurring rule's plan.
     var planData: Data?
 
     init(name: String, splitMethod: SplitMethod, group: SpendingGroup?) {

@@ -142,7 +142,7 @@ enum ExpenseCategory: String, CaseIterable, Codable, Identifiable, Sendable {
 
     var color: Color { group.color }
 
-    /// Best-effort category from an expense title — powers the "smart" default
+    /// Best-effort category from an expense title - powers the "smart" default
     /// when someone types "Uber to airport" and never opens the category picker.
     static func suggestion(for title: String) -> ExpenseCategory? {
         let text = title.lowercased()

@@ -5,7 +5,7 @@ import SwiftUI
 /// Where the money actually went.
 ///
 /// Every figure is your own share, converted to your base currency at the rate
-/// captured when each expense was entered — so the totals don't drift as
+/// captured when each expense was entered - so the totals don't drift as
 /// exchange rates move.
 struct InsightsView: View {
     @Environment(\.modelContext) private var context
@@ -47,7 +47,7 @@ struct InsightsView: View {
                         )
                     } else {
                         headlineTiles
-                        // A single bar is not a chart — the headline figure
+                        // A single bar is not a chart - the headline figure
                         // already says everything it could.
                         if report.monthly.count > 1 {
                             monthlyChart
@@ -71,7 +71,7 @@ struct InsightsView: View {
                     Menu {
                         Picker(selection: $groupFilter.animation(Motion.smooth)) {
                             Text("All groups").tag(SpendingGroup?.none)
-                            ForEach(groups.filter { !$0.isArchived }) { group in
+                            ForEach(groups.filter { !$0.isArchived && !$0.isDirect }) { group in
                                 Text(group.displayName).tag(SpendingGroup?.some(group))
                             }
                         } label: {
@@ -171,7 +171,7 @@ struct InsightsView: View {
 
     // MARK: - Monthly
 
-    /// One series, so one hue and no legend — the axis names the months.
+    /// One series, so one hue and no legend - the axis names the months.
     private var monthlyChart: some View {
         Card {
             VStack(alignment: .leading, spacing: 14) {
@@ -225,7 +225,7 @@ struct InsightsView: View {
     // MARK: - Categories
 
     /// Ranked horizontal bars rather than a pie: with ten-ish categories a pie
-    /// can't be read, and every bar carries its own name and figure — which
+    /// can't be read, and every bar carries its own name and figure - which
     /// doubles as the table view.
     private var categoryChart: some View {
         Card {
@@ -460,7 +460,7 @@ enum InsightsRange: String, CaseIterable, Identifiable {
 }
 
 enum SpendBasis: String, CaseIterable, Identifiable {
-    /// What you personally owed — the honest "what did this cost me" number.
+    /// What you personally owed - the honest "what did this cost me" number.
     case yourShare
     /// The full value of every bill you were part of.
     case fullBills

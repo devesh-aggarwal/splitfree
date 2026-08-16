@@ -20,7 +20,6 @@ final class AppSettings {
         // literal history of who paid for whom.
         self.simplifyDebtsByDefault = defaults.object(forKey: Keys.simplifyDefault) as? Bool ?? true
         self.convertToBaseCurrency = defaults.object(forKey: Keys.convertToBase) as? Bool ?? true
-        self.hapticsEnabled = defaults.object(forKey: Keys.haptics) as? Bool ?? true
         self.requiresBiometricUnlock = defaults.bool(forKey: Keys.biometricLock)
         self.appearanceRaw = defaults.string(forKey: Keys.appearance) ?? Appearance.system.rawValue
         self.recentCurrencyCodes = defaults.stringArray(forKey: Keys.recentCurrencies) ?? []
@@ -45,13 +44,6 @@ final class AppSettings {
     /// Roll multi-currency balances into one base-currency figure on summaries.
     var convertToBaseCurrency: Bool {
         didSet { defaults.set(convertToBaseCurrency, forKey: Keys.convertToBase) }
-    }
-
-    var hapticsEnabled: Bool {
-        didSet {
-            defaults.set(hapticsEnabled, forKey: Keys.haptics)
-            Haptics.isEnabled = hapticsEnabled
-        }
     }
 
     var requiresBiometricUnlock: Bool {
@@ -121,7 +113,6 @@ final class AppSettings {
         static let onboarded = "settings.hasCompletedOnboarding"
         static let simplifyDefault = "settings.simplifyDebtsByDefault"
         static let convertToBase = "settings.convertToBaseCurrency"
-        static let haptics = "settings.hapticsEnabled"
         static let biometricLock = "settings.requiresBiometricUnlock"
         static let appearance = "settings.appearance"
         static let recentCurrencies = "settings.recentCurrencies"

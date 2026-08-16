@@ -36,7 +36,7 @@ struct Money: Hashable, Codable, Sendable {
     var isPositive: Bool { minorUnits > 0 }
     var magnitude: Money { Money(minorUnits: abs(minorUnits), currencyCode: currencyCode) }
 
-    /// The amount as a decimal in major units — for display and for rate math only.
+    /// The amount as a decimal in major units - for display and for rate math only.
     var decimalValue: Decimal {
         let scale = Currency.fractionDigits(for: currencyCode)
         return Decimal(minorUnits) / pow(Decimal(10), scale)
@@ -75,7 +75,7 @@ extension Money {
         )
     }
 
-    /// Magnitude only — used where the sign is carried by surrounding copy
+    /// Magnitude only - used where the sign is carried by surrounding copy
     /// ("you owe" / "owes you") rather than a minus glyph.
     func formattedAbsolute(showsCurrencyCode: Bool = false) -> String {
         magnitude.formatted(showsCurrencyCode: showsCurrencyCode)

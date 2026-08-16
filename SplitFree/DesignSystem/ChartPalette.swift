@@ -4,13 +4,13 @@ import SwiftUI
 ///
 /// The category badge colours elsewhere in the app are tuned to sit behind a
 /// white glyph, which makes several of them too close together to serve as
-/// chart series — blue and purple are nearly identical under deuteranopia. So
+/// chart series - blue and purple are nearly identical under deuteranopia. So
 /// charts get their own fixed ramp.
 ///
 /// Both sets were checked against the six palette checks (lightness band,
 /// chroma floor, adjacent CVD separation for protan/deutan/tritan, the
 /// normal-vision floor, and contrast against the chart surface) and pass in
-/// their respective modes. **Assign these in fixed order and never cycle** —
+/// their respective modes. **Assign these in fixed order and never cycle** -
 /// past the eighth slot, fold the tail into "Other" rather than inventing a
 /// ninth hue that nobody can tell from the first.
 enum ChartPalette {
@@ -26,7 +26,7 @@ enum ChartPalette {
         series[min(max(0, index), series.count - 1)]
     }
 
-    /// The single hue used when a chart shows one series — most of ours do,
+    /// The single hue used when a chart shows one series - most of ours do,
     /// because the bars are already labelled with what they are.
     static var primary: Color { series[0] }
 

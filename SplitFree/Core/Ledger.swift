@@ -319,7 +319,7 @@ enum Ledger {
         return (expenses, settlements)
     }
 
-    /// Every expense and settlement touching a friend, groups included — the
+    /// Every expense and settlement touching a friend, groups included - the
     /// figure shown next to their name on the Friends tab.
     static func sharedLedger(
         between user: Participant,

@@ -17,7 +17,7 @@ struct ExpenseEditorContext: Identifiable {
 ///
 /// The layout is a funnel: the amount is the biggest thing on screen, then what
 /// it was for, then who's involved. Paying and splitting are single summary rows
-/// that open focused sheets, so the common case — one person paid, split evenly —
+/// that open focused sheets, so the common case - one person paid, split evenly -
 /// is a three-field form.
 struct ExpenseEditorView: View {
     let context: ExpenseEditorContext
@@ -521,7 +521,7 @@ struct ExpenseEditorView: View {
                 applyScan(image: image, text: text, items: items, to: draft)
             }
         case .group:
-            GroupPickerSheet(selection: draft.group, groups: allGroups.filter { !$0.isArchived }) { group in
+            GroupPickerSheet(selection: draft.group, groups: allGroups.filter { !$0.isArchived && !$0.isDirect }) { group in
                 apply(group: group, to: draft)
             }
         }
@@ -545,7 +545,10 @@ struct ExpenseEditorView: View {
         ToolbarItem(placement: .keyboard) {
             HStack {
                 Spacer()
-                Button { focusedField = nil } label: { Text("Done") }
+                Button {
+                    focusedField = nil
+                    UIApplication.dismissKeyboard()
+                } label: { Text("Done") }
             }
         }
     }
@@ -628,6 +631,25 @@ struct ExpenseEditorView: View {
               let image = UIImage(data: data)
         else { return }
         draft.receiptImageData = image.compressedForStorage()
+
+        // Run the same recognition the scanner uses, so a photo from the
+        // library itemizes itself instead of opening an empty manual sheet.
+        // Hand-entered items are never overwritten.
+        let result = await ReceiptParser.parse(image: image, currencyCode: draft.currencyCode)
+        draft.receiptText = result.rawText
+        if draft.lineItems.isEmpty, !result.items.isEmpty {
+            draft.lineItems = result.items.map {
+                ExpenseDraft.DraftLineItem(
+                    name: $0.name,
+                    amountMinorUnits: $0.amountMinorUnits,
+                    quantity: $0.quantity
+                )
+            }
+            if draft.amountMinorUnits == 0 {
+                draft.adoptItemizedTotal()
+            }
+            Haptics.success()
+        }
     }
 
     private func save() {

@@ -86,13 +86,13 @@ struct ImportTransactionsView: View {
                 EmptyStateView(
                     symbol: "square.and.arrow.down",
                     title: String(localized: "Bring in your statement"),
-                    message: String(localized: "Export a CSV from your bank or card app, then pick it here. SplitFree reads it on your device — nothing is uploaded anywhere."),
+                    message: String(localized: "Export a CSV from your bank or card app, then pick it here. SplitFree reads it on your device. Nothing is uploaded anywhere."),
                     actionTitle: String(localized: "Choose a CSV file")
                 ) { isPresentingFilePicker = true }
 
                 InfoBanner(
                     symbol: "lock.fill",
-                    text: String(localized: "Most banks call this “Export”, “Download transactions”, or “Statement as CSV”. Money coming in is skipped — only spending becomes an expense.")
+                    text: String(localized: "Most banks call this “Export”, “Download transactions”, or “Statement as CSV”. Money coming in is skipped, so only spending becomes an expense.")
                 )
                 .padding(.horizontal, Metrics.screenPadding)
             }
@@ -208,7 +208,7 @@ struct ImportTransactionsView: View {
 
                 Picker(selection: $selectedGroup.animation(Motion.quick)) {
                     Text("No group").tag(SpendingGroup?.none)
-                    ForEach(groups.filter { !$0.isArchived }) { group in
+                    ForEach(groups.filter { !$0.isArchived && !$0.isDirect }) { group in
                         Text(group.displayName).tag(SpendingGroup?.some(group))
                     }
                 } label: {
@@ -258,7 +258,7 @@ struct ImportTransactionsView: View {
                             .font(Typography.rowTitle)
                         Text(splitEqually
                             ? String(localized: "Everyone selected shares each transaction.")
-                            : String(localized: "Recorded as yours alone — useful for tracking your own spending."))
+                            : String(localized: "Recorded as yours alone, useful for tracking your own spending."))
                             .font(Typography.caption)
                             .foregroundStyle(Palette.secondaryText)
                     }
@@ -280,7 +280,7 @@ struct ImportTransactionsView: View {
                         .font(Typography.rowTitle)
                         .foregroundStyle(Palette.primaryText)
                     if parsed.skippedCount > 0 {
-                        Text("^[\(parsed.skippedCount) row](inflect: true) skipped — no usable date or amount, or money coming in.")
+                        Text("^[\(parsed.skippedCount) row](inflect: true) skipped: no usable date or amount, or money coming in.")
                             .font(Typography.caption)
                             .foregroundStyle(Palette.secondaryText)
                     }

@@ -5,7 +5,7 @@ import Foundation
 /// Swift's own `hashValue` is seeded per process, so it changes every launch and
 /// is useless for deciding what has already been uploaded. This is FNV-1a over a
 /// canonical string, which gives the same answer on every launch and on both
-/// platforms — the Android app computes the identical value from the identical
+/// platforms - the Android app computes the identical value from the identical
 /// fields, so a group that round-trips between an iPhone and a Pixel doesn't
 /// re-upload itself forever.
 enum SyncFingerprint {
@@ -29,7 +29,7 @@ enum SyncFingerprint {
 
 extension SpendingGroup {
     /// Includes the roster, because a member added or renamed is a change to the
-    /// group as far as the server is concerned — the whole roster is pushed with
+    /// group as far as the server is concerned - the whole roster is pushed with
     /// it, so the whole roster has to be part of what marks it dirty.
     func syncFingerprint(memberID: (Participant) -> UUID) -> String {
         var parts = [
