@@ -528,8 +528,8 @@ struct ExpenseEditorView: View {
         case .itemize:
             ItemizationSheet(draft: draft)
         case .scanReceipt:
-            ReceiptScanSheet { image, text, items in
-                applyScan(image: image, text: text, items: items, to: draft)
+            ReceiptScanSheet { image, result in
+                applyScan(image: image, result: result, to: draft)
             }
         case .group:
             GroupPickerSheet(selection: draft.group, groups: allGroups.filter { !$0.isArchived && !$0.isDirect }) { group in
@@ -624,15 +624,10 @@ struct ExpenseEditorView: View {
         }
     }
 
-    private func applyScan(image: UIImage?, text: String, items: [ExpenseDraft.DraftLineItem], to draft: ExpenseDraft) {
+    private func applyScan(image: UIImage?, result: ReceiptParser.Result, to draft: ExpenseDraft) {
         if let image { draft.receiptImageData = image.compressedForStorage() }
-        draft.receiptText = text
-        if !items.isEmpty {
-            draft.lineItems = items
-            if draft.amountMinorUnits == 0 {
-                draft.adoptItemizedTotal()
-            }
-        }
+        draft.receiptText = result.rawText
+        applyParsedReceipt(result, to: draft, overwriteItems: true)
         Haptics.success()
     }
 
@@ -651,6 +646,17 @@ struct ExpenseEditorView: View {
         let result = await ReceiptParser.parse(image: image, currencyCode: draft.currencyCode)
         draft.receiptText = result.rawText
         if draft.lineItems.isEmpty, !result.items.isEmpty {
+            applyParsedReceipt(result, to: draft, overwriteItems: true)
+            Haptics.success()
+        }
+    }
+
+    /// Moves what the parser found onto the draft: items, tax, tip, and - when
+    /// the amount hasn't been typed yet - the total, preferring the printed one
+    /// so a missed line shows up as a visible remainder instead of a wrong sum.
+    private func applyParsedReceipt(_ result: ReceiptParser.Result, to draft: ExpenseDraft, overwriteItems: Bool) {
+        guard !result.items.isEmpty else { return }
+        if overwriteItems || draft.lineItems.isEmpty {
             draft.lineItems = result.items.map {
                 ExpenseDraft.DraftLineItem(
                     name: $0.name,
@@ -658,10 +664,19 @@ struct ExpenseEditorView: View {
                     quantity: $0.quantity
                 )
             }
-            if draft.amountMinorUnits == 0 {
+        }
+        if draft.taxMinorUnits == 0, let tax = result.taxMinorUnits {
+            draft.taxMinorUnits = tax
+        }
+        if draft.tipMinorUnits == 0, let tip = result.tipMinorUnits {
+            draft.tipMinorUnits = tip
+        }
+        if draft.amountMinorUnits == 0 {
+            if let total = result.totalMinorUnits, total >= draft.lineItemsTotalMinorUnits {
+                draft.amountMinorUnits = total
+            } else {
                 draft.adoptItemizedTotal()
             }
-            Haptics.success()
         }
     }
 

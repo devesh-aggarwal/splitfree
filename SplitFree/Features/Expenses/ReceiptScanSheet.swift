@@ -52,7 +52,7 @@ struct DocumentScannerView: UIViewControllerRepresentable {
 /// Scan → read → review. The parsed items are shown before anything is applied,
 /// because OCR on a crumpled receipt is a suggestion, not a fact.
 struct ReceiptScanSheet: View {
-    var onApply: (UIImage?, String, [ExpenseDraft.DraftLineItem]) -> Void
+    var onApply: (UIImage?, ReceiptParser.Result) -> Void
 
     @Environment(\.dismiss) private var dismiss
     @Environment(AppSettings.self) private var settings
@@ -240,14 +240,7 @@ struct ReceiptScanSheet: View {
     }
 
     private func apply() {
-        let items = (parsed?.items ?? []).map { item in
-            ExpenseDraft.DraftLineItem(
-                name: item.name,
-                amountMinorUnits: item.amountMinorUnits,
-                quantity: item.quantity
-            )
-        }
-        onApply(scannedImage, parsed?.rawText ?? "", items)
+        onApply(scannedImage, parsed ?? ReceiptParser.Result())
         dismiss()
     }
 }

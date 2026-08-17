@@ -38,7 +38,13 @@ enum ReceiptParser {
     static func recognizeText(in image: UIImage) async -> [String] {
         guard let cgImage = image.cgImage else { return [] }
 
-        let languages = Locale.preferredLanguages
+        // A photo's pixel data is often stored rotated, with the orientation
+        // flag saying how to display it. Vision reads the raw pixels, so the
+        // flag must be passed along or a portrait photo is OCR'd sideways and
+        // nothing is recognized. (Scanner output is always upright, which is
+        // how this path can look fine in one flow and fail in the other.)
+        let orientation = CGImagePropertyOrientation(image.imageOrientation)
+        let preferredLanguages = Locale.preferredLanguages
 
         return await withCheckedContinuation { continuation in
             // The request and handler are built inside the work item so nothing
@@ -47,9 +53,18 @@ enum ReceiptParser {
                 let request = VNRecognizeTextRequest()
                 request.recognitionLevel = .accurate
                 request.usesLanguageCorrection = false
-                request.recognitionLanguages = languages
+                // Only request languages Vision actually supports: one
+                // unsupported code (e.g. an "en-IN" device language) makes
+                // `perform` throw and OCR silently return nothing at all.
+                let supported = (try? request.supportedRecognitionLanguages()) ?? []
+                let usable = preferredLanguages.filter { preferred in
+                    supported.contains { $0 == preferred || $0.hasPrefix(preferred.prefix(2)) }
+                }
+                if !usable.isEmpty {
+                    request.recognitionLanguages = usable
+                }
 
-                let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+                let handler = VNImageRequestHandler(cgImage: cgImage, orientation: orientation, options: [:])
                 try? handler.perform([request])
 
                 let observations = request.results ?? []
@@ -125,16 +140,29 @@ enum ReceiptParser {
             }
             if matches(lowered, keywords: ignoreKeywords) { continue }
 
-            let (name, quantity) = extractQuantity(from: label)
+            let (name, parsedQuantity, priceIsLineTotal) = extractQuantity(from: label)
             let cleaned = name.trimmingCharacters(in: CharacterSet(charactersIn: " .-–—*#:"))
             guard cleaned.count >= 2, amount > 0 else { continue }
-            // A "line item" costing more than the printed total is a misread.
-            result.items.append(ParsedItem(name: cleaned, amountMinorUnits: amount, quantity: quantity))
+
+            // "2 x Cheeseburger  25.90" prints the line total, but items are
+            // stored as unit price × quantity, so the price must be divided or
+            // the item counts double. When it doesn't divide evenly the line is
+            // kept whole - the sum matters more than the quantity badge.
+            var quantity = parsedQuantity
+            var unitAmount = amount
+            if quantity > 1, priceIsLineTotal {
+                if amount % quantity == 0 {
+                    unitAmount = amount / quantity
+                } else {
+                    quantity = 1
+                }
+            }
+            result.items.append(ParsedItem(name: cleaned, amountMinorUnits: unitAmount, quantity: quantity))
         }
 
         // Drop obvious misreads once we know the total.
         if let total = result.totalMinorUnits, total > 0 {
-            result.items = result.items.filter { $0.amountMinorUnits <= total }
+            result.items = result.items.filter { $0.amountMinorUnits * $0.quantity <= total }
         }
 
         return result
@@ -171,18 +199,23 @@ enum ReceiptParser {
     private static let amountPattern = #"[$€£¥₹₽₩฿]?\s?\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{1,2})\s?[$€£¥₹₽₩฿]?"#
 
     /// "2 x Latte" or "Latte x2" → quantity 2.
-    private static func extractQuantity(from label: String) -> (name: String, quantity: Int) {
+    ///
+    /// `priceIsLineTotal` reports what the trailing price means for that form:
+    /// "2 x Latte 9.00" prints the extended total, while "2 @ 4.50" quotes the
+    /// unit price.
+    private static func extractQuantity(from label: String) -> (name: String, quantity: Int, priceIsLineTotal: Bool) {
         if let match = label.range(of: #"^\s*(\d{1,2})\s*[xX×@]\s*"#, options: .regularExpression) {
-            let digits = label[match].filter(\.isNumber)
+            let marker = label[match]
+            let digits = marker.filter(\.isNumber)
             let quantity = Int(digits) ?? 1
-            return (String(label[match.upperBound...]), max(1, quantity))
+            return (String(label[match.upperBound...]), max(1, quantity), !marker.contains("@"))
         }
         if let match = label.range(of: #"\s*[xX×]\s*(\d{1,2})\s*$"#, options: .regularExpression) {
             let digits = label[match].filter(\.isNumber)
             let quantity = Int(digits) ?? 1
-            return (String(label[label.startIndex..<match.lowerBound]), max(1, quantity))
+            return (String(label[label.startIndex..<match.lowerBound]), max(1, quantity), true)
         }
-        return (label, 1)
+        return (label, 1, true)
     }
 
     private static func matches(_ text: String, keywords: [String]) -> Bool {
@@ -209,4 +242,21 @@ enum ReceiptParser {
         "table", "server", "cashier", "tel", "phone", "www", "http", "thank you",
         "date", "time", "ref", "trans", "account", "balance", "points", "member",
     ]
+}
+
+extension CGImagePropertyOrientation {
+    /// UIKit and ImageIO number their orientations differently; Vision speaks ImageIO.
+    init(_ orientation: UIImage.Orientation) {
+        switch orientation {
+        case .up: self = .up
+        case .down: self = .down
+        case .left: self = .left
+        case .right: self = .right
+        case .upMirrored: self = .upMirrored
+        case .downMirrored: self = .downMirrored
+        case .leftMirrored: self = .leftMirrored
+        case .rightMirrored: self = .rightMirrored
+        @unknown default: self = .up
+        }
+    }
 }

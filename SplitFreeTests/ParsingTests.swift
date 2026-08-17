@@ -70,13 +70,46 @@ struct ReceiptParserTests {
         #expect(!names.contains { $0.contains("NOPA") })
     }
 
-    @Test("A leading quantity is lifted off the item name")
+    @Test("A leading quantity is lifted off the item name and the line total becomes a unit price")
     func parsesQuantity() {
         let result = ReceiptParser.parse(lines: ["3 x Croissant   9.00"], currencyCode: "USD")
         let item = result.items.first
         #expect(item?.quantity == 3)
         #expect(item?.name == "Croissant")
-        #expect(item?.amountMinorUnits == 900)
+        // 9.00 is the printed line total; stored per unit so 3 × 3.00 = 9.00.
+        #expect(item?.amountMinorUnits == 300)
+    }
+
+    @Test("An @ quantity quotes the unit price, which is kept as is")
+    func parsesUnitPriceQuantity() {
+        let result = ReceiptParser.parse(lines: ["2 @ Latte   4.50"], currencyCode: "USD")
+        let item = result.items.first
+        #expect(item?.quantity == 2)
+        #expect(item?.amountMinorUnits == 450)
+    }
+
+    @Test("A line total that doesn't divide evenly keeps the whole amount")
+    func keepsIndivisibleLineTotalsWhole() {
+        let result = ReceiptParser.parse(lines: ["2 x Special   9.99"], currencyCode: "USD")
+        let item = result.items.first
+        // 9.99 can't split into 2 equal cent amounts; the sum wins over the badge.
+        #expect(item?.quantity == 1)
+        #expect(item?.amountMinorUnits == 999)
+    }
+
+    @Test("Quantity lines sum to the receipt's own subtotal")
+    func quantityLinesSumCorrectly() {
+        let result = ReceiptParser.parse(
+            lines: [
+                "2 x Cheeseburger    25.90",
+                "Fries                4.95",
+                "Subtotal            30.85",
+                "TOTAL               33.55",
+            ],
+            currencyCode: "USD"
+        )
+        let sum = result.items.reduce(0) { $0 + $1.amountMinorUnits * $1.quantity }
+        #expect(sum == result.subtotalMinorUnits)
     }
 
     @Test("Comma decimals are read correctly")
