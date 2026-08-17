@@ -87,10 +87,13 @@ class LedgerViewModel(
     }
 
     /** Opens a link in the browser. */
-    fun openUrl(url: String) {
+    fun openUrl(url: String, fallbackUrl: String? = null) {
         val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(url))
             .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-        runCatching { appContext.startActivity(intent) }
+        runCatching { appContext.startActivity(intent) }.onFailure {
+            // A market:// link on a device without the Play Store, for example.
+            if (fallbackUrl != null) openUrl(fallbackUrl)
+        }
     }
 
     /** Hands a link to the system share sheet. */

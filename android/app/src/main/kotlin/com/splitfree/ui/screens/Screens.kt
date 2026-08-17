@@ -105,7 +105,22 @@ fun OnboardingScreen(viewModel: LedgerViewModel) {
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         )
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(20.dp))
+        Text(
+            "Choose your default currency",
+            style = MaterialTheme.typography.titleMedium,
+            color = colors.primaryText,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Spacer(Modifier.height(4.dp))
+        Text(
+            "Your totals are shown in this currency. Individual expenses can still be in any of 150+ currencies.",
+            style = MaterialTheme.typography.bodySmall,
+            color = colors.secondaryText,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Spacer(Modifier.height(10.dp))
         SplitCard(onClick = { showCurrencyPicker = true }) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(Currencies.flag(currency), fontSize = 24.sp)
@@ -644,8 +659,15 @@ fun AccountScreen(viewModel: LedgerViewModel) {
                 color = colors.secondaryText,
             )
             Spacer(Modifier.height(12.dp))
-            SecondaryButton("Buy me a coffee") {
-                viewModel.openUrl("https://buymeacoffee.com/devesha")
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                SecondaryButton("Buy me a coffee") {
+                    viewModel.openUrl("https://buymeacoffee.com/devesha")
+                }
+                SecondaryButton("Rate the app") {
+                    // The market scheme opens the Play Store app directly; the
+                    // web URL is the fallback for devices without it.
+                    viewModel.openUrl("market://details?id=com.splitfree", fallbackUrl = "https://play.google.com/store/apps/details?id=com.splitfree")
+                }
             }
         }
 
@@ -697,11 +719,12 @@ fun AccountScreen(viewModel: LedgerViewModel) {
         }
 
         SplitCard {
-            SectionHeader("About the app")
+            SectionHeader("Support SplitFree")
             Spacer(Modifier.height(8.dp))
             Text(
-                "SplitFree is made by Devesh. It is free, open source, and has no adverts, " +
-                    "no subscription and no paid tier.",
+                "SplitFree is free to use, yet I incur costs for the server and " +
+                    "developer memberships. If SplitFree has helped you, please " +
+                    "consider buying me a coffee!",
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.secondaryText,
             )
@@ -709,11 +732,15 @@ fun AccountScreen(viewModel: LedgerViewModel) {
             SecondaryButton("Buy me a coffee") {
                 viewModel.openUrl("https://buymeacoffee.com/devesha")
             }
-            Spacer(Modifier.height(16.dp))
+        }
+
+        SplitCard {
+            SectionHeader("Your data")
+            Spacer(Modifier.height(8.dp))
             Text(
                 "Everything lives on this device. Sharing a group is the one thing " +
                     "that changes that: it is uploaded so your friends' phones can reach it. " +
-                    "There are no accounts, no analytics and no adverts.",
+                    "SplitFree works without an account and collects nothing about you.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.secondaryText,
             )
@@ -721,6 +748,12 @@ fun AccountScreen(viewModel: LedgerViewModel) {
             SecondaryButton("Read the privacy policy") {
                 viewModel.openUrl("https://splitfree.dev/privacy")
             }
+            Spacer(Modifier.height(12.dp))
+            Text(
+                "Version " + com.splitfree.BuildConfig.VERSION_NAME,
+                style = MaterialTheme.typography.labelSmall,
+                color = colors.tertiaryText,
+            )
         }
 
         Spacer(Modifier.height(40.dp))

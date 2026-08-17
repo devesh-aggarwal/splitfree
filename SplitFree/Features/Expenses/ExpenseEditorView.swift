@@ -35,6 +35,7 @@ struct ExpenseEditorView: View {
     @State private var showsMoreOptions = false
     @State private var photoItem: PhotosPickerItem?
     @State private var showsDeleteConfirmation = false
+    @State private var isReadingReceipt = false
     @FocusState private var focusedField: Field?
 
     private enum Field: Hashable { case amount, title, notes }
@@ -413,12 +414,22 @@ struct ExpenseEditorView: View {
                             .frame(width: 72, height: 92)
                             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                         VStack(alignment: .leading, spacing: 8) {
-                            Button {
-                                activeSheet = .itemize
-                            } label: {
-                                Label("Itemize", systemImage: "list.bullet.rectangle")
+                            if isReadingReceipt {
+                                HStack(spacing: 8) {
+                                    ProgressView()
+                                    Text("Reading the receipt…")
+                                        .font(Typography.caption)
+                                        .foregroundStyle(Palette.secondaryText)
+                                }
+                                .padding(.vertical, 6)
+                            } else {
+                                Button {
+                                    activeSheet = .itemize
+                                } label: {
+                                    Label("Itemize", systemImage: "list.bullet.rectangle")
+                                }
+                                .buttonStyle(SecondaryButtonStyle())
                             }
-                            .buttonStyle(SecondaryButtonStyle())
                             Button(role: .destructive) {
                                 draft.receiptImageData = nil
                                 draft.receiptText = ""
@@ -635,6 +646,8 @@ struct ExpenseEditorView: View {
         // Run the same recognition the scanner uses, so a photo from the
         // library itemizes itself instead of opening an empty manual sheet.
         // Hand-entered items are never overwritten.
+        isReadingReceipt = true
+        defer { isReadingReceipt = false }
         let result = await ReceiptParser.parse(image: image, currencyCode: draft.currencyCode)
         draft.receiptText = result.rawText
         if draft.lineItems.isEmpty, !result.items.isEmpty {
