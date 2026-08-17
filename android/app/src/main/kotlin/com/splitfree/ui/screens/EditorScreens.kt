@@ -1,5 +1,10 @@
 package com.splitfree.ui.screens
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -20,10 +26,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -62,7 +73,9 @@ fun MoneyField(
     align: TextAlign = TextAlign.Center,
 ) {
     val colors = splitColors
+    val focusManager = LocalFocusManager.current
     var digits by remember(currencyCode) { mutableStateOf(if (minorUnits == 0L) "" else minorUnits.toString()) }
+    var focused by remember { mutableStateOf(false) }
 
     LaunchedEffect(minorUnits) {
         val expected = if (minorUnits == 0L) "" else minorUnits.toString()
@@ -76,22 +89,48 @@ fun MoneyField(
             digits = filtered
             onChange(filtered.toLongOrNull() ?: 0L)
         },
-        modifier = modifier,
+        modifier = modifier.onFocusChanged { focused = it.isFocused },
         textStyle = style.copy(
             color = if (minorUnits == 0L) colors.tertiaryText else colors.primaryText,
             textAlign = align,
         ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         cursorBrush = androidx.compose.ui.graphics.SolidColor(Color.Transparent),
         singleLine = true,
         decorationBox = {
-            Text(
-                Money(minorUnits, currencyCode).formatted(),
-                style = style,
-                color = if (minorUnits == 0L) colors.tertiaryText else colors.primaryText,
-                textAlign = align,
-                modifier = Modifier.fillMaxWidth(),
-            )
+            // The rendered amount replaces the raw digits, so the field draws
+            // its own caret: without one there is no sign the keypad is live.
+            val boxAlignment = when (align) {
+                TextAlign.Start, TextAlign.Left -> Alignment.CenterStart
+                TextAlign.End, TextAlign.Right -> Alignment.CenterEnd
+                else -> Alignment.Center
+            }
+            Box(Modifier.fillMaxWidth(), contentAlignment = boxAlignment) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        Money(minorUnits, currencyCode).formatted(),
+                        style = style,
+                        color = if (minorUnits == 0L) colors.tertiaryText else colors.primaryText,
+                    )
+                    if (focused) {
+                        val blink by rememberInfiniteTransition(label = "caret").animateFloat(
+                            initialValue = 1f,
+                            targetValue = 0f,
+                            animationSpec = infiniteRepeatable(tween(500), RepeatMode.Reverse),
+                            label = "caretAlpha",
+                        )
+                        Spacer(Modifier.width(2.dp))
+                        Box(
+                            Modifier
+                                .width(2.5.dp)
+                                .height(with(LocalDensity.current) { style.fontSize.toDp() })
+                                .alpha(blink)
+                                .background(colors.accent, RoundedCornerShape(1.25.dp)),
+                        )
+                    }
+                }
+            }
         },
     )
 }
@@ -831,7 +870,7 @@ fun ExpenseEditorScreen(
         }
     }
     if (showGroupPicker) {
-        GroupPickerSheet(ledger.groups.filter { !it.isArchived }, groupId, {
+        GroupPickerSheet(ledger.groups.filter { !it.isArchived && !it.isDirect }, groupId, {
             groupId = it
             showGroupPicker = false
         }) { showGroupPicker = false }

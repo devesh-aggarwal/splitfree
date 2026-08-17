@@ -28,6 +28,12 @@ enum ReceiptParser {
 
     // MARK: - OCR
 
+    /// A piece of recognized text and where it sat on the page.
+    struct Fragment {
+        var text: String
+        var frame: CGRect
+    }
+
     /// Runs text recognition over an image.
     static func recognizeText(in image: UIImage) async -> [String] {
         guard let cgImage = image.cgImage else { return [] }
@@ -47,12 +53,40 @@ enum ReceiptParser {
                 try? handler.perform([request])
 
                 let observations = request.results ?? []
-                // Receipts read top to bottom; Vision reports bottom-up origins.
-                let lines = observations
-                    .sorted { $0.boundingBox.midY > $1.boundingBox.midY }
-                    .compactMap { $0.topCandidates(1).first?.string }
-                continuation.resume(returning: lines)
+                let fragments = observations.compactMap { observation -> Fragment? in
+                    guard let text = observation.topCandidates(1).first?.string else { return nil }
+                    return Fragment(text: text, frame: observation.boundingBox)
+                }
+                continuation.resume(returning: assembleLines(from: fragments))
             }
+        }
+    }
+
+    /// Reunites fragments that share a visual row.
+    ///
+    /// Vision reports one observation per detected text box, and the wide gap
+    /// on a receipt between the item column and the price column means they
+    /// arrive as separate boxes. The parser needs "Flat White" and "9.00" back
+    /// on one line, in left-to-right order, to see an item at all.
+    static func assembleLines(from fragments: [Fragment]) -> [String] {
+        // Receipts read top to bottom; Vision reports bottom-up origins.
+        let sorted = fragments.sorted { $0.frame.midY > $1.frame.midY }
+
+        var rows: [[Fragment]] = []
+        for fragment in sorted {
+            if let index = rows.firstIndex(where: { row in
+                guard let anchor = row.first else { return false }
+                let tolerance = max(anchor.frame.height, fragment.frame.height) * 0.6
+                return abs(anchor.frame.midY - fragment.frame.midY) < tolerance
+            }) {
+                rows[index].append(fragment)
+            } else {
+                rows.append([fragment])
+            }
+        }
+
+        return rows.map { row in
+            row.sorted { $0.frame.minX < $1.frame.minX }.map(\.text).joined(separator: "  ")
         }
     }
 

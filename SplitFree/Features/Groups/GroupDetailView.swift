@@ -96,6 +96,15 @@ struct GroupDetailView: View {
         .sheet(item: $selectedExpense) { expense in
             ExpenseDetailView(expense: expense)
         }
+        #if DEBUG
+        // The screenshot script wants the itemized bill on screen, and a
+        // launch argument gets there without taps that break when the
+        // timeline changes shape.
+        .task {
+            guard DemoData.opensItemizedExpense, selectedExpense == nil else { return }
+            selectedExpense = group.expenseList.first { !$0.lineItemList.isEmpty }
+        }
+        #endif
         .sheet(isPresented: $isPresentingSettleUp) {
             SettleUpView(group: group, sheet: sheet)
         }

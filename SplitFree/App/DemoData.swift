@@ -29,6 +29,12 @@ enum DemoData {
         ProcessInfo.processInfo.arguments.contains("-openFirstGroup")
     }
 
+    /// Opens the itemized dinner inside the first group, for the screenshot
+    /// that shows a bill split line by line.
+    static var opensItemizedExpense: Bool {
+        ProcessInfo.processInfo.arguments.contains("-openItemizedExpense")
+    }
+
     private static func value(after flag: String) -> String? {
         let arguments = ProcessInfo.processInfo.arguments
         guard let index = arguments.firstIndex(of: flag), index + 1 < arguments.count else {
@@ -61,8 +67,8 @@ enum DemoData {
 
         add("Hotel, three nights", 84000, .hotel, daysAgo: 6, paidBy: you,
             among: [you, marco, priya, jonas], in: portland, context: context)
-        add("Dinner downtown", 14250, .diningOut, daysAgo: 4, paidBy: marco,
-            among: [you, marco, priya, jonas], in: portland, context: context)
+        addItemizedDinner(paidBy: marco, you: you, marco: marco, priya: priya, jonas: jonas,
+                          in: portland, context: context)
         add("Transit passes", 3600, .publicTransit, daysAgo: 4, paidBy: priya,
             among: [you, marco, priya, jonas], in: portland, context: context)
         add("Art museum", 5000, .activities, daysAgo: 2, paidBy: you,
@@ -113,6 +119,76 @@ enum DemoData {
     }
 
     // MARK: - Building blocks
+
+    /// The dinner is split line by line off the receipt, because that is the
+    /// screen the screenshots most want to show.
+    private static func addItemizedDinner(
+        paidBy payer: Participant,
+        you: Participant,
+        marco: Participant,
+        priya: Participant,
+        jonas: Participant,
+        in group: SpendingGroup,
+        context: ModelContext
+    ) {
+        let everyone = [you, marco, priya, jonas]
+        let expense = Expense(
+            title: "Dinner downtown",
+            amountMinorUnits: 14250,
+            currencyCode: group.defaultCurrencyCode,
+            date: Date().addingTimeInterval(-4 * 86400),
+            category: .diningOut,
+            splitMethod: .itemized,
+            group: group
+        )
+        expense.baseCurrencyCode = group.defaultCurrencyCode
+        expense.taxMinorUnits = 1150
+        expense.tipMinorUnits = 2400
+        context.insert(expense)
+
+        let lines: [(name: String, unit: Int, quantity: Int, had: [Participant])] = [
+            ("Wood-fired margherita", 1900, 1, [you, marco]),
+            ("Rigatoni alla vodka", 2200, 1, [priya]),
+            ("Roast half chicken", 2600, 1, [jonas]),
+            ("House salad", 1400, 1, [you, marco, priya, jonas]),
+            ("Tiramisu", 950, 2, [you, priya]),
+            ("Sparkling water", 700, 1, [marco, jonas]),
+        ]
+        for (index, line) in lines.enumerated() {
+            let item = ExpenseLineItem(
+                name: line.name,
+                amountMinorUnits: line.unit,
+                quantity: line.quantity,
+                sortOrder: index,
+                assignees: line.had
+            )
+            item.expense = expense
+            context.insert(item)
+        }
+
+        let allocations = SplitCalculator.itemized(
+            total: expense.amountMinorUnits,
+            items: lines.map {
+                SplitCalculator.ItemAssignment(
+                    amountMinorUnits: $0.unit * max(1, $0.quantity),
+                    participantIDs: $0.had.map(\.id)
+                )
+            },
+            taxMinorUnits: expense.taxMinorUnits,
+            tipMinorUnits: expense.tipMinorUnits,
+            fallbackParticipants: everyone.map(\.id)
+        )
+        Ledger.applySplit(
+            to: expense,
+            payers: [(participant: payer, amountMinorUnits: expense.amountMinorUnits)],
+            shares: allocations.compactMap { allocation in
+                everyone.first { $0.id == allocation.participantID }.map {
+                    (participant: $0, amountMinorUnits: allocation.amountMinorUnits, weight: 1)
+                }
+            },
+            in: context
+        )
+    }
 
     private static func person(_ name: String, colorIndex: Int, in context: ModelContext) -> Participant {
         let participant = Participant(name: name, colorIndex: colorIndex)

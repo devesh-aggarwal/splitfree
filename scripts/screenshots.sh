@@ -70,9 +70,10 @@ capture() { # capture <udid> <folder>
   done <<'ROUTE'
 1-groups|-startTab groups
 2-group|-startTab groups -openFirstGroup
-3-friends|-startTab friends
-4-insights|-startTab insights
-5-account|-startTab account
+3-itemize|-startTab groups -openFirstGroup -openItemizedExpense
+4-friends|-startTab friends
+5-insights|-startTab insights
+6-account|-startTab account
 ROUTE
 
   xcrun simctl status_bar "$udid" clear >/dev/null 2>&1 || true

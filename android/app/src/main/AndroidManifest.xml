@@ -38,16 +38,24 @@
 
             <!-- An invite link, opened from a message. -->
             <!--
-              The web link is handled by a page that bounces into the custom
-              scheme below. Verifying the https link directly would need an
-              assetlinks.json at the domain root, which a GitHub project page
-              cannot serve, so the redirect is the path that actually works.
+              The splitfree.dev join page bounces into the custom scheme below,
+              which works everywhere with no verification. The https filter is
+              the direct route: it starts working on Android 12+ once
+              splitfree.dev serves /.well-known/assetlinks.json with this app's
+              signing certificate hash (available in Play Console under
+              Setup > App signing after the first upload).
             -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="splitfree" android:host="join" />
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="splitfree.dev" android:pathPrefix="/join" />
             </intent-filter>
         </activity>
 

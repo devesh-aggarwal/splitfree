@@ -19,12 +19,13 @@ struct ExpenseDetailView: View {
 
     var body: some View {
         NavigationStack {
+            ScrollViewReader { proxy in
             ScrollView {
                 VStack(spacing: 16) {
                     headerCard
                     breakdownCard
                     if !expense.lineItemList.isEmpty {
-                        itemsCard
+                        itemsCard.id("items")
                     }
                     if let data = expense.receiptImageData, let image = UIImage(data: data) {
                         receiptCard(image)
@@ -36,6 +37,16 @@ struct ExpenseDetailView: View {
                     Color.clear.frame(height: 20)
                 }
                 .padding(Metrics.screenPadding)
+            }
+            #if DEBUG
+            // The screenshot wants the line items and tax in frame, not the
+            // header they sit beneath.
+            .task {
+                guard DemoData.opensItemizedExpense else { return }
+                try? await Task.sleep(for: .milliseconds(600))
+                withAnimation(nil) { proxy.scrollTo("items", anchor: .top) }
+            }
+            #endif
             }
             .scrollDismissesKeyboard(.interactively)
             .screenBackground()

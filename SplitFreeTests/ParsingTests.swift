@@ -7,6 +7,37 @@ import Testing
 @Suite("Receipt parser")
 struct ReceiptParserTests {
 
+    @Test("Split name and price columns are reunited onto one line")
+    func assemblesColumnsIntoLines() {
+        // Vision reports the item column and the price column of a receipt as
+        // separate boxes with (roughly) the same vertical position, in
+        // bottom-up normalized coordinates.
+        let fragments: [ReceiptParser.Fragment] = [
+            .init(text: "GREEN LEAF CAFE", frame: CGRect(x: 0.1, y: 0.90, width: 0.5, height: 0.03)),
+            .init(text: "Flat White", frame: CGRect(x: 0.1, y: 0.80, width: 0.3, height: 0.03)),
+            .init(text: "9.00", frame: CGRect(x: 0.7, y: 0.801, width: 0.1, height: 0.03)),
+            // Price detected before its label, which happens routinely.
+            .init(text: "12.50", frame: CGRect(x: 0.7, y: 0.70, width: 0.1, height: 0.03)),
+            .init(text: "Avocado Toast", frame: CGRect(x: 0.1, y: 0.701, width: 0.3, height: 0.03)),
+            .init(text: "Total", frame: CGRect(x: 0.1, y: 0.60, width: 0.2, height: 0.03)),
+            .init(text: "21.50", frame: CGRect(x: 0.7, y: 0.60, width: 0.1, height: 0.03)),
+        ]
+
+        let lines = ReceiptParser.assembleLines(from: fragments)
+        #expect(lines == [
+            "GREEN LEAF CAFE",
+            "Flat White  9.00",
+            "Avocado Toast  12.50",
+            "Total  21.50",
+        ])
+
+        let result = ReceiptParser.parse(lines: lines, currencyCode: "USD")
+        #expect(result.items.count == 2)
+        #expect(result.items.first?.name == "Flat White")
+        #expect(result.items.first?.amountMinorUnits == 900)
+        #expect(result.totalMinorUnits == 2150)
+    }
+
     @Test("A typical restaurant receipt yields items, tax, tip and total")
     func parsesRestaurantReceipt() {
         let lines = [
