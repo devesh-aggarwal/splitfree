@@ -1,4 +1,5 @@
 import SwiftData
+import StoreKit
 import SwiftUI
 
 struct AccountView: View {
@@ -22,6 +23,11 @@ struct AccountView: View {
     @State private var showsResetConfirmation = false
 
     @Environment(\.openURL) private var openURL
+
+    /// Apple only permits linking out to an external payment mechanism from the
+    /// US storefront (guideline 3.1.1(a)). Everywhere else the link, and any
+    /// mention of it, has to stay hidden. Defaults to hidden until we know.
+    @State private var allowsExternalSupportLink = false
 
     /// The numeric Apple ID of the app on the App Store, used for the
     /// write-review deep link. `requestReview` is silently ignored on
@@ -58,6 +64,9 @@ struct AccountView: View {
             .sheet(isPresented: $isPresentingRecurring) { RecurringRulesView() }
             .sheet(isPresented: $isPresentingAbout) { AboutView() }
             .task { await sync.refreshState() }
+            .task {
+                allowsExternalSupportLink = await Storefront.current?.countryCode == "USA"
+            }
             .confirmationDialog(
                 Text("Erase everything?"),
                 isPresented: $showsResetConfirmation,
@@ -109,16 +118,24 @@ struct AccountView: View {
                         .font(.headline)
                         .foregroundStyle(Palette.primaryText)
                 }
-                Text("All features of SplitFree are completely free to use. If you'd like to support me, please consider rating the app or buying me a coffee!")
-                    .font(Typography.rowSubtitle)
-                    .foregroundStyle(Palette.secondaryText)
-                    .fixedSize(horizontal: false, vertical: true)
+                Group {
+                    if allowsExternalSupportLink {
+                        Text("All features of SplitFree are completely free to use. If you'd like to support me, please consider rating the app or buying me a coffee!")
+                    } else {
+                        Text("All features of SplitFree are completely free to use. If you'd like to support me, please consider rating the app!")
+                    }
+                }
+                .font(Typography.rowSubtitle)
+                .foregroundStyle(Palette.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
 
                 HStack(spacing: 10) {
-                    Link(destination: URL(string: "https://buymeacoffee.com/devesha")!) {
-                        Text("Buy me a coffee")
+                    if allowsExternalSupportLink {
+                        Link(destination: URL(string: "https://buymeacoffee.com/devesha")!) {
+                            Text("Buy me a coffee")
+                        }
+                        .buttonStyle(SecondaryButtonStyle())
                     }
-                    .buttonStyle(SecondaryButtonStyle())
 
                     Button {
                         if let url = URL(string: "https://apps.apple.com/app/id\(Self.appStoreID)?action=write-review") {
